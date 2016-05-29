@@ -1,0 +1,77 @@
+package com.broker.entity;
+
+public class Order {
+	private long orderID;
+	private String orderType;
+	private String product;
+	private String period;
+	private int quantity;
+	private double price;
+	private int side;
+	private String orderTime;
+
+	public long getOrderID() {
+		return orderID;
+	}
+
+	public void setOrderID(long orderID) {
+		this.orderID = orderID;
+	}
+
+	public String getOrderType() {
+		return orderType;
+	}
+
+	public void setOrderType(String orderType) {
+		this.orderType = orderType;
+	}
+
+	public String getProduct() {
+		return product;
+	}
+
+	public void setProduct(String product) {
+		this.product = product;
+	}
+
+	public String getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(String period) {
+		this.period = period;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public int getSide() {
+		return side;
+	}
+
+	public void setSide(int side) {
+		this.side = side;
+	}
+
+	public String getOrderTime() {
+		return orderTime;
+	}
+
+	public void setOrderTime(String orderTime) {
+		this.orderTime = orderTime;
+	}
+
+}
