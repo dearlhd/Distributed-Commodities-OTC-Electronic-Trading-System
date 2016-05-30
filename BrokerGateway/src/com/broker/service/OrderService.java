@@ -7,4 +7,8 @@ public interface OrderService {
 	void dealLimitOrder (Order order);
 	void dealStopOrder (Order order);
 	void dealCancelOrder (Order order);
+	
+	void addOrder(Order order);
+	
+	void printOrderBook(Order order, int side);
 }
