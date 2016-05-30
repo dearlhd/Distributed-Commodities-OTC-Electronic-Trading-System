@@ -31,10 +31,7 @@ public class OrderServiceImpl implements OrderService {
 			String sellKey = key + 1;
 			sellList = redisService.getOrderList(sellKey);
 			if (sellList == null) {
-				System.out.println("sell list is null");
 				sellList = new ArrayList<Order>();
-			} else {
-				System.out.println("sell list size is: " + sellList.size());
 			}
 			
 			int quantity = matchOrder(sellList, new ArrayList<Order>(), order);
@@ -99,10 +96,7 @@ public class OrderServiceImpl implements OrderService {
 		else if (order.getSide() == 1) {
 			buyList = redisService.getOrderList(buyKey);
 			if (buyList == null) {
-				System.out.println("buy list is null");
 				buyList = new ArrayList<Order>();
-			} else {
-				System.out.println("sell list size is: " + buyList.size());
 			}
 			for (int i = 0; i < buyList.size(); i++) {
 				if (order.getPrice() <= buyList.get(i).getPrice()) {
@@ -127,12 +121,67 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public void dealStopOrder(Order order) {
-
+		String stopKey = "StopOrder:" + order.getProduct() + " " + order.getPeriod();
+		final String key = "OrderBook:" + order.getProduct() + " " + order.getPeriod();
+		
+		List<Order> stopList = redisService.getOrderList(stopKey);
+		if (stopList == null) {
+			return;
+		} 
+		
+		for (int i = 0; i < stopList.size(); i++) {
+			Order stopOrder = stopList.get(i);
+			if (stopOrder.getPrice() == order.getPrice()) {
+				List<Order> matchList;
+				if (stopOrder.getSide() == 0) {
+					matchList = redisService.getOrderList(key+1);
+				}
+				else {
+					matchList = redisService.getOrderList(key+0);
+				}
+				matchOrder(matchList, new ArrayList<Order>(), stopOrder);
+			}
+		}
+		
 	}
 
 	@Override
 	public void dealCancelOrder(Order order) {
-
+		String key = "OrderBook:" + order.getProduct() + " " + order.getPeriod();
+		List<Order> matchList = new ArrayList<Order>();
+		if (order.getOrderType() == "stop") {
+			key = "StopOrder:" + order.getProduct() + " " + order.getPeriod();
+			matchList = redisService.getOrderList(key);
+		}
+		
+		if (order.getSide() == 0 && order.getOrderType() == "limit") {
+			key = key + 0;
+			matchList = redisService.getOrderList(key);
+		}
+		else if (order.getSide() == 1 && order.getOrderType() == "limit"){
+			key = key + 1;
+			matchList = redisService.getOrderList(key);
+		}
+		
+		if (matchList == null) {
+			return;
+		} 
+		
+		for (int i = 0; i < matchList.size(); i++) {
+			Order stopOrder = matchList.get(i);
+			if (stopOrder.getOrderID().equals(order.getOrderID())) {
+				if (stopOrder.getQuantity() == order.getQuantity()) {
+					matchList.remove(i);
+					redisService.setOrderList(key, matchList);
+					return;
+				}
+				else if (stopOrder.getQuantity() > order.getQuantity()) {
+					stopOrder.setQuantity(stopOrder.getQuantity() - order.getQuantity());
+					redisService.setOrderList(key, matchList);
+					return;
+				}
+			}
+		}
 	}
 
 	private static int compareOrder(Order order1, Order order2) {
@@ -248,7 +297,6 @@ public class OrderServiceImpl implements OrderService {
 		
 		redisService.setOrderList(matchKey, matchList);
 		matchList = redisService.getOrderList(matchKey);
-		System.out.println();
 
 		// TODO 生成blotter entry并向交易双方发送通知
 
@@ -293,5 +341,17 @@ public class OrderServiceImpl implements OrderService {
 			Order od = matchList.get(i);
 			System.out.println(od.getOrderTime() + " " + od.getPrice() + " " + od.getSide() + " " + od.getQuantity());
 		}
+	}
+
+	@Override
+	public void addStopOrder(Order order) {
+		String key = "StopOrder:" + order.getProduct() + " " + order.getPeriod();
+		
+		List<Order> stopList = redisService.getOrderList(key);
+		if (stopList == null) {
+			stopList = new ArrayList<Order>();
+		}
+		stopList.add(order);
+		redisService.setOrderList(key, stopList);
 	}
 }
