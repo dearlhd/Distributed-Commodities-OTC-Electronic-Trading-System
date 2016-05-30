@@ -2,8 +2,6 @@ package com.broker.dao;
 
 import com.broker.entity.User;
 
-
-
 public interface IUserDao {
     int deleteByPrimaryKey(Integer id);
 

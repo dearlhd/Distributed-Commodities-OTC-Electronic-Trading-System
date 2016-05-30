@@ -1,6 +1,9 @@
 package com.broker.entity;
 
-public class BlotterEntry {
+import java.io.Serializable;
+
+public class BlotterEntry implements Serializable{
+	private static final long serialVersionUID = -1144509530178499858L;
 	private long tradeID;
 	private String broker;
 	private String product;

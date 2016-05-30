@@ -1,7 +1,10 @@
 package com.broker.entity;
 
-public class Order {
-	private long orderID;
+import java.io.Serializable;
+
+public class Order implements Serializable {
+	private static final long serialVersionUID = -8093937721423856923L;
+	private String orderID;
 	private String orderType;
 	private String product;
 	private String period;
@@ -9,12 +12,14 @@ public class Order {
 	private double price;
 	private int side;
 	private String orderTime;
+	private String trader;
+	private String traderCompany;
 
-	public long getOrderID() {
+	public String getOrderID() {
 		return orderID;
 	}
 
-	public void setOrderID(long orderID) {
+	public void setOrderID(String orderID) {
 		this.orderID = orderID;
 	}
 
@@ -72,6 +77,22 @@ public class Order {
 
 	public void setOrderTime(String orderTime) {
 		this.orderTime = orderTime;
+	}
+
+	public String getTrader() {
+		return trader;
+	}
+
+	public void setTrader(String trader) {
+		this.trader = trader;
+	}
+
+	public String getTraderCompany() {
+		return traderCompany;
+	}
+
+	public void setTraderCompany(String traderCompany) {
+		this.traderCompany = traderCompany;
 	}
 
 }
