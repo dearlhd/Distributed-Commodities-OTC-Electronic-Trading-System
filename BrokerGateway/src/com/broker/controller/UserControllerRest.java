@@ -3,6 +3,7 @@ package com.broker.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import net.sf.json.JSONObject;
@@ -16,11 +17,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.broker.entity.User;
+import com.broker.service.MessagingService;
 
 
 @Controller
 @RequestMapping("/rest")
 public class UserControllerRest {
+	@Resource
+	private MessagingService messagingService;
+	
 	@RequestMapping(value = "/hello", produces = "text/plain;charset=UTF-8")
     public @ResponseBody
     String hello() {
@@ -51,10 +56,26 @@ public class UserControllerRest {
         return jsonObject;
     }
     
-    @RequestMapping(value = "/greeting", method = RequestMethod.POST,consumes = "application/json")
-    public @ResponseBody User greeting(@RequestBody User user) { 
-        System.out.println(user.getUserName());
-        return user;
+    @RequestMapping(value = "/greeting", method = RequestMethod.POST)
+    public @ResponseBody JSONObject greeting(@RequestBody JSONObject obj) {
+    	obj = new JSONObject();
+		obj.put("name", "luo");
+		obj.put("greeting", "hello");
+
+		String url = "http://localhost:8888/BrokerGateway/rest/greeting2/";
+		obj = messagingService.postMessage(url, obj);
+		System.out.println("In greeting1: " + obj.toString());
+        return obj;
+    }
+    
+    @RequestMapping(value = "/greeting2", method = RequestMethod.POST)
+    public @ResponseBody JSONObject greeting2(@RequestBody JSONObject obj) {
+    	obj = new JSONObject();
+		obj.put("name", "luo");
+		obj.put("greeting", "hello");
+
+		System.out.println("In greeting2: " + obj.toString());
+        return obj;
     }
 
     @RequestMapping(value = "/User", method = RequestMethod.POST)

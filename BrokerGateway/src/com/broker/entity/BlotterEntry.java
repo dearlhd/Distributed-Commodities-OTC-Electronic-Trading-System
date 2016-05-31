@@ -2,9 +2,9 @@ package com.broker.entity;
 
 import java.io.Serializable;
 
-public class BlotterEntry implements Serializable{
+public class BlotterEntry implements Serializable {
 	private static final long serialVersionUID = -1144509530178499858L;
-	private long tradeID;
+	private int tradeID;
 	private String broker;
 	private String product;
 	private String period;
@@ -18,20 +18,20 @@ public class BlotterEntry implements Serializable{
 	private int completionSide;
 	private String dealTime;
 
+	public int getTradeID() {
+		return tradeID;
+	}
+
+	public void setTradeID(int tradeID) {
+		this.tradeID = tradeID;
+	}
+
 	public String getDealTime() {
 		return dealTime;
 	}
 
 	public void setDealTime(String dealTime) {
 		this.dealTime = dealTime;
-	}
-
-	public long getTradeID() {
-		return tradeID;
-	}
-
-	public void setTradeID(long tradeID) {
-		this.tradeID = tradeID;
 	}
 
 	public String getBroker() {

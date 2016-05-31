@@ -1,16 +1,19 @@
 package com.broker.service;
 
+import java.util.List;
+
 import com.broker.entity.Order;
 
 public interface OrderService {
-	void dealMarketOrder (Order order);
-	void dealLimitOrder (Order order);
-	void dealStopOrder (Order order);
-	void dealCancelOrder (Order order);
+	public double dealMarketOrder (Order order);
+	public double dealLimitOrder (Order order);
+	public void dealStopOrder (Order order);
+	public void dealCancelOrder (Order order);
 	
-	void addStopOrder (Order order);
+	public void addStopOrder (Order order);
 	
-	void addOrder(Order order);
+	public void addOrder(Order order);
 	
-	void printOrderBook(Order order, int side);
+	public List<Order> getOrderBook(Order order);
+	public void printOrderBook(Order order, int side);
 }

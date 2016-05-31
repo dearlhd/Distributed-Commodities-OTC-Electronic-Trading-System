@@ -10,21 +10,35 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import net.sf.json.JSONObject;
+
 import com.broker.entity.BlotterEntry;
 import com.broker.entity.Order;
+import com.broker.service.BlotterService;
+import com.broker.service.MessagingService;
 import com.broker.service.OrderService;
 import com.broker.service.RedisService;
 
 public class OrderServiceImpl implements OrderService {
+	private static double marketDepth = 0.0;
+
 	@Resource
 	private RedisService redisService;
 
+	@Resource
+	private BlotterService blotterService;
+
+	@Resource
+	private MessagingService msgService;
+
 	@Override
-	public void dealMarketOrder(Order order) {
+	public double dealMarketOrder(Order order) {
+		marketDepth = 0.0;
 		List<Order> buyList;
 		List<Order> sellList;
 
-		final String key = "OrderBook:" + order.getProduct() + " " + order.getPeriod();
+		final String key = "OrderBook:" + order.getProduct() + " "
+				+ order.getPeriod();
 
 		// order side is buy
 		if (order.getSide() == 0) {
@@ -33,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
 			if (sellList == null) {
 				sellList = new ArrayList<Order>();
 			}
-			
+
 			int quantity = matchOrder(sellList, new ArrayList<Order>(), order);
 
 			if (quantity > 0) {
@@ -48,22 +62,24 @@ public class OrderServiceImpl implements OrderService {
 			if (buyList == null) {
 				buyList = new ArrayList<Order>();
 			}
-			int quantity = matchOrder (buyList, new ArrayList<Order>(), order);
+			int quantity = matchOrder(buyList, new ArrayList<Order>(), order);
 
 			if (quantity > 0) {
 				// TODO 当market order不能全部交易完成时
 			}
-
 		}
+		return marketDepth;
 	}
 
 	@Override
-	public void dealLimitOrder(Order order) {
+	public double dealLimitOrder(Order order) {
+		marketDepth = 0.0;
 		List<Order> buyList;
 		List<Order> sellList;
 		List<Order> matchList = new ArrayList<Order>();
 
-		final String key = "OrderBook:" + order.getProduct() + " " + order.getPeriod();
+		final String key = "OrderBook:" + order.getProduct() + " "
+				+ order.getPeriod();
 
 		String sellKey = key + 1;
 		String buyKey = key + 0;
@@ -73,7 +89,7 @@ public class OrderServiceImpl implements OrderService {
 			if (sellList == null) {
 				sellList = new ArrayList<Order>();
 			}
-			
+
 			for (int i = 0; i < sellList.size(); i++) {
 				if (order.getPrice() >= sellList.get(i).getPrice()) {
 					matchList.add(sellList.get(i));
@@ -104,7 +120,7 @@ public class OrderServiceImpl implements OrderService {
 					buyList.remove(i);
 				}
 			}
-			
+
 			int quantity = matchOrder(matchList, buyList, order);
 			if (quantity > 0) {
 				order.setQuantity(quantity);
@@ -116,57 +132,58 @@ public class OrderServiceImpl implements OrderService {
 				redisService.setOrderList(sellKey, sellList);
 			}
 		}
-
+		return marketDepth;
 	}
 
 	@Override
 	public void dealStopOrder(Order order) {
-		String stopKey = "StopOrder:" + order.getProduct() + " " + order.getPeriod();
-		final String key = "OrderBook:" + order.getProduct() + " " + order.getPeriod();
-		
+		String stopKey = "StopOrder:" + order.getProduct() + " "
+				+ order.getPeriod();
+		final String key = "OrderBook:" + order.getProduct() + " "
+				+ order.getPeriod();
+
 		List<Order> stopList = redisService.getOrderList(stopKey);
 		if (stopList == null) {
 			return;
-		} 
-		
+		}
+
 		for (int i = 0; i < stopList.size(); i++) {
 			Order stopOrder = stopList.get(i);
 			if (stopOrder.getPrice() == order.getPrice()) {
 				List<Order> matchList;
 				if (stopOrder.getSide() == 0) {
-					matchList = redisService.getOrderList(key+1);
-				}
-				else {
-					matchList = redisService.getOrderList(key+0);
+					matchList = redisService.getOrderList(key + 1);
+				} else {
+					matchList = redisService.getOrderList(key + 0);
 				}
 				matchOrder(matchList, new ArrayList<Order>(), stopOrder);
 			}
 		}
-		
+
 	}
 
 	@Override
 	public void dealCancelOrder(Order order) {
-		String key = "OrderBook:" + order.getProduct() + " " + order.getPeriod();
+		String key = "OrderBook:" + order.getProduct() + " "
+				+ order.getPeriod();
 		List<Order> matchList = new ArrayList<Order>();
 		if (order.getOrderType() == "stop") {
 			key = "StopOrder:" + order.getProduct() + " " + order.getPeriod();
 			matchList = redisService.getOrderList(key);
 		}
-		
+
 		if (order.getSide() == 0 && order.getOrderType() == "limit") {
 			key = key + 0;
 			matchList = redisService.getOrderList(key);
-		}
-		else if (order.getSide() == 1 && order.getOrderType() == "limit"){
+		} else if (order.getSide() == 1 && order.getOrderType() == "limit") {
 			key = key + 1;
 			matchList = redisService.getOrderList(key);
 		}
-		
+
 		if (matchList == null) {
 			return;
-		} 
-		
+		}
+
 		for (int i = 0; i < matchList.size(); i++) {
 			Order stopOrder = matchList.get(i);
 			if (stopOrder.getOrderID().equals(order.getOrderID())) {
@@ -174,9 +191,9 @@ public class OrderServiceImpl implements OrderService {
 					matchList.remove(i);
 					redisService.setOrderList(key, matchList);
 					return;
-				}
-				else if (stopOrder.getQuantity() > order.getQuantity()) {
-					stopOrder.setQuantity(stopOrder.getQuantity() - order.getQuantity());
+				} else if (stopOrder.getQuantity() > order.getQuantity()) {
+					stopOrder.setQuantity(stopOrder.getQuantity()
+							- order.getQuantity());
 					redisService.setOrderList(key, matchList);
 					return;
 				}
@@ -233,9 +250,10 @@ public class OrderServiceImpl implements OrderService {
 		});
 	}
 
-	private int matchOrder(List<Order> matchList, List<Order> leftList, Order order) {
+	private int matchOrder(List<Order> matchList, List<Order> leftList,
+			Order order) {
 		sortOrder(matchList);
-		
+
 		int quantity = order.getQuantity();
 		List<BlotterEntry> beList = new ArrayList<BlotterEntry>();
 		final String key = "OrderBook:" + order.getProduct() + " "
@@ -244,8 +262,7 @@ public class OrderServiceImpl implements OrderService {
 
 		if (order.getSide() == 0) {
 			matchKey = key + 1;
-		}
-		else {
+		} else {
 			matchKey = key + 0;
 		}
 		while (matchList.size() > 0 && quantity > 0) {
@@ -258,7 +275,7 @@ public class OrderServiceImpl implements OrderService {
 			be.setPeriod(order.getPeriod());
 			be.setPrice(oldOrder.getPrice());
 			be.setInitiatorTrader(oldOrder.getTrader());
-			be.setInitiatorTrader(oldOrder.getTraderCompany());
+			be.setInitiatorCompany(oldOrder.getTraderCompany());
 			be.setInitiatorSide(1);
 			be.setCompletionTrader(order.getTrader());
 			be.setCompletionCompany(order.getTraderCompany());
@@ -266,6 +283,8 @@ public class OrderServiceImpl implements OrderService {
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 设置日期格式
 			Date date = new Date();
 			be.setDealTime(df.format(date));
+
+			marketDepth = be.getPrice();
 
 			// first node of sell List is enough
 			if (oldQuantity >= quantity) {
@@ -294,11 +313,48 @@ public class OrderServiceImpl implements OrderService {
 		}
 
 		matchList.addAll(leftList);
-		
+
 		redisService.setOrderList(matchKey, matchList);
 		matchList = redisService.getOrderList(matchKey);
 
-		// TODO 生成blotter entry并向交易双方发送通知
+		// TODO 向交易双方发送通知， 向所有trader gateway发送最新的order book
+		for (int i = 0; i < beList.size(); i++) {
+			BlotterEntry be = beList.get(i);
+			String url1 = "", url2 = "";
+			if (be.getInitiatorCompany().equals("traderCompany1")) {
+				url1 = "";
+			} else if (be.getInitiatorCompany().equals("traderCompany2")) {
+				url1 = "";
+			} else if (be.getInitiatorCompany().equals("traderCompany3")) {
+				url1 = "";
+			}
+
+			if (be.getCompletionCompany().equals("traderCompany1")) {
+				url2 = "";
+			} else if (be.getCompletionCompany().equals("traderCompany2")) {
+				url2 = "";
+			} else if (be.getCompletionCompany().equals("traderCompany3")) {
+				url2 = "";
+			}
+
+			JSONObject jsonObject = JSONObject.fromObject(be);
+			jsonObject.put("msg", "blotterEntry");
+			if (url1.equals(url2)) {
+				msgService.postMessage(url1, jsonObject);
+			} else {
+				msgService.postMessage(url1, jsonObject);
+				msgService.postMessage(url2, jsonObject);
+			}
+
+		}
+		
+		JSONObject jsonObject = JSONObject.fromObject(getOrderBook(order));
+		jsonObject.put("msg", "orderBook");
+		msgService.postToAllTrader(jsonObject);
+
+		for (int i = 0; i < beList.size(); i++) {
+			blotterService.addBlotterEntry(beList.get(i));
+		}
 
 		return quantity;
 	}
@@ -329,29 +385,131 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public void printOrderBook(Order order, int side) {
-		String key = "OrderBook:" + order.getProduct() + " " + order.getPeriod() + side;
+		String key = "OrderBook:" + order.getProduct() + " "
+				+ order.getPeriod() + side;
 		List<Order> matchList = redisService.getOrderList(key);
-		
+
 		if (matchList == null) {
 			return;
 		}
-		
+
 		sortOrder(matchList);
 		for (int i = 0; i < matchList.size(); i++) {
 			Order od = matchList.get(i);
-			System.out.println(od.getOrderTime() + " " + od.getPrice() + " " + od.getSide() + " " + od.getQuantity());
+			System.out.println(od.getOrderTime() + " " + od.getPrice() + " "
+					+ od.getSide() + " " + od.getQuantity());
 		}
 	}
 
 	@Override
 	public void addStopOrder(Order order) {
-		String key = "StopOrder:" + order.getProduct() + " " + order.getPeriod();
-		
+		String key = "StopOrder:" + order.getProduct() + " "
+				+ order.getPeriod();
+
 		List<Order> stopList = redisService.getOrderList(key);
 		if (stopList == null) {
 			stopList = new ArrayList<Order>();
 		}
 		stopList.add(order);
 		redisService.setOrderList(key, stopList);
+	}
+
+	@Override
+	public List<Order> getOrderBook(Order order) {
+		String buyKey = "OrderBook:" + order.getProduct() + " "
+				+ order.getPeriod() + 0;
+		String sellKey = "OrderBook:" + order.getProduct() + " "
+				+ order.getPeriod() + 1;
+		List<Order> orderBook = new ArrayList<Order>();
+		List<Order> buyList = redisService.getOrderList(buyKey);
+		List<Order> sellList = redisService.getOrderList(sellKey);
+
+		if (buyList == null)
+			buyList = new ArrayList<Order>();
+		if (sellList == null)
+			sellList = new ArrayList<Order>();
+
+		sortOrder(buyList);
+		sortOrder(sellList);
+
+		int sellCnt = 0, buyCnt = 0;
+
+		Order od = new Order();
+		od.setProduct(order.getProduct());
+		od.setPeriod(order.getPeriod());
+		od.setQuantity(0);
+		od.setPrice(0.0);
+		od.setSide(0);
+
+		for (int i = 0; i < buyList.size(); i++) {
+			if (buyCnt > 3)
+				break;
+
+			Order tOrder = buyList.get(i);
+			if (od.getPrice() == 0.0) {
+				buyCnt++;
+				od.setPrice(tOrder.getPrice());
+				od.setQuantity(tOrder.getQuantity());
+				continue;
+			} else {
+				if (od.getPrice() == tOrder.getPrice()) {
+					od.setQuantity(od.getQuantity() + tOrder.getQuantity());
+					continue;
+				} else {
+					buyCnt++;
+					orderBook.add(od);
+					od = new Order();
+					od.setProduct(order.getProduct());
+					od.setPeriod(order.getPeriod());
+					od.setPrice(tOrder.getPrice());
+					od.setQuantity(tOrder.getQuantity());
+					od.setSide(0);
+				}
+			}
+		}
+		
+		if (buyCnt <= 3) {
+			orderBook.add(od);
+		}
+
+		od = new Order();
+		od.setProduct(order.getProduct());
+		od.setPeriod(order.getPeriod());
+		od.setQuantity(0);
+		od.setPrice(0.0);
+		od.setSide(1);
+
+		for (int i = 0; i < sellList.size(); i++) {
+			if (sellCnt > 3)
+				break;
+
+			Order tOrder = sellList.get(i);
+			if (od.getPrice() == 0.0) {
+				sellCnt++;
+				od.setPrice(tOrder.getPrice());
+				od.setQuantity(tOrder.getQuantity());
+				continue;
+			} else {
+				if (od.getPrice() == tOrder.getPrice()) {
+					od.setQuantity(od.getQuantity() + tOrder.getQuantity());
+					continue;
+				} else {
+					sellCnt++;
+					orderBook.add(0, od);
+					od = new Order();
+					od.setProduct(order.getProduct());
+					od.setPeriod(order.getPeriod());
+					od.setPrice(tOrder.getPrice());
+					od.setQuantity(tOrder.getQuantity());
+					od.setSide(1);
+				}
+			}
+		}
+		
+		if (sellCnt <= 3) {
+			orderBook.add(0, od);
+		}
+
+		return orderBook;
 	}
 }

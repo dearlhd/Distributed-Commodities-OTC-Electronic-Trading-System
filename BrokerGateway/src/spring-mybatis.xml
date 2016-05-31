@@ -55,6 +55,10 @@
 	</bean>
 
 	<bean id="redisService" class="com.broker.serviceImpl.RedisServiceImpl"></bean>
-	<bean id="redisClient" class="com.broker.utils.jedis.RedisClient"></bean>
 	<bean id="orderService" class="com.broker.serviceImpl.OrderServiceImpl"></bean>
+	<bean id="blotterService" class="com.broker.serviceImpl.BlotterServiceImpl"></bean>
+	<bean id="messagingService" class="com.broker.serviceImpl.MessagingServiceImpl"></bean>
+	
+	<bean id="redisClient" class="com.broker.utils.jedis.RedisClient"></bean>
+	<bean id="httpClientUtil" class="com.broket.utils.httpClient.HttpClientUtil"></bean>
 </beans>  
