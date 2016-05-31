@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>TraderAccount</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<link rel="stylesheet" href="css/bootstrap.css" />
+	<link rel="stylesheet" href="css/my.css" />
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/my.js"></script>
+	<script src="js/bootstrap.min.js"> </script>
+
+</head>
+<body>
+
+<div id="wrap">
+	<header id="header" class="container">
+		<div class="top-link">
+			<a href="login.html" class="my_logout">Log Out</a>
+		</div>
+		<div class="my_title">Futures<a class="my_title_a">Trader</a></div>
+		<nav id="nav-wrap">
+			<ul id="nav">
+				<li><a href="#" onclick="queryMarketClick();">Market</a></li>
+				<li><a href="#" onclick="queryOrderClick();">My Order</a></li>
+				<li><a href="#" onclick="queryBlotter();">Order Blotter</a></li>
+				<li><a href="#" class="my_account">My Account</a>
+					<ul>
+						<li><a href="traderAccount.html">Setting</a></li>
+						<li><a href="traderAccount.html">MyFund</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</header>
+
+<section class="container home-content">
+	<hr class="my_hr_T my_hr_Add"/>
+
+	<div class="two-thirds column">
+		<h3>Personal Setting</h3>	
+	</div>
+	<div class = "one-third column">
+	</div>
+</section>
+
+<section class="container page-content">
+	<section id="main-content">
+		<article class="eleven columns blog-post my_accountarticle">
+			<hr/>
+			<h4 class="my_accountTitle">Account Name</h4>
+			<hr class="my_nullhr"/>
+			<input type="" class="my_accountsettingInput my_disabled" disabled="disabled" value="asd"/>
+			<hr class="my_hr_T"/>
+
+			
+			<h4 class="my_accountTitle">Old Password</h4>
+			<hr class="my_nullhr"/>
+			<input type="password" class="my_accountsettingInput" />
+			<hr class="my_hr_T"/>
+
+			<h4 class="my_accountTitle">New Password</h4>
+			<hr class="my_nullhr"/>
+			<input type="password" class="my_accountsettingInput" />
+
+			<h4 class="my_accountTitle">New Password Repeat</h4>
+			<hr class="my_nullhr"/>
+			<input type="password" class="my_accountsettingInput" />
+			<a href="#" class="readmore mySettingConfirm">comfirm</a>
+		</article>
+	</section>
+
+	<section id="sidebar" class="my_sidebar">
+		<h4 class="subtitle">My Funds</h4>
+		<div class="listbox1">
+			<ul>
+				<li>
+					<a href="#" class="my_fund">10.66$</a>
+					<a href="#" class="my_fundType">Available Fund</a>
+				</li>
+				<li>
+					<a href="#" class="my_fund">2.03$</a>
+					<a href="#" class="my_fundType">Frozen Fund</a>					
+				</li>
+				<li><a href="#" onclick="showHiddenFoundInjection();">Fund Injection</a></li>
+				<li class="my_fundli"> 
+					<div hidden id="my_hiddenfundinjection">
+						<input class="my_fundinjectioninput" id="foundinjection" placeholder=" Input funds quantity $" />
+						<button class="my_fundinjectionconfirm" onclick="fundinjectionConfirmClick();">Confirm</button>
+					</div>
+				</li>
+			</ul>
+		</div>	
+	</section>
+</section>
+
+<section class="container page-content">
+	<hr class="my_blankhr"/>
+</section>
+
+
+<footer id="footer" align="center" class="my_footer">
+	<div class="container footer-in">
+		<p>CopyRights@</p>
+	</div>
+</footer>
+
+</div>
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+	function queryMarketClick(){
+		alert(1);
+	}
+
+	function queryOrderClick(){
+		alert(1);
+	}
+
+	function queryBlotter(){
+		window.location.href = "traderOrderBlotter.html";
+	}
+
+	function fundinjectionConfirmClick(){
+		alert(1);
+	}
+
+	function showHiddenFoundInjection(){
+		$("#foundinjection").val("");
+		if ($("#my_hiddenfundinjection").is(":hidden")) $("#my_hiddenfundinjection").show(500);
+		else $("#my_hiddenfundinjection").hide(500);
+	}
+
+	$(window).load(function() {
+    	$('#slider').nivoSlider();
+    });
+
+    $(document).ready(function(){
+
+    });
+</script>
