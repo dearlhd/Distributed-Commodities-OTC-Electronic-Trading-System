@@ -149,17 +149,20 @@ public class OrderServiceImpl implements OrderService {
 
 		for (int i = 0; i < stopList.size(); i++) {
 			Order stopOrder = stopList.get(i);
-			if (stopOrder.getPrice() == order.getPrice()) {
-				List<Order> matchList;
-				if (stopOrder.getSide() == 0) {
-					matchList = redisService.getOrderList(key + 1);
-				} else {
-					matchList = redisService.getOrderList(key + 0);
-				}
+			List<Order> matchList;
+			if (stopOrder.getPrice() <= order.getPrice() && stopOrder.getSide() == 0) {
+				matchList = redisService.getOrderList(key + 1);
 				matchOrder(matchList, new ArrayList<Order>(), stopOrder);
+				stopList.remove(i);
+			}
+			else if (stopOrder.getPrice() >= order.getPrice() && stopOrder.getSide() == 1) {
+				matchList = redisService.getOrderList(key + 0);
+				matchOrder(matchList, new ArrayList<Order>(), stopOrder);
+				stopList.remove(i);
 			}
 		}
-
+		
+		redisService.setOrderList(stopKey, stopList);
 	}
 
 	@Override

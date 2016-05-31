@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.broker.dao.BlotterDao">
-	<resultMap id="BaseResultMap" type="com.broker.entity.BlotterEntry">
+	<resultMap id="BlotterList" type="com.broker.entity.BlotterEntry">
 		<id column="tradeID" property="tradeID" jdbcType="INTEGER" />
 		<result column="broker" property="broker" jdbcType="VARCHAR" />
 		<result column="product" property="product" jdbcType="VARCHAR" />
@@ -22,32 +22,37 @@
 			jdbcType="INTEGER" />
 		<result column="dealTime" property="dealTime" jdbcType="VARCHAR" />
 	</resultMap>
+
 	<sql id="Base_Column_List">
 		tradeID, broker, product, period, price, quantity,
 		initiatorTrader, initiatorCompany, initiatorSide,
-		completionTrader, completionCompany, completionSide, dealTime
+		completionTrader,
+		completionCompany, completionSide, dealTime
 	</sql>
 	<insert id="addBlotterEntry" parameterType="com.broker.entity.BlotterEntry">
-		insert into orderBlotter (tradeID, broker, product, period, price,
+		insert into
+		orderBlotter (tradeID, broker, product, period, price,
 		quantity,
 		initiatorTrader, initiatorCompany, initiatorSide,
-		completionTrader, completionCompany,
+		completionTrader,
+		completionCompany,
 		completionSide, dealTime)
-		values (#{tradeID,jdbcType=INTEGER}, #{broker,jdbcType=VARCHAR},
-			#{product,jdbcType=VARCHAR},
-			#{period,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, #{quantity,jdbcType=INTEGER},
-			#{initiatorTrader,jdbcType=VARCHAR},
-			#{initiatorCompany,jdbcType=VARCHAR},
-			#{initiatorSide,jdbcType=INTEGER},
-			#{completionTrader,jdbcType=VARCHAR},
-			#{completionCompany,jdbcType=VARCHAR},
-			#{completionSide,jdbcType=INTEGER}, #{dealTime,jdbcType=VARCHAR})
+		values
+		(#{tradeID,jdbcType=INTEGER}, #{broker,jdbcType=VARCHAR},
+		#{product,jdbcType=VARCHAR},
+		#{period,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, #{quantity,jdbcType=INTEGER},
+		#{initiatorTrader,jdbcType=VARCHAR},
+		#{initiatorCompany,jdbcType=VARCHAR},
+		#{initiatorSide,jdbcType=INTEGER},
+		#{completionTrader,jdbcType=VARCHAR},
+		#{completionCompany,jdbcType=VARCHAR},
+		#{completionSide,jdbcType=INTEGER}, #{dealTime,jdbcType=VARCHAR})
 	</insert>
-	<insert id="insert" parameterType="com.broker.entity.User">
-		insert into user_t (id, user_name, password,
-		age)
-		values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR},
-		#{password,jdbcType=VARCHAR},
-		#{age,jdbcType=INTEGER})
-	</insert>
+
+	<select id="getBlotterByTrader" resultMap="BlotterList" parameterType="String">
+		select * from orderBlotter
+		<if test="trader != null" >
+		where completionTrader = #{trader, jdbcType=VARCHAR} or initiatorTrader = #{trader, jdbcType=VARCHAR}
+		</if>
+	</select>
 </mapper>
