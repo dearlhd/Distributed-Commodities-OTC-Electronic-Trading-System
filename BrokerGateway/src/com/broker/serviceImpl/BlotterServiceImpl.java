@@ -41,6 +41,10 @@ public class BlotterServiceImpl implements BlotterService {
 			blotters = getBlotterByTrader(obj.get("trader").toString());
 		}
 		
+		if (blotters == null) {
+			return null;
+		}
+		
 		List<BlotterEntry> results = new ArrayList<BlotterEntry>();
 		try {
 			SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");

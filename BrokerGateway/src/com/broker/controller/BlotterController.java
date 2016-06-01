@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.stereotype.Controller;
@@ -22,7 +23,8 @@ public class BlotterController {
 	private BlotterService blotterService;
 	
 	@RequestMapping(value = "/getBlotter", method = RequestMethod.POST)
-    public @ResponseBody JSONObject getBlotter(@RequestBody JSONObject obj) {
+    public @ResponseBody JSONArray getBlotter(@RequestBody JSONObject obj) {
+		System.out.println(obj.toString());
     	JSONObject queryObj = new JSONObject();
     	try {
 	    	queryObj.put("startTime", obj.get("startTime").toString());
@@ -34,11 +36,16 @@ public class BlotterController {
     	}
     	
     	List<BlotterEntry> bel = blotterService.getBlotterBySpecialInfo(queryObj);
+    	
+    	if (bel == null) {
+    		return new JSONArray();
+    	}
+    	
     	for (int i = 0; i < bel.size(); i++) {
     		System.out.println(bel.get(i).getDealTime());
     	}
     	
-    	obj = JSONObject.fromObject(bel);
-    	return obj;
+    	JSONArray ja = JSONArray.fromObject(bel);
+    	return ja;
     }
 }
