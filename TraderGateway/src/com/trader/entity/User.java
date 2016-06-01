@@ -14,8 +14,8 @@ public class User implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id")
-	private Integer id;
+	@Column(name = "userID")
+	private Integer userID;
 
 	@Column(name = "username", length = 32)
 	private String username;
@@ -29,12 +29,12 @@ public class User implements Serializable {
 	@Column(name = "frozenCapital")
 	private double frozenCapital;
 
-	public Integer getId() {
-		return id;
+	public Integer getUserID() {
+		return userID;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setUserID(Integer userID) {
+		this.userID = userID;
 	}
 
 	public String getUsername() {
