@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.stereotype.Controller;
@@ -57,15 +58,9 @@ public class OrderController {
 	@RequestMapping(value = "/Order", method = RequestMethod.POST)
 	@ResponseBody
 	public Object addOrder(@RequestBody JSONObject obj) {
-		System.out.println("in order controller");
+		System.out.println("in order controller, post method");
 		Order order = parseMessage(obj);
 
-		orderService.printOrderBook(order, 1);
-		System.out.println();
-		
-		orderService.printOrderBook(order, 0);
-		System.out.println();
-		
 		if (order.getOrderType().equals("market")) {
 			double marketDepth = orderService.dealMarketOrder(order);
 			if (marketDepth != 0.0) {
@@ -90,38 +85,26 @@ public class OrderController {
 			orderService.addOrder(order);
 		}
 
-		System.out.println("-------------------");
-		orderService.printOrderBook(order, 1);
-		System.out.println();
-		
-		orderService.printOrderBook(order, 0);
-		System.out.println();
-		
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("msg", "注册人员信息成功");
-		return jsonObject;
+		return obj;
 	}
 	
-	@RequestMapping(value = "/getOrderBook", method = RequestMethod.POST)
+	@RequestMapping(value = "/OrderBook", method = RequestMethod.POST)
     @ResponseBody
-    public Object getOrderBook(@RequestBody JSONObject obj) {
+    public JSONArray getOrderBook(@RequestBody JSONObject obj) {
 		Order order = parseMessage(obj);
-		orderService.printOrderBook(order, 0);
-		System.out.println();
-		orderService.printOrderBook(order, 1);
-		
-		System.out.println();
-		System.out.println();
 		
 		List<Order> lo = orderService.getOrderBook(order);
+		
+		if (lo == null) {
+			return null; 
+		}
+		
 		for (int i = 0; i < lo.size(); i++) {
 			Order od = lo.get(i);
 			System.out.println(od.getPrice() + " " + od.getSide() + " " + od.getQuantity());
 		}
 		
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("msg", "注册人员信息成功");
-		return jsonObject;
+		return JSONArray.fromObject(lo);
     }
 	
 	@RequestMapping(value = "/testBlotter", method = RequestMethod.POST)

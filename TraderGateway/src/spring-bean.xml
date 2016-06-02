@@ -6,7 +6,13 @@
 	xsi:schemaLocation="
         http://www.springframework.org/schema/beans     
         http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
         ">
+
+	<!-- 自动扫描 -->
+	<context:component-scan base-package="com.trader" />
+	
 	<bean id="userDAO" class="com.trader.daoImpl.UserDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
@@ -14,4 +20,13 @@
 		<property name="userDao" ref="userDAO"></property>
 	</bean>
 
+	<bean id="orderDAO" class="com.trader.daoImpl.OrderDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="orderService" class="com.trader.serviceImpl.OrderServiceImpl">
+		<property name="orderDao" ref="orderDAO"></property>
+	</bean>
+
+	<bean id="msgService" class="com.trader.serviceImpl.MessagingServiceImpl"></bean>
+	<bean id="httpClientUtil" class="com.trader.utils.httpClient.HttpClientUtil"></bean>
 </beans>

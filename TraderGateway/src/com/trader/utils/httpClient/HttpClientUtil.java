@@ -2,6 +2,7 @@ package com.trader.utils.httpClient;
 
 import java.io.IOException;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.http.HttpResponse;
@@ -16,7 +17,7 @@ public class HttpClientUtil {
 		
 	}
 
-	public JSONObject postMessage(String url, JSONObject obj) {
+	public Object postMessage(String url, JSONObject obj) {
 		try {
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpPost postMethod = new HttpPost(url);
@@ -28,12 +29,13 @@ public class HttpClientUtil {
 
 			HttpResponse result = httpClient.execute(postMethod);
 			String resData = EntityUtils.toString(result.getEntity());
-
-			obj = JSONObject.fromObject(resData);
+			
+			JSONArray resultArray = JSONArray.fromObject(resData); 
 			System.out.println("client: " + obj.toString());
+			return resultArray;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return obj;
+		return null;
 	}
 }

@@ -9,7 +9,7 @@ import com.trader.entity.User;
 import com.trader.service.UserService;
 
 public class UserServiceImpl implements UserService{
-	@Resource (name="userDao")
+	@Resource (name="userDAO")
 	UserDao userDao;
 	
 	public UserDao getUserDao() {
