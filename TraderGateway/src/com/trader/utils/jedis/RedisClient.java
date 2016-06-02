@@ -46,11 +46,11 @@ public class RedisClient {
 		shardedJedisPool = new ShardedJedisPool(config, shards);
 	}
 
-	public void setOrderList(String key, List<Order> orders) {
+	public void setOrderBook(String key, List<Order> orders) {
 		jedis.set(key.getBytes(), SerializeUtil.serialize(orders));
 	}
 
-	public List<Order> getOrderList(String key) {
+	public List<Order> getOrderBook(String key) {
 		return (List<Order>) SerializeUtil.unserialize(jedis.get(key.getBytes()));
 	}
 

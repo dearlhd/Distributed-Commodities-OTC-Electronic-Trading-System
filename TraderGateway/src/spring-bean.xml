@@ -29,4 +29,7 @@
 
 	<bean id="msgService" class="com.trader.serviceImpl.MessagingServiceImpl"></bean>
 	<bean id="httpClientUtil" class="com.trader.utils.httpClient.HttpClientUtil"></bean>
+	
+	<bean id="redisService" class="com.trader.serviceImpl.RedisServiceImpl"></bean>
+	<bean id="redisClient" class="com.trader.utils.jedis.RedisClient"></bean>
 </beans>
