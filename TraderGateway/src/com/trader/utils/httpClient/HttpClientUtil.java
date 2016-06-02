@@ -17,7 +17,51 @@ public class HttpClientUtil {
 		
 	}
 
-	public Object postMessage(String url, JSONObject obj) {
+//	public Object postMessage(String url, JSONObject obj) {
+//		try {
+//			HttpClient httpClient = new DefaultHttpClient();
+//			HttpPost postMethod = new HttpPost(url);
+//
+//			StringEntity entity = new StringEntity(obj.toString(), "utf-8");// 解决中文乱码问题
+//			entity.setContentEncoding("UTF-8");
+//			entity.setContentType("application/json");
+//			postMethod.setEntity(entity);
+//
+//			HttpResponse result = httpClient.execute(postMethod);
+//			String resData = EntityUtils.toString(result.getEntity());
+//			
+//			JSONArray resultArray = JSONArray.fromObject(resData); 
+//			System.out.println("client: " + obj.toString());
+//			return resultArray;
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
+	
+	public Object postMessageRetObject(String url, Object obj) {
+		try {
+			HttpClient httpClient = new DefaultHttpClient();
+			HttpPost postMethod = new HttpPost(url);
+
+			StringEntity entity = new StringEntity(obj.toString(), "utf-8");// 解决中文乱码问题
+			entity.setContentEncoding("UTF-8");
+			entity.setContentType("application/json");
+			postMethod.setEntity(entity);
+
+			HttpResponse result = httpClient.execute(postMethod);
+			String resData = EntityUtils.toString(result.getEntity());
+			
+			JSONObject resultObject = JSONObject.fromObject(resData); 
+			System.out.println("trader recieve: " + resData);
+			return resultObject;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public Object postMessageRetArray(String url, Object obj) {
 		try {
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpPost postMethod = new HttpPost(url);
@@ -31,7 +75,7 @@ public class HttpClientUtil {
 			String resData = EntityUtils.toString(result.getEntity());
 			
 			JSONArray resultArray = JSONArray.fromObject(resData); 
-			System.out.println("client: " + obj.toString());
+			System.out.println("trader recieve: " + resData);
 			return resultArray;
 		} catch (IOException e) {
 			e.printStackTrace();

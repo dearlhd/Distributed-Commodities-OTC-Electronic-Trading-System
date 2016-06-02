@@ -2,6 +2,7 @@ package com.trader.daoImpl;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import com.trader.dao.OrderDao;
 import com.trader.entity.Order;
@@ -19,8 +20,11 @@ public class OrderDaoImpl implements OrderDao {
 
 	@Override
 	public Order addOrder(Order order) {
-		Session session = sessionFactory.getCurrentSession();
-		order = (Order)session.save(order);
+		Session session = sessionFactory.openSession();
+		
+		Transaction tx = session.beginTransaction();
+		session.save(order);
+		tx.commit(); 
 		session.close();
 		return order;
 	}

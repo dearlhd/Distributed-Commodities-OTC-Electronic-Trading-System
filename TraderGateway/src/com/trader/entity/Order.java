@@ -8,14 +8,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity(name = "order")
+@Entity(name = "[order]")
 public class Order implements Serializable {
 	private static final long serialVersionUID = -8093937721423856923L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "orderID")
-	private String orderID;
+	private int orderID;
 
 	@Column(name = "orderType", length = 32)
 	private String orderType;
@@ -44,11 +44,11 @@ public class Order implements Serializable {
 	@Column(name = "traderCompany", length = 32)
 	private String traderCompany;
 
-	public String getOrderID() {
+	public int getOrderID() {
 		return orderID;
 	}
 
-	public void setOrderID(String orderID) {
+	public void setOrderID(int orderID) {
 		this.orderID = orderID;
 	}
 

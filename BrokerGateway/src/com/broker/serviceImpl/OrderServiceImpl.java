@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import com.broker.entity.BlotterEntry;
@@ -351,9 +352,9 @@ public class OrderServiceImpl implements OrderService {
 
 		}
 		
-		JSONObject jsonObject = JSONObject.fromObject(getOrderBook(order));
-		jsonObject.put("msg", "orderBook");
-		msgService.postToAllTrader(jsonObject);
+		JSONArray jsonArray = JSONArray.fromObject(getOrderBook(order));
+		//jsonArray.put("msg", "orderBook");
+		msgService.postPriceToAllTrader(jsonArray);
 
 		for (int i = 0; i < beList.size(); i++) {
 			blotterService.addBlotterEntry(beList.get(i));

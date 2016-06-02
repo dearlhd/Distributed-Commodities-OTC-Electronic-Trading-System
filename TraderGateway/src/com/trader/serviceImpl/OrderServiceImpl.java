@@ -26,10 +26,6 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Order addOrder(Order order) {
-		if (msgService == null) {
-			System.out.println("msgService is null");
-		}
-		
 		int brokerIndex = msgService.queryMartketPrice(order);
 		JSONObject msg = JSONObject.fromObject(order);
 		msgService.postOrderToBroker("/Order", brokerIndex, msg);

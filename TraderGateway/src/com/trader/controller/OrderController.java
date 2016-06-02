@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.trader.dao.OrderDao;
 import com.trader.entity.Order;
 import com.trader.service.OrderService;
 
@@ -47,6 +48,14 @@ public class OrderController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody JSONObject addOrder(@RequestBody JSONObject obj) {
+		System.out.println(obj.toString());
+		Order order = parseRequest(obj);
+		orderService.addOrder(order);
+		return obj;
+	}
+	
+	@RequestMapping(value = "/test", method = RequestMethod.POST)
+	public @ResponseBody JSONObject testSaveOrder(@RequestBody JSONObject obj) {
 		System.out.println(obj.toString());
 		Order order = parseRequest(obj);
 		orderService.addOrder(order);

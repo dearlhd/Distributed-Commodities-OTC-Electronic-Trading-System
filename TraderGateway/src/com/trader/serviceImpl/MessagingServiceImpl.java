@@ -28,12 +28,12 @@ public class MessagingServiceImpl implements MessagingService{
 	@Override
 	public JSONObject postOrderToBroker(String subUrl, int brokerIndex, JSONObject msg) {
 		String url = brokerUrls.get(brokerIndex) + subUrl;
-		return (JSONObject)httpClientUtil.postMessage(url, msg);
+		return (JSONObject)httpClientUtil.postMessageRetObject(url, msg);
 	}
 	
 	@Override
 	public JSONArray postMsgToBroker(String url, JSONObject msg) {
-		return (JSONArray)httpClientUtil.postMessage(url, msg);
+		return (JSONArray)httpClientUtil.postMessageRetArray(url, msg);
 	}
 
 	private double getMarketDepth(JSONArray ordersArray, int side) {
