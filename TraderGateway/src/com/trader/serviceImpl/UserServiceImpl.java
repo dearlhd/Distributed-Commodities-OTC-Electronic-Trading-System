@@ -15,7 +15,7 @@ public class UserServiceImpl implements UserService{
 	public UserDao getUserDao() {
 		return userDao;
 	}
-
+	
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
@@ -25,4 +25,15 @@ public class UserServiceImpl implements UserService{
 		return userDao.getUsers();
 	}
 
+	@Override
+	public List<User> getUsersByUsername(User user){
+		return userDao.getUsersByUsername(user);
+	}
+
+	@Override
+	public User setUsers(User user){
+		List<User> list = getUsersByUsername(user);
+		if (list != null) return null;
+		return userDao.setUsers(user);
+	}
 }
