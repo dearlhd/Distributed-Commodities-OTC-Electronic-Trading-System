@@ -28,7 +28,9 @@ public class MessagingServiceImpl implements MessagingService{
 	@Override
 	public JSONObject postOrderToBroker(String subUrl, int brokerIndex, JSONObject msg) {
 		String url = brokerUrls.get(brokerIndex) + subUrl;
-		return (JSONObject)httpClientUtil.postMessageRetObject(url, msg);
+		JSONObject obj = (JSONObject) httpClientUtil.postMessageRetObject(url, msg);
+		System.out.println("Trader! MsgService, postOrderToBroker: " + obj);
+		return obj;
 	}
 	
 	@Override
@@ -45,7 +47,7 @@ public class MessagingServiceImpl implements MessagingService{
 		
 		double price = 0.0;
 		if (side == 0) {
-			for (int i = orders.size(); i >= 0; i++) {
+			for (int i = orders.size()-1; i >= 0; i--) {
 				if (orders.get(i).getSide() == 1) {
 					price = orders.get(i).getPrice();
 					return price;

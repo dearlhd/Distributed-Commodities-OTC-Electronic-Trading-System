@@ -7,11 +7,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import com.trader.dao.OrderDao;
+import com.trader.dao.BlotterDao;
+import com.trader.entity.BlotterEntry;
 import com.trader.entity.Order;
-import com.trader.entity.User;
 
-public class OrderDaoImpl implements OrderDao {
+public class BlotterDaoImpl implements BlotterDao{
 	private SessionFactory sessionFactory;
 
 	public SessionFactory getSessionFactory() {
@@ -21,36 +21,38 @@ public class OrderDaoImpl implements OrderDao {
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
-
+	
 	@Override
-	public Order addOrder(Order order) {
+	public BlotterEntry addBlotterEntry(BlotterEntry be) {
 		Session session = sessionFactory.openSession();
 		
 		Transaction tx = session.beginTransaction();
-		session.save(order);
+		session.save(be);
 		tx.commit(); 
 		session.close();
-		return order;
+		return be;
 	}
 
 	@Override
-	public List<Order> getOrders() {
-		String hql="from torder";
+	public List<BlotterEntry> getBlotterEntrys() {
+		String hql="from blotterentry";
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery(hql);
         
-        List<Order> orders= (List<Order>)query.list();
-		return orders;
+        List<BlotterEntry> blotters= (List<BlotterEntry>)query.list();
+		return blotters;
 	}
 
 	@Override
-	public List<Order> getOrderByUser(String username) {
-		String hql="from torder where trader=:name";
+	public List<BlotterEntry> getBlotterEntrysByTrader(String username) {
+		String hql="from blotterentry where initiatorTrader=:iname or completionTrader=:cname";
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery(hql);
-        query.setString("name", username);
+        query.setString("iname", username);
+        query.setString("cname", username);
         
-        List<Order> orders= (List<Order>)query.list();
-		return orders;
+        List<BlotterEntry> blotters= (List<BlotterEntry>)query.list();
+		return blotters;
 	}
+
 }

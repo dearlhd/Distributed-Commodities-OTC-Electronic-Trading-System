@@ -8,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity(name = "[order]")
+@Entity(name = "torder")
 public class Order implements Serializable {
 	private static final long serialVersionUID = -8093937721423856923L;
 

@@ -31,6 +31,15 @@ public class OrderServiceImpl implements OrderService {
 
 	@Resource
 	private MessagingService msgService;
+	
+	List<String> traderUrls;
+
+	public OrderServiceImpl () {
+		traderUrls = new ArrayList<String>();
+		traderUrls.add("http://localhost:8888/TraderGateway");
+		//traderUrls.add("");
+		//traderUrls.add("");
+	}
 
 	@Override
 	public double dealMarketOrder(Order order) {
@@ -254,8 +263,7 @@ public class OrderServiceImpl implements OrderService {
 		});
 	}
 
-	private int matchOrder(List<Order> matchList, List<Order> leftList,
-			Order order) {
+	private int matchOrder(List<Order> matchList, List<Order> leftList, Order order) {
 		sortOrder(matchList);
 
 		int quantity = order.getQuantity();
@@ -324,30 +332,30 @@ public class OrderServiceImpl implements OrderService {
 		// TODO 向交易双方发送通知， 向所有trader gateway发送最新的order book
 		for (int i = 0; i < beList.size(); i++) {
 			BlotterEntry be = beList.get(i);
-			String url1 = "", url2 = "";
+			int traderIndex1 = -1, traderIndex2 = -1;
 			if (be.getInitiatorCompany().equals("traderCompany1")) {
-				url1 = "";
+				traderIndex1 = 0;
 			} else if (be.getInitiatorCompany().equals("traderCompany2")) {
-				url1 = "";
+				traderIndex1 = 1;
 			} else if (be.getInitiatorCompany().equals("traderCompany3")) {
-				url1 = "";
+				traderIndex1 = 2;
 			}
 
 			if (be.getCompletionCompany().equals("traderCompany1")) {
-				url2 = "";
+				traderIndex2 = 0;
 			} else if (be.getCompletionCompany().equals("traderCompany2")) {
-				url2 = "";
+				traderIndex2 = 1;
 			} else if (be.getCompletionCompany().equals("traderCompany3")) {
-				url2 = "";
+				traderIndex2 = 2;
 			}
 
 			JSONObject jsonObject = JSONObject.fromObject(be);
 			jsonObject.put("msg", "blotterEntry");
-			if (url1.equals(url2)) {
-				msgService.postMessage(url1, jsonObject);
+			if (traderIndex1 == traderIndex2) {
+				msgService.postMessage(traderUrls.get(traderIndex1) + "/OrderBlotter", jsonObject);
 			} else {
-				msgService.postMessage(url1, jsonObject);
-				msgService.postMessage(url2, jsonObject);
+				msgService.postMessage(traderUrls.get(traderIndex1) + "/OrderBlotter", jsonObject);
+				msgService.postMessage(traderUrls.get(traderIndex2) + "/OrderBlotter", jsonObject);
 			}
 
 		}

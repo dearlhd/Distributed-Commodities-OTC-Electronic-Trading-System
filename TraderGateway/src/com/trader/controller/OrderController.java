@@ -2,12 +2,15 @@ package com.trader.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,6 +37,8 @@ public class OrderController {
 			order.setPrice(Double.parseDouble(obj.get("price").toString()));
 			order.setSide(Integer.parseInt(obj.get("side").toString()));
 			order.setTrader(obj.get("trader").toString());
+			
+			order.setTraderCompany("traderCompany1");
 		} catch (Exception e) {
 			e.printStackTrace();
 			//throw new WebApplicationException(400);
@@ -46,6 +51,23 @@ public class OrderController {
 		return order;
 	}
 
+	@RequestMapping(value = "/{conditions}", method = RequestMethod.GET)
+    @ResponseBody
+    public JSONArray getOrders(@PathVariable("conditions") String conditions) {
+		conditions = conditions.replaceAll("\\s*", "");
+		String[] conds = conditions.split("&");
+		
+		JSONObject condObj = new JSONObject();
+		for (int i = 0; i < conds.length; i++) {
+			String[] np = conds[i].split("=");
+			condObj.put(np[0], np[1]);
+		}
+		
+		JSONArray orderBook = new JSONArray();
+		orderBook = JSONArray.fromObject(orderService.queryOrderByConditions(condObj));
+        return orderBook;
+    }
+	
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody JSONObject addOrder(@RequestBody JSONObject obj) {
 		System.out.println(obj.toString());
@@ -54,11 +76,12 @@ public class OrderController {
 		return obj;
 	}
 	
-	@RequestMapping(value = "/test", method = RequestMethod.POST)
-	public @ResponseBody JSONObject testSaveOrder(@RequestBody JSONObject obj) {
-		System.out.println(obj.toString());
-		Order order = parseRequest(obj);
-		orderService.addOrder(order);
+	@RequestMapping(value = "/test/{arg}", method = RequestMethod.GET)
+	public @ResponseBody JSONObject testSaveOrder(@PathVariable("arg") String arg) {
+		System.out.println(arg);
+		JSONObject obj = new JSONObject();
+		//Order order = parseRequest(obj);
+		//orderService.addOrder(order);
 		return obj;
 	}
 }
