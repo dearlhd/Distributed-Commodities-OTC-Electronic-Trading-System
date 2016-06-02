@@ -60,7 +60,7 @@
     .take-tour { float:left; height:0; margin:0; padding:0;}
    .take-tour a { width:276px; height:66px; float:left; display:block; position:relative; bottom: 198px; left:90px;  z-index:10;  }
    .take-tour a img { padding:15px 0 0 5px; float:left}
-   .play-tour { width:52px; height:52px; border:0; border-radius: 26px; background: #24bcf0 url(../images/play-ico1.png) no-repeat center center; display:block; margin-right:5px; float:left;
+   .play-tour { width:52px; height:52px; border:0; border-radius: 26px; background: #24bcf0 url(../images/play-ico1.png) no-repeat center center; background-size: 100%; opacity:0.8; display:block; margin-right:5px; float:left;
       -webkit-transition: background 0.4s ease, border 0.4s ease; -moz-transition: background 0.4s ease, border 0.4s ease; -ms-transition: background 0.4s ease, border 0.4s ease; -o-transition: background 0.4s ease, border 0.4s ease; transition: background 0.4s ease, border 0.4s ease;}
 	  .take-tour a:hover .play-tour { background-color:#e53f51; border:5px solid #e6808b; border-radius: 31px; cursor:pointer;} 
 	  

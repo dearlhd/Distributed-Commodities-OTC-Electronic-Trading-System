@@ -217,7 +217,7 @@
 .my_blottertable
 {
 	zoom : 1;
-	width: 30px;
+	/*width: 300px;*/
 }
 
 .table > tbody > tr > .my_pricefilter{
@@ -708,4 +708,29 @@
 h4.my_marketsubtitle
 {
 	margin-top: 10px;
+}
+
+.my_OrderModal
+{
+	top: 0px;
+	background-color: rgba(255, 255, 255, 0.8);
+	width: 50%;
+	margin: auto auto;
+	left: 65%;
+
+}
+
+.my_orderlabel
+{
+	font-weight: normal;
+}
+
+.my_orderselect
+{
+	margin-left: 0px;
+}
+
+.my_modal
+{
+	background-color: rgba(0, 0, 0, 0);
 }

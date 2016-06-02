@@ -18,7 +18,7 @@
 <div id="wrap">
 	<header id="header" class="container">
 		<div class="top-link">
-			<a href="login.html" class="my_logout">Log Out</a>
+			<a href="index.html" class="my_logout">Log Out</a>
 		</div>
 		<div class="my_title">Futures<a class="my_title_a">Trader</a></div>
 		<nav id="nav-wrap">
@@ -52,20 +52,27 @@
 	<div> 
 		<p class="my_marqueep">Futures Market : </p>
     	<marquee class="my_marquee" direction="right" scrollamount="5" onmouseover="this.stop()" onmouseout="this.start()">
-    		<a href="#">橡胶</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    		<a href="#">燃料油</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    		<a href="#">甲醇</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    		<a href="#">玻璃</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    		<a href="#">PVC</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    		<a href="#">小麦</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    		<a href="#">豆油</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    		<a href="#">棉花</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    		<a href="#">Gold</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    		<a href="#">白银</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        	<a href="#">铜</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        	<a href="#">铝</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        	
-        	<a href="#">锌</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        	<a href="#">钢材</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        	        	             
+    		<a href="#" onclick="futuresItemsSet(this);">橡胶</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    		<a href="#" onclick="futuresItemsSet(this);">线材</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    		<a href="#" onclick="futuresItemsSet(this);">燃料油</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    		<a href="#" onclick="futuresItemsSet(this);">甲醇</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    		<a href="#" onclick="futuresItemsSet(this);">玻璃</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    		<a href="#" onclick="futuresItemsSet(this);">PVC</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    		<a href="#" onclick="futuresItemsSet(this);">ER</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    		<a href="#" onclick="futuresItemsSet(this);">RO</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     		<a href="#" onclick="futuresItemsSet(this);">WT</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    		<a href="#" onclick="futuresItemsSet(this);">WS</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    		<a href="#" onclick="futuresItemsSet(this);">Egg</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    		<a href="#" onclick="futuresItemsSet(this);">Wheat</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    		<a href="#" onclick="futuresItemsSet(this);">豆油</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    		<a href="#" onclick="futuresItemsSet(this);">Cotton</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    		<a href="#" onclick="futuresItemsSet(this);">AU</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		
+        	<a href="#" onclick="futuresItemsSet(this);">CU</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        	<a href="#" onclick="futuresItemsSet(this);">AL</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        	
+        	<a href="#" onclick="futuresItemsSet(this);">ZN</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        	<a href="#" onclick="futuresItemsSet(this);">铅</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        	<a href="#" onclick="futuresItemsSet(this);">银</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        	<a href="#" onclick="futuresItemsSet(this);">钢材</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        	        	             
         	<a href="#" onclick="futuresItemsSet(this);">Bean</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     	</marquee>
  	</div>
@@ -74,7 +81,7 @@
 
 
 	<div class="two-thirds column">
-		<h3>Futures Items: <span class="my_futuresitemDate">2016-05-29</span><span class="my_futuresitemCategory"> Bean</span></h3>	
+		<h3>Futures Items: <span class="my_futuresitemDate" id="currentfuturesItemDate">MAY29</span><span class="my_futuresitemCategory" id="currentfuturesItem"> Bean</span></h3>	
 	</div>
 	<div class = "one-third column">
 	</div>
@@ -140,8 +147,9 @@
 				</tbody>
 			</table>
 
-			<a href="#" class="readmore">Purchase</a>
+			<a hidden href="#" class="readmore">Purchase</a>
 		</article>
+
 	</section>
 
 	<section id="sidebar" >
@@ -155,58 +163,58 @@
 				<div style="display: block;" id="bd_01">
 					<p class="my_clearfix">
 	                    <a href="#" onclick="futuresItemsSet(this);">Bean</a>
-    	                <a href="#">Corn</a>
-        	            <a href="#">Wheat</a>
-            	        <a href="#">Cotton</a>
-                	    <a href="#">Sugar</a>
-                    	<a href="#">PalmOil</a>
+    	                <a href="#" onclick="futuresItemsSet(this);">Corn</a>
+        	            <a href="#" onclick="futuresItemsSet(this);">Wheat</a>
+            	        <a href="#" onclick="futuresItemsSet(this);">Cotton</a>
+                	    <a href="#" onclick="futuresItemsSet(this);">Sugar</a>
+                    	<a href="#" onclick="futuresItemsSet(this);">PalmOil</a>
 	                </p>
     	            <p class="my_clearfix">
-        	            <a href="#">ER</a>
-            	        <a href="#">RO</a>
-                	    <a href="#">WS</a>
-                    	<a href="#">WT</a>
-	                    <a href="#">豆一</a>
-    	                <a href="#">豆二</a>
+        	            <a href="#" onclick="futuresItemsSet(this);">ER</a>
+            	        <a href="#" onclick="futuresItemsSet(this);">RO</a>
+                	    <a href="#" onclick="futuresItemsSet(this);">WS</a>
+                    	<a href="#" onclick="futuresItemsSet(this);">WT</a>
+	                    <a href="#" onclick="futuresItemsSet(this);">豆一</a>
+    	                <a href="#" onclick="futuresItemsSet(this);">豆二</a>
         	        </p>
             	    <p class="my_clearfix">
-                	    <a href="#">豆粕</a>
-                    	<a href="#">豆油</a>
-	                    <a href="#">鸡蛋</a>
-    	                <a href="#">粳稻</a>
-        	            <a href="#">天然橡胶</a>
+                	    <a href="#" onclick="futuresItemsSet(this);">豆粕</a>
+                    	<a href="#" onclick="futuresItemsSet(this);">豆油</a>
+	                    <a href="#" onclick="futuresItemsSet(this);">鸡蛋</a>
+    	                <a href="#" onclick="futuresItemsSet(this);">粳稻</a>
+        	            <a href="#" onclick="futuresItemsSet(this);">天然橡胶</a>
             	    </p>
 				</div>
 				<div style="display: none;" id="bd_02">
               		<p class="my_clearfix">
-                    	<a href="#">LLDPE</a>
-                    	<a href="#">PVC</a>
-    	                <a href="#">PTA</a>
-	                    <a href="#">橡胶</a>
-        	            <a href="#">燃料油</a>
-            	        <a href="#">线材</a>
+                    	<a href="#" onclick="futuresItemsSet(this);">LDPE</a>
+                    	<a href="#" onclick="futuresItemsSet(this);">PVC</a>
+    	                <a href="#" onclick="futuresItemsSet(this);">PTA</a>
+	                    <a href="#" onclick="futuresItemsSet(this);">橡胶</a>
+        	            <a href="#" onclick="futuresItemsSet(this);">燃料油</a>
+            	        <a href="#" onclick="futuresItemsSet(this);">线材</a>
                 	</p>
 	                <p class="my_clearfix">
-    	                <a href="#">甲醇</a>
-        	            <a href="#">焦炭</a>
-            	        <a href="#">铁矿石</a>
-                	    <a href="#">石油沥青</a>
-                    	<a href="#">玻璃</a>
-	                    <a href="#">动力煤</a>
+    	                <a href="#" onclick="futuresItemsSet(this);">甲醇</a>
+        	            <a href="#" onclick="futuresItemsSet(this);">焦炭</a>
+            	        <a href="#" onclick="futuresItemsSet(this);">铁矿石</a>
+                	    <a href="#" onclick="futuresItemsSet(this);">石油沥青</a>
+                    	<a href="#" onclick="futuresItemsSet(this);">玻璃</a>
+	                    <a href="#" onclick="futuresItemsSet(this);">动力煤</a>
     	            </p>
         	    </div>
             	<div style="display: none;" id="bd_03">
                 	<p class="my_clearfix">
-                    	<a href="#">CU</a>
-	                    <a href="#">AL</a>
-    	                <a href="#">ZN</a>
-        	            <a href="#">铅</a>
-            	        <a href="#">钢材</a>
-                	    <a href="#">RB</a>
+                    	<a href="#" onclick="futuresItemsSet(this);">CU</a>
+	                    <a href="#" onclick="futuresItemsSet(this);">AL</a>
+    	                <a href="#" onclick="futuresItemsSet(this);">ZN</a>
+        	            <a href="#" onclick="futuresItemsSet(this);">铅</a>
+            	        <a href="#" onclick="futuresItemsSet(this);">钢材</a>
+                	    <a href="#" onclick="futuresItemsSet(this);">RB</a>
 	                </p>
     	            <p class="my_clearfix">
-        	            <a href="#">AU</a>
-            	        <a href="#">白银</a>
+        	            <a href="#" onclick="futuresItemsSet(this);">AU</a>
+            	        <a href="#" onclick="futuresItemsSet(this);">银</a>
                 	</p>
             	</div>
 			</div>
@@ -280,9 +288,9 @@
 		<h4 class="subtitle my_marketsubtitle">Order Categories</h4>
 		<div class="listbox1">
 			<ul>
-				<li><a href="#" onclick="alert(1);">Marker Order</a></li>
-				<li><a href="#">Limit Order</a></li>
-				<li><a href="#">Stop Order</a></li>
+				<li><a href="#" data-toggle="modal" data-target="#myOrderModal" onclick="OrderSet(this)">Market Order</a></li>
+				<li><a href="#" data-toggle="modal" data-target="#myOrderModal" onclick="OrderSet(this)">Limit Order</a></li>
+				<li><a href="#" data-toggle="modal" data-target="#myOrderModal" onclick="OrderSet(this)">Stop Order</a></li>
 			</ul>
 		</div>	
 	</section>
@@ -301,19 +309,95 @@
 
 </div>
 
+<div class="modal fade my_modal" id="myOrderModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+       	<div class="modal-content my_OrderModal">
+           	<div class="modal-header">
+               	<button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="myOrderModalClose">&times;</button>
+               	<h4 class="modal-title my_timelisth" id="myModalLabel"></h4>
+           	</div>
+           	<div class="modal-body">
+           		<form role="form">
+           			<div class="form-group my_userlistlabel my_orderlabel">
+           				<label for="name">Product</label>
+  						<input type="text" class="form-control my_userlistinput" id="Order_Product" placeholder=" Input The Product">
+            		</div>
+            		<div class="form-group my_userlistlabel my_orderlabel">
+           				<label for="name">Quantity</label>
+  						<input type="text" class="form-control my_userlistinput" id="Order_Quantity" placeholder=" Input The Quantity">
+            		</div>
+            		<div class="form-group my_userlistlabel my_orderlabel" id="myOrderPriceInput">
+           				<label for="name">Price</label>
+  						<input type="text" class="form-control my_userlistinput" id="Order_Price" placeholder=" Input The Price">
+            		</div>
+            		<div class="from-group my_timelistlabel my_orderlabel">
+            			<label for="name">Month</label>
+      					<select class="form-control my_timelistselect my_orderselect" id="Order_Month">
+         					<option value=1>JAN</option>
+         					<option value=2>FEB</option>
+         					<option value=3>MAR</option>
+         					<option value=4>APR</option>
+         					<option value=5>MAY</option>
+         					<option value=6>JUN</option>
+         					<option value=7>JUL</option>
+         					<option value=8>AUG</option>
+         					<option value=9>SEP</option>
+         					<option value=10>OCT</option>
+         					<option value=11>NOV</option>
+         					<option value=12>DEC</option>
+      					</select>
+            		</div>
+            		<div class="form-group my_userlistlabel my_orderlabel">
+           				<label for="name">Date</label>
+  						<input type="text" class="form-control my_userlistinput" maxlength="2" id="Order_Date" placeholder=" Input The Date">
+            		</div>
+            		<div class="from-group my_timelistlabel my_orderlabel">
+            			<label for="name">Side</label>
+      					<select class="form-control my_timelistselect my_orderselect" id="Order_Side">
+         					<option value=0>Buy</option>
+         					<option value=1>Sell</option>
+      					</select>
+            		</div>
+            	</form>
+            </div>
+           	<div class="modal-footer">
+            	<button type="button" class="btn btn-default my_timelistmodelbutton" style="outline:0;" data-dismiss="modal">Close</button>
+               	<button type="button" class="btn btn-primary my_timelistmodelbutton" style="outline:0;" onclick="OrderConfirmClick();">Confirm</button>
+            </div>
+        </div>
+	</div>
+</div>
+
 </body>
 </html>
 
 <script type="text/javascript">
 
-	var myurl = "http://59.78.22.100:8888/TraderGateway/rest/"
+  	//////////////////////////////////  8888 8888 8888 
+  	var myurl = "http://localhost:8088/TraderGateway/";
+  	var orderType = "";
+
+  	function OrderSet(_orders){
+  		orderType = $(_orders).text();
+  		$("#myModalLabel").text(orderType);
+  		$("#Order_Product").val("");
+  		$("#Order_Quantity").val("");
+  		$("#Order_Price").val("");
+  		$("#Order_Month").val(1);
+  		$("#Order_Date").val("");
+  		$("#Order_Side").val(0);
+  		if (orderType == "Market Order"){
+  			$("#myOrderPriceInput").hide();
+  			$("#Order_Price").val(0);
+  		}
+  		else $("#myOrderPriceInput").show(); 
+  	}
 	
 	function futuresItemsSet(items){
 		//alert($(items).text());
 		if ($("#marketdepthTable").is(":hidden")) $("#marketdepthTable").show(1000);
 		$("#futuresItemsCategory").text($(items).text());
 	}
-
 
 	function validateDate(year, month, date){
 		var minDate = 1;
@@ -327,11 +411,111 @@
 			else maxDate = 28;
 		}
 		for (var i = 0; i < date.length; ++i)
-			if (!(date.charAt(i) <= '9') && (date.charAt(i) >= '0'))
+			if (!((date.charAt(i) <= '9') && (date.charAt(i) >= '0')))
 				return 0;
 		var curDate = date * 1;
 		if ((curDate >= minDate) && (curDate <= maxDate)) return curDate;
 		else return 0;
+	}
+//////////////////////////////////////////////////////////////// !!!  function has not checked yet
+	function OrderConfirmClick(){
+		var cur_product = $("#Order_Product").val();
+		var cur_quantity = $("#Order_Quantity").val();
+		var cur_price = $("#Order_Price").val();
+		var cur_month = $("#Order_Month").val();
+		var cur_date = $("#Order_Date").val();
+		var cur_side = $("#Order_Side").val();
+		if ((cur_product == "") || (cur_quantity == "") || (cur_price == "") || (cur_month == "") || (cur_date == "") || (cur_side == "")){
+			alert("订单内容请填写完整");
+		}
+		else{
+			var cur_year = new Date().getFullYear();
+			cur_date = validateDate(cur_year, cur_month, cur_date);
+			if (cur_date == 0) alert("非法日期");
+			else{
+				var cur_period = $("#Order_Month").children().eq($("#Order_Month").val() - 1).text();
+				if (cur_date < 10) cur_period += ("0" + cur_date);
+				else cur_period += ("" + cur_date);
+				if (orderType == "Market Order") orderType = "market";
+				else if (orderType == "Limit Order") orderType = "limit";
+				else if (orderType == "Stop Order") orderType = "stop";
+				orderInfo = {
+					"trader" : localStorage.getItem("visitor"),
+					"side" : cur_side * 1,
+					"price" : cur_price * 1,
+					"quantity" : cur_quantity * 1,
+					"product" : cur_product,
+					"period" : cur_period,
+					"orderType" : orderType
+				};
+				$.ajax({
+					url : myurl + "Order",
+					type: "POST",
+					contentType: "application/json",
+					data: JSON.stringify(orderInfo),
+					success : function(msg){
+						var obj = eval(msg);
+						if (jQuery.isEmptyObject(obj)){
+							alert("下单失败");
+						}
+						else{
+							alert("下单成功");
+						}
+					}          	
+				});
+			}
+		}
+	}
+
+	function getMarketDepth(items, periods){
+		$.ajax({
+			url : myurl + "OrderBook/product=" + items + "&period=" + periods,
+			type : "GET",
+			success : function(msg){
+				var obj = eval(msg);
+				//console.log(obj);
+				if (jQuery.isEmptyObject(obj)){
+	               	alert("没有该期货相关的信息");
+                }
+                else{
+                	$("#currentfuturesItem").text(" " + items);
+                	$("#currentfuturesItemDate").text(periods);
+                	var max_1 = obj.length;
+                	var max_0;
+                	for (max_0 = 0; max_0 < max_1; ++max_0)
+                		if (obj[max_0].side == 1){
+                			break;
+                		}
+                	var pnt = 0;
+                	for (var i = max_0; i < max_1; ++i){
+                		pnt++;
+                		$("#up_" + pnt).children().eq(2).text(obj[i].price);
+                		$("#up_" + pnt).children().eq(3).text(obj[i].quantity);
+                		$("#up_" + pnt).children().eq(4).text(pnt);
+                	}
+                	while (pnt < 3){
+                		pnt++;
+                		$("#up_" + pnt).children().eq(2).text("");
+                		$("#up_" + pnt).children().eq(3).text("");
+                		$("#up_" + pnt).children().eq(4).text("");
+                	}
+
+                	var pnt = 0;
+                	for (var i = max_0 - 1; i >= 0; --i){
+                		pnt++;
+                		$("#down_" + pnt).children().eq(2).text(obj[i].price);
+                		$("#down_" + pnt).children().eq(1).text(obj[i].quantity);
+                		$("#down_" + pnt).children().eq(0).text(pnt);
+                	}
+                	while (pnt < 3){
+                		pnt++;
+                		$("#down_" + pnt).children().eq(2).text("");
+                		$("#down_" + pnt).children().eq(1).text("");
+                		$("#down_" + pnt).children().eq(0).text("");
+                	}
+                }
+			}
+		});
 	}
 
 	function queryMarketDepthClick(){
@@ -343,22 +527,22 @@
 		 	cur_date = validateDate(cur_year, cur_month, cur_date);		
 			if (cur_date == 0) alert("非法日期");
 			else{
-				alert(cur_date);
-				/*  include => cur_month cur_date futuresItemsCategory
-					ajax
-					///////////////////////////////////////////////////////////////
-				*/
+				var cur_period = $("#futuresItemsMonth").children().eq($("#futuresItemsMonth").val() - 1).text();
+				if (cur_date < 10) cur_period += ("0" + cur_date);
+				else cur_period += ("" + cur_date);
+				//console.log(cur_period);
+				getMarketDepth($("#futuresItemsCategory").text(), cur_period);
 			}
 		}
 
 	}
 
 	function queryMarketClick(){
-		alert(1);
+		window.location.href = "trader.html";
 	}
 
 	function queryOrderClick(){
-		alert(1);
+		window.location.href = "traderOrder.html";
 	}
 
 	function queryBlotter(){
@@ -420,7 +604,102 @@
     	$('#slider').nivoSlider();
     });
 
+	function addredis(){
+		var marketdepthInfo = [{
+			"orderType" : "market",
+			"product" : "AU",
+			"period" : "OCT13",
+			"quantity" : 20,
+			"price" : 18,
+			"side" : 0,
+			"orderTime" : "2016-06-03 11:22:33",
+			"trader" : "qsk",
+			"traderCompany" : "QSK Gateway"
+		},{
+			"orderType" : "market",
+			"product" : "AU",
+			"period" : "OCT13",
+			"quantity" : 30,
+			"price" : 20,
+			"side" : 0,
+			"orderTime" : "2016-06-03 11:22:33",
+			"trader" : "qsk",
+			"traderCompany" : "QSK Gateway"
+		},
+		{
+			"orderType" : "market",
+			"product" : "AU",
+			"period" : "OCT13",
+			"quantity" : 40,
+			"price" : 25,
+			"side" : 0,
+			"orderTime" : "2016-06-03 11:22:33",
+			"trader" : "qsk",
+			"traderCompany" : "QSK Gateway"
+		},
+		{
+			"orderType" : "market",
+			"product" : "AU",
+			"period" : "OCT13",
+			"quantity" : 80,
+			"price" : 30,
+			"side" : 1,
+			"orderTime" : "2016-06-03 11:22:33",
+			"trader" : "qsk",
+			"traderCompany" : "QSK Gateway"
+		},
+		{
+			"orderType" : "market",
+			"product" : "AU",
+			"period" : "OCT13",
+			"quantity" : 30,
+			"price" : 35,
+			"side" : 1,
+			"orderTime" : "2016-06-03 11:22:33",
+			"trader" : "qsk",
+			"traderCompany" : "QSK Gateway"
+		},
+		{
+			"orderType" : "market",
+			"product" : "AU",
+			"period" : "OCT13",
+			"quantity" : 90,
+			"price" : 50,
+			"side" : 1,
+			"orderTime" : "2016-06-03 11:22:33",
+			"trader" : "qsk",
+			"traderCompany" : "QSK Gateway"
+		}
+		];
+		$.ajax({
+              url : myurl + "OrderBook",
+              type : "POST",
+              contentType: "application/json",
+              data: JSON.stringify(marketdepthInfo),
+              success : function(msg){
+              	console.log("yes");	
+              }
+		});
+	}
+
+	function getredis(){
+		console.log("in");
+		$.ajax({
+				url : myurl + "OrderBook/product=AU&period=OCT13",
+				type : "GET",
+				success : function(msg){
+					var obj = eval(msg);
+					console.log(obj);
+				}
+		});
+	}
+
     $(document).ready(function(){
+    	//addredis();
+    	//getredis();
+    	getMarketDepth("AU", "OCT13");
+//    	if (localStorage.getItem("visitor") == null)
+ //   		window.location.href = "index.html";////////////////////////////////////////////////////////////////
     	//$("#ada_01").css("background-color", "rgba(240, 240, 240, 1)");
     	$("#ada_02").css("background-color", "rgba(240, 240, 240, 1)");
     	$("#ada_03").css("background-color", "rgba(240, 240, 240, 1)");

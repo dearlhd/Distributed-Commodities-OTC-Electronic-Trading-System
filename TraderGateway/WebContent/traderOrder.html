@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Trader Order</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<link rel="stylesheet" href="css/bootstrap.css" />
+	<link rel="stylesheet" href="css/my.css" />
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/my.js"></script>
+	<script src="js/bootstrap.min.js"> </script>
+
+</head>
+<body>
+
+<div id="wrap">
+	<header id="header" class="container">
+		<div class="top-link">
+			<a href="index.html" class="my_logout">Log Out</a>
+		</div>
+		<div class="my_title">Futures<a class="my_title_a">Trader</a></div>
+		<nav id="nav-wrap">
+			<ul id="nav">
+				<li><a href="#" onclick="queryMarketClick();">Market</a></li>
+				<li><a href="#" onclick="queryOrderClick();">My Order</a></li>
+				<li><a href="#" onclick="queryBlotter();">Order Blotter</a></li>
+				<li><a href="#" class="my_account">My Account</a>
+					<ul>
+						<li><a href="traderAccount.html">Setting</a></li>
+						<li><a href="traderAccount.html">MyFund</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</header>
+
+	<hr class="my_blankheaderhr"/>
+
+	<div class="my_searchlist" id="searchlist">
+		<section class="container page-content">
+			<hr class="my_blanklisthr"/>
+			<p class="my_blottertitle">My Order</p>
+			<hr class="my_hr_T my_hr_Add"/>
+
+			<div class="my_listitems">
+				<label>Time:</label>
+				<a onclick="TimeChooseList(this);" id="time_all">All</a>
+				<a onclick="TimeChooseList(this);" id="time_today">Today</a>
+				<a class="my_listsepLine"></a>
+				<a id="time_start" data-toggle="modal" data-target="#myTimeModal" onclick="StartTimeSet();">StartTime</a>
+				<p style="display:inline;">~</p>
+				<a id="time_end" data-toggle="modal" data-target="#myTimeModal" onclick="EndTimeSet();">EndTime</a>		
+			</div>
+
+			<hr class="my_dashlisthr">
+
+			<div class="my_listitems">
+				<label>Category:</label>
+				<a id="category_all" onclick="CategoryChooseList(this);">All</a>
+				<a id="category_Agricultural" onclick="CategoryChooseList(this);">Agricultural</a>
+				<a id="category_Energy" onclick="CategoryChooseList(this);">Energy</a>
+				<a id="category_Metal" onclick="CategoryChooseList(this);">Metal</a>		
+				<label class="my_listsearchbuttom" onclick="searchButtomClick();">Search</label>		
+			</div>
+
+			<hr class="my_blanklisthr"/>
+		</section>
+	</div>
+
+	<hr class="my_blanklisthr"/>
+
+<section class="container page-content" id="main-container">
+
+<section id="main-content">
+	<div id="blotterTableWhole">
+		<table class="table table-hover table-striped  my_blottertable" id="blotterTable">
+	
+		</table>
+	</div>
+</section>
+
+<section id="sidebar" class="my_sidebar my_barfixed">
+	<h4 class="subtitle">Cancel Order</h4>
+	<div class="listbox1">
+		<ul>
+			<li>
+				<input class="my_fund my_cancelorderinput" id="cancelordernumber"/>
+				<a href="#" class="my_fundType">Order Number #</a>
+			</li>
+			<li>
+				<!--<a href="#" class="my_fund">20</a>-->
+				<input class="my_fund my_cancelorderinput" id="cancelorderquantity"/>
+				<a href="#" class="my_fundType">Quantity</a>
+				
+			</li>
+			
+			<li class="my_fundli"> 
+				<button class="my_fundinjectionconfirm" onclick="cancelorderClick();">Confirm</button>
+			</li>
+		</ul>
+	</div>	
+</section>
+
+</section>
+
+<section class="container page-content">
+	<hr class="my_blankhr"/>
+</section>
+
+
+<footer id="footer" align="center" class="my_footer">
+	<div class="container footer-in">
+		<p>CopyRights@</p>
+	</div>
+</footer>
+
+<div class="modal fade" id="myTimeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+       	<div class="modal-content my_timelistModal">
+           	<div class="modal-header">
+               	<button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="myModalClose">&times;</button>
+               	<h4 class="modal-title my_timelisth" id="myModalLabel"></h4>
+           	</div>
+           	<div class="modal-body">
+           		<form role="form">
+           			<div class="form-group my_timelistlabel">
+           				<label for="name">Year</label>
+  						<input type="text" class="form-control my_timelistinput" maxlength="4" id="Time_Year" placeholder=" Input The Year">
+            		</div>
+            		<div class="from-group my_timelistlabel">
+            			<label for="name">Month</label>
+      					<select class="form-control my_timelistselect" id="Time_Month">
+         					<option value=1>1</option>
+         					<option value=2>2</option>
+         					<option value=3>3</option>
+         					<option value=4>4</option>
+         					<option value=5>5</option>
+         					<option value=6>6</option>
+         					<option value=7>7</option>
+         					<option value=8>8</option>
+         					<option value=9>9</option>
+         					<option value=10>10</option>
+         					<option value=11>11</option>
+         					<option value=12>12</option>
+      					</select>
+            		</div>
+            		<div class="form-group my_timelistlabel">
+           				<label for="name">Date</label>
+  						<input type="text" class="form-control my_timelistinput" maxlength="2" id="Time_Date" placeholder=" Input The Date">
+            		</div>
+            	</form>
+            </div>
+           	<div class="modal-footer">
+            	<button type="button" class="btn btn-default my_timelistmodelbutton" style="outline:0;" data-dismiss="modal">Close</button>
+               	<button type="button" class="btn btn-primary my_timelistmodelbutton" style="outline:0;" id="starttime_set" onclick="StartTimeSetClick();">Confirm</button>          
+               	<button type="button" class="btn btn-primary my_timelistmodelbutton" style="outline:0;" id="endtime_set" onclick="EndTimeSetClick();">Confirm</button>
+            </div>
+        </div>
+	</div>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+	var query_category = "All";
+	var query_time_type = 0;	
+	var query_StartTime = "";
+	var query_EndTime = "";
+	var query_time = "Today";
+	var sidebarHeight = 0;
+	var sidebarWidth = 0;
+	var futures_categorysAgricultural = ["Bean", "Cotton", "Sugar", "WS", "WT", "ER", "PalmOil", "Corn", "Wheat", "RO"];
+	var futures_categorysEnergy = ["PVC"];
+	var futures_categorysMetal = ["CU", "AL", "ZN", "RB", "AU"];
+	//////////////////////////////////////////////////////////////////////  大写
+	var table_layer =　"<table class='table table-hover table-striped  my_blottertable' id='blotterTable'>"+
+					  "</table>";
+
+	var demo_head = "<hr class='my_blankhr'/>" + 
+					"<article class='eleven columns blog-post my_accountarticle my_textleft'>" +
+						"<h4 class='my_accountTitle'>";
+	var demo_tail = "</h4>" +
+					"</article>";
+
+	var myurl = "http://localhost:8088/TraderGateway/";
+
+	function validateInt(numbers){
+		for (var i = 0; i < numbers.length; ++i)
+			if (!((numbers.charAt(i) <= '9') && (numbers.charAt(i) >= '0')))
+				return 0;
+		return numbers * 1;
+	}
+
+	function cancelorderClick(){
+		var order_number = $("#cancelordernumber").val();
+		var oreder_quantity = $("#cancelorderquantity").val();
+		if (validateInt(order_number) == 0) alert("订单号非法");
+		else{
+			var orderitem = $("#blotterTable").children().eq(order_number);
+			if (orderitem.html() == null){
+				alert("请输入正确订单号");
+			}
+			else{
+				//console.log(orderitem.children().eq(0).children().eq(2).text());
+				orderitem = orderitem.children().eq(0);
+				var max_quantity = orderitem.children().eq(4).text();
+				if (oreder_quantity > max_quantity) alert("取消订单的数量过大");
+				else{
+					orderInfo = {
+						"trader" : localStorage.getItem("visitor"),
+						"side" : orderitem.children().eq(6).text() * 1,
+						"price" : orderitem.children().eq(5).text() * 1,
+						"quantity" : orderitem.children().eq(4).text() * 1,
+						"product" : orderitem.children().eq(2).text(),
+						"period" : orderitem.children().eq(3).text(),
+						"orderType" : "cancel"
+					};
+					$.ajax({
+						url : myurl + "Order",
+						type: "POST",
+						contentType: "application/json",
+						data: JSON.stringify(orderInfo),
+						success : function(msg){
+							var obj = eval(msg);
+							if (jQuery.isEmptyObject(obj)){
+								alert("删除订单失败");
+							}
+							else{
+								alert("删除订单成功");
+							}
+						}
+					});
+					searchButtomClick();
+				}
+			}
+		}
+		
+	}
+
+	function GetCateGory(producttypes){
+		for (var i = 0; i < futures_categorysAgricultural.length; ++i)
+			if (futures_categorysAgricultural[i] == producttypes)
+				return 1;
+		for (var i = 0; i < futures_categorysEnergy.length; ++i)
+			if (futures_categorysEnergy[i] == producttypes)
+				return 2;
+		for (var i = 0; i < futures_categorysMetal.length; ++i)
+			if (futures_categorysMetal[i] == producttypes)
+				return 3;
+		return 0;
+	}
+
+	function searchButtomClick(){
+		//alert("user: " + query_user + " Category: " + query_category + " query_time_type: " + query_time_type + " query_company: " + query_company);
+		var blotterInfo =　{};
+		if (query_time_type == 0){
+			if (query_time == "All"){
+				blotterInfo.startTime = "0000-00-00";
+				blotterInfo.endTime = "9999-99-99";
+			}
+			else if (query_time == "Today"){
+				var myDate = new Date();
+				blotterInfo.startTime = "" + myDate.getFullYear() + "-";
+				if (myDate.getMonth() < 9)
+					blotterInfo.startTime += "0" + (myDate.getMonth() + 1) + "-";
+				else blotterInfo.startTime += "" + (myDate.getMonth() + 1) + "-";
+				if (myDate.getDate() < 10)
+					blotterInfo.startTime += "0" + myDate.getDate();
+				else blotterInfo.startTime += "" + myDate.getDate();
+				blotterInfo.endTime = blotterInfo.startTime;
+			}
+		}
+		else{
+			if ((query_StartTime == "") || (query_EndTime == "")){
+				alert("请输入完整的时间段!");
+				return;
+			}
+			blotterInfo.startTime = query_StartTime.replace(new RegExp(":", "gm"), "-");
+			blotterInfo.endTime = query_EndTime.replace(new RegExp(":", "gm"), "-");	
+		}
+		blotterInfo.trader = localStorage.getItem("visitor");
+		//console.log(blotterInfo);
+
+        $.ajax({
+        	url: myurl + "Order/trader=" + blotterInfo.trader + "&startTime=" + blotterInfo.startTime + "&endTime=" + blotterInfo.endTime,
+          	type: "GET",
+          	success: function(msg){
+          		var obj = eval(msg);
+          		//if null print null message
+				if (jQuery.isEmptyObject(obj)){
+					table_layer = demo_head + ":( No Such Order. Maybe Change The Time Or Trader." + demo_tail;
+					$("#blotterTableWhole").html(table_layer);
+          			return false;
+        		}
+        		//console.log(obj);
+        		//console.log("<> :" + query_category);
+        		table_layer = "" +
+        			"<table class='table table-hover table-striped  my_blottertable' id='blotterTable'>" + 
+						"<thead class='my_fontBold'>" +				
+							"<tr>" +
+								"<th>#</th>" +
+								"<th>OrderType</th>" +
+								"<th>Product</th>" +
+								"<th>Period</th>" +
+								"<th>Quantity</th>" +
+								"<th>Price</th>" +
+								"<th>Side</th>" +
+								"<th>orderTime</th>" +
+							"</tr>"　+
+						"</thead>";
+
+        		for (var i = 0; i < obj.length; ++i){
+        			table_layer += "" +
+        				"<tbody class='my_tbody'>"　+
+							"<tr class='my_tr'>"　+
+	    						"<td>" + (i + 1) + "</td>"　+
+								"<td>" + obj[i].orderType + "</td>"　+
+								"<td class='productType'>" + obj[i].product + "</td>"　+
+								"<td>" + obj[i].period + "</td>"　+
+								"<td>" + obj[i].quantity + "</td>"　+
+								"<td>" + obj[i].price + "</td>"　+								
+								"<td>" + obj[i].side + "</td>" +
+								"<td>" + obj[i].orderTime + "</td>" +
+							"</tr>" +
+						"</tbody>";
+        		}
+        		
+        		table_layer += "</table>";
+        		CategoryChooseList("#category_" + query_category);
+          	}
+        });
+	}
+
+	function queryMarketClick(){
+		window.location.href = "trader.html";
+	}
+
+	function queryOrderClick(){
+		window.location.href = "traderOrder.html";
+	}
+
+	function queryBlotter(){
+		window.location.href = "traderOrderBlotter.html";
+	}
+
+	function CategoryChooseList(categorys){
+		$(categorys).parent().children("a").css("background-color", "rgba(240, 240, 240, 1)");
+		$(categorys).css("background-color", "rgba(211, 211, 211, 1)");
+		query_category = $(categorys).text();
+		//console.log(query_category);
+		$("#blotterTableWhole").html(table_layer);
+		if (query_category == "All")
+		{
+			//do nothing
+		}
+		else if (query_category == "Agricultural")
+		{
+			//console.log(GetCateGory("Silver"));
+			$(".my_tbody").filter(function(){
+				return (GetCateGory($(".productType", this).text()) != 1);
+			}).remove();
+		}
+		else if (query_category == "Energy")
+		{
+			$(".my_tbody").filter(function(){
+				return (GetCateGory($(".productType", this).text()) != 2);
+			}).remove();
+		}
+		else if (query_category == "Metal")
+		{
+			$(".my_tbody").filter(function(){
+				return (GetCateGory($(".productType", this).text()) != 3);
+			}).remove();
+		}
+
+		var iter = $("#blotterTable").children().eq(0).next();
+		var cnt = 0;
+		//console.log(iter.html());
+		while (iter.html() != null){
+			//console.log(iter.html());
+			//console.log(iter.children().eq(0).children().eq(0).text());
+			iter.children().eq(0).children().eq(0).text(++cnt);
+			iter = iter.next();
+		}
+	}
+
+	function validateYear(year){
+		if (year.length != 4) return 0;
+		else{
+			for (var i = 0; i < 4; ++i)
+				if (!(year.charAt(i) <= '9') && (year.charAt(i) >= '0'))
+					return 0;
+			return year * 1;
+		}
+	}
+
+	function validateDate(year, month, date){
+		var minDate = 1;
+		var maxDate = 31;
+		if ((month == 1) || (month == 3) || (month == 5) || (month == 7) || (month == 8) || (month == 10) || (month == 12)) maxDate = 31;
+		else if ((month == 4) ||(month == 6) ||(month == 9) ||(month == 11)) maxDate = 30;
+		else{
+			if ((year % 400) == 0) maxDate = 29;
+			else if ((year % 100) == 0) maxDate = 28;
+			else if ((year % 4) == 0) maxDate = 29;
+			else maxDate = 28;
+		}
+		for (var i = 0; i < date.length; ++i)
+			if (!((date.charAt(i) <= '9') && (date.charAt(i) >= '0')))
+				return 0;
+		var curDate = date * 1;
+		if ((curDate >= minDate) && (curDate <= maxDate)) return curDate;
+		else return 0;
+	}
+
+	function StartTimeSetClick(){
+		var Tyear = $("#Time_Year").val();
+		var Tmonth = $("#Time_Month").val();
+		var Tdate = $("#Time_Date").val();
+		if (Tyear == "") alert("请输入年份");
+		else if (Tdate == "") alert("请输入日期");
+		else{
+			var _year = validateYear(Tyear);
+			var _month = Tmonth * 1;
+			if (_year == 0){
+				alert("非法年份!");
+			}
+			else{
+				var _date = validateDate(_year, _month, Tdate);
+				if (_date == 0) alert("非法日期");
+				else{
+					var new_starttime = _year + ":";
+					if (_month < 10) new_starttime += ("" + 0 + _month + ":");
+					else new_starttime += (_month + ":");
+					if (_date < 10) new_starttime += ("" + 0 + _date);
+					else new_starttime += (_date);
+					if ((query_EndTime != "") && (query_EndTime < new_starttime)){
+						alert("起始日期超过截止日期!");
+					}
+					else{
+						query_StartTime = new_starttime;
+						query_time_type = 1;
+						$("#time_start").text(query_StartTime);
+						$("#time_all").css("background-color", "rgba(240, 240, 240, 1)");
+						$("#time_today").css("background-color", "rgba(240, 240, 240, 1)");
+						$("#time_start").css("background-color", "rgba(211, 211, 211, 1)");
+						$("#myModalClose").click();
+					}					
+				}
+			}
+		}
+	}
+
+	function EndTimeSetClick(){
+		var Tyear = $("#Time_Year").val();
+		var Tmonth = $("#Time_Month").val();
+		var Tdate = $("#Time_Date").val();
+		if (Tyear == "") alert("请输入年份");
+		else if (Tdate == "") alert("请输入日期");
+		else{
+			var _year = validateYear(Tyear);
+			var _month = Tmonth * 1;
+			if (_year == 0){
+				alert("非法年份!");
+			}
+			else{
+				var _date = validateDate(_year, _month, Tdate);
+				if (_date == 0) alert("非法日期");
+				else{
+					var new_starttime = _year + ":";
+					if (_month < 10) new_starttime += ("" + 0 + _month + ":");
+					else new_starttime += (_month + ":");
+					if (_date < 10) new_starttime += ("" + 0 + _date);
+					else new_starttime += (_date);
+					if ((query_StartTime != "") && (query_StartTime > new_starttime)){
+						alert("截止日期不到起始日期!");
+					}
+					else{
+						query_EndTime = new_starttime;
+						query_time_type = 1;
+						$("#time_end").text(query_EndTime);
+						$("#time_all").css("background-color", "rgba(240, 240, 240, 1)");
+						$("#time_today").css("background-color", "rgba(240, 240, 240, 1)");
+						$("#time_end").css("background-color", "rgba(211, 211, 211, 1)");
+						$("#myModalClose").click();
+					}					
+				}
+			}
+		}
+	}
+
+	function StartTimeSet(){
+		$("#myModalLabel").text("Blotter Start Time");
+		$("#starttime_set").show();
+		$("#endtime_set").hide();
+		$("#Time_Year").val(null);
+		$("#Time_Date").val(null);
+	}
+
+	function EndTimeSet(){
+		$("#myModalLabel").text("Blotter End Time");
+		$("#starttime_set").hide();
+		$("#endtime_set").show();
+		$("#Time_Year").val(null);
+		$("#Time_Date").val(null);
+	}
+
+	function TimeChooseList(times){
+		$(times).parent().children("a").css("background-color", "rgba(240, 240, 240, 1)");
+		$(times).css("background-color", "rgba(211, 211, 211, 1)");
+		query_time_type = 0;
+		query_StartTime = "";
+		query_EndTime = "";
+		query_time = $(times).text();
+	}
+
+	function InitChooseList(){
+		searchButtomClick();
+		CategoryChooseList("#category_all");
+		TimeChooseList("#time_today");
+
+	}
+
+	$(window).load(function() {
+    	$('#slider').nivoSlider();
+    });
+
+    window.onresize = function(){
+    	sidebarWidth = ($(document).width() - $("#main-container").width()) / 2; 
+    	$("#sidebar").css("right", (sidebarWidth).toString() + "px");
+    };
+
+    $(window).scroll(function(){
+		if ($(window).scrollTop() > sidebarHeight)
+    		$("#sidebar").css("top", "10px");
+    	else $("#sidebar").css("top", (sidebarHeight - $(window).scrollTop()).toString() + "px");
+    });
+
+
+    $(document).ready(function(){
+    	InitChooseList();
+    	sidebarHeight = $("#header").height() + $("#searchlist").height() + 60;
+    	sidebarWidth = ($(document).width() - $("#main-container").width()) / 2; 
+    	//alert(sidebarWidth);
+    	//alert(sidebarHeight);
+    	$("#sidebar").css("top", (sidebarHeight).toString() + "px");
+    	$("#sidebar").css("right", (sidebarWidth).toString() + "px");
+    });
+</script>
