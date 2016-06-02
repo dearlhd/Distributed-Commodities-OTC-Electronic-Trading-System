@@ -47,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
 		List<Order> buyList;
 		List<Order> sellList;
 
-		final String key = "OrderBook:" + order.getProduct() + " "
+		final String key = "Broker!OrderBook:" + order.getProduct() + " "
 				+ order.getPeriod();
 
 		// order side is buy
@@ -88,7 +88,7 @@ public class OrderServiceImpl implements OrderService {
 		List<Order> sellList;
 		List<Order> matchList = new ArrayList<Order>();
 
-		final String key = "OrderBook:" + order.getProduct() + " "
+		final String key = "Broker!OrderBook:" + order.getProduct() + " "
 				+ order.getPeriod();
 
 		String sellKey = key + 1;
@@ -147,9 +147,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public void dealStopOrder(Order order) {
-		String stopKey = "StopOrder:" + order.getProduct() + " "
+		String stopKey = "Broker!StopOrder:" + order.getProduct() + " "
 				+ order.getPeriod();
-		final String key = "OrderBook:" + order.getProduct() + " "
+		final String key = "Broker!OrderBook:" + order.getProduct() + " "
 				+ order.getPeriod();
 
 		List<Order> stopList = redisService.getOrderList(stopKey);
@@ -177,11 +177,11 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public void dealCancelOrder(Order order) {
-		String key = "OrderBook:" + order.getProduct() + " "
+		String key = "Broker!OrderBook:" + order.getProduct() + " "
 				+ order.getPeriod();
 		List<Order> matchList = new ArrayList<Order>();
 		if (order.getOrderType() == "stop") {
-			key = "StopOrder:" + order.getProduct() + " " + order.getPeriod();
+			key = "Broker!StopOrder:" + order.getProduct() + " " + order.getPeriod();
 			matchList = redisService.getOrderList(key);
 		}
 
@@ -268,7 +268,7 @@ public class OrderServiceImpl implements OrderService {
 
 		int quantity = order.getQuantity();
 		List<BlotterEntry> beList = new ArrayList<BlotterEntry>();
-		final String key = "OrderBook:" + order.getProduct() + " "
+		final String key = "Broker!OrderBook:" + order.getProduct() + " "
 				+ order.getPeriod();
 		String matchKey;
 
@@ -374,7 +374,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public void addOrder(Order order) {
 		List<Order> orders = new ArrayList<Order>();
-		final String key = "OrderBook:" + order.getProduct() + " "
+		final String key = "Broker!OrderBook:" + order.getProduct() + " "
 				+ order.getPeriod();
 		if (order.getSide() == 0) {
 			String buyKey = key + 0;
@@ -397,7 +397,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public void printOrderBook(Order order, int side) {
-		String key = "OrderBook:" + order.getProduct() + " "
+		String key = "Broker!OrderBook:" + order.getProduct() + " "
 				+ order.getPeriod() + side;
 		List<Order> matchList = redisService.getOrderList(key);
 
@@ -415,7 +415,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public void addStopOrder(Order order) {
-		String key = "StopOrder:" + order.getProduct() + " "
+		String key = "Broker!StopOrder:" + order.getProduct() + " "
 				+ order.getPeriod();
 
 		List<Order> stopList = redisService.getOrderList(key);
@@ -428,9 +428,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public List<Order> getOrderBook(Order order) {
-		String buyKey = "OrderBook:" + order.getProduct() + " "
+		String buyKey = "Broker!OrderBook:" + order.getProduct() + " "
 				+ order.getPeriod() + 0;
-		String sellKey = "OrderBook:" + order.getProduct() + " "
+		String sellKey = "Broker!OrderBook:" + order.getProduct() + " "
 				+ order.getPeriod() + 1;
 		List<Order> orderBook = new ArrayList<Order>();
 		List<Order> buyList = redisService.getOrderList(buyKey);
@@ -523,5 +523,10 @@ public class OrderServiceImpl implements OrderService {
 		}
 
 		return orderBook;
+	}
+
+	@Override
+	public List<Order> queryOrderByConditions(JSONObject conds) {
+		return redisService.queryOrderByCondition(conds);
 	}
 }

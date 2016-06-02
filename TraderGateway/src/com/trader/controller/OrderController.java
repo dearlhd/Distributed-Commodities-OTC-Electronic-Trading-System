@@ -63,9 +63,9 @@ public class OrderController {
 			condObj.put(np[0], np[1]);
 		}
 		
-		JSONArray orderBook = new JSONArray();
-		orderBook = JSONArray.fromObject(orderService.queryOrderByConditions(condObj));
-        return orderBook;
+		JSONArray orders = new JSONArray();
+		orders = JSONArray.fromObject(orderService.queryOrderByConditions(condObj));
+        return orders;
     }
 	
 	@RequestMapping(method = RequestMethod.POST)

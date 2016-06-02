@@ -8,6 +8,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,7 +23,26 @@ public class BlotterController {
 	@Resource
 	private BlotterService blotterService;
 	
-	@RequestMapping(value = "/getBlotter", method = RequestMethod.POST)
+	@RequestMapping(value = "/OrderBlotter/{conditions}", method = RequestMethod.GET)
+    @ResponseBody
+    public JSONArray getOrders(@PathVariable("conditions") String conditions) {
+		conditions = conditions.replaceAll("\\s*", "");
+		String[] conds = conditions.split("&");
+		
+		JSONObject condObj = new JSONObject();
+		for (int i = 0; i < conds.length; i++) {
+			String[] np = conds[i].split("=");
+			condObj.put(np[0], np[1]);
+		}
+		
+		JSONArray blotters = new JSONArray();
+		blotters = JSONArray.fromObject(blotterService.getBlotterBySpecialInfo(condObj));
+        return blotters;
+    }
+	
+	
+	// This is a interface just for test
+	@RequestMapping(value = "/OrderBlotter", method = RequestMethod.POST)
     public @ResponseBody JSONArray getBlotter(@RequestBody JSONObject obj) {
 		System.out.println(obj.toString());
     	JSONObject queryObj = new JSONObject();

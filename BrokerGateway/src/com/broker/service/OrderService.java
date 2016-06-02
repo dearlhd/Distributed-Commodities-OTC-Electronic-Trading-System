@@ -2,6 +2,8 @@ package com.broker.service;
 
 import java.util.List;
 
+import net.sf.json.JSONObject;
+
 import com.broker.entity.Order;
 
 public interface OrderService {
@@ -16,4 +18,6 @@ public interface OrderService {
 	
 	public List<Order> getOrderBook(Order order);
 	public void printOrderBook(Order order, int side);
+	
+	public List<Order> queryOrderByConditions(JSONObject conds);
 }

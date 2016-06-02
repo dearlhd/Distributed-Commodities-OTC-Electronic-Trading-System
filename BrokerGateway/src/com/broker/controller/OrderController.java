@@ -55,6 +55,23 @@ public class OrderController {
 		return order;
 	}
 	
+	@RequestMapping(value = "/Order/{conditions}", method = RequestMethod.GET)
+	@ResponseBody
+	public JSONArray getOrders(@PathVariable("conditions") String conditions) {
+		conditions = conditions.replaceAll("\\s*", "");
+		String[] conds = conditions.split("&");
+		
+		JSONObject condObj = new JSONObject();
+		for (int i = 0; i < conds.length; i++) {
+			String[] np = conds[i].split("=");
+			condObj.put(np[0], np[1]);
+		}
+		
+		JSONArray orders = new JSONArray();
+		orders = JSONArray.fromObject(orderService.queryOrderByConditions(condObj));
+		return orders;
+	}
+	
 	@RequestMapping(value = "/Order", method = RequestMethod.POST)
 	@ResponseBody
 	public Object addOrder(@RequestBody JSONObject obj) {
@@ -88,24 +105,24 @@ public class OrderController {
 		return obj;
 	}
 	
-	@RequestMapping(value = "/OrderBook", method = RequestMethod.POST)
-    @ResponseBody
-    public JSONArray getOrderBook(@RequestBody JSONObject obj) {
-		Order order = parseMessage(obj);
-		
-		List<Order> lo = orderService.getOrderBook(order);
-		
-		if (lo == null) {
-			return null; 
-		}
-		
-		for (int i = 0; i < lo.size(); i++) {
-			Order od = lo.get(i);
-			System.out.println(od.getPrice() + " " + od.getSide() + " " + od.getQuantity());
-		}
-		
-		return JSONArray.fromObject(lo);
-    }
+//	@RequestMapping(value = "/OrderBook", method = RequestMethod.POST)
+//    @ResponseBody
+//    public JSONArray getOrderBook(@RequestBody JSONObject obj) {
+//		Order order = parseMessage(obj);
+//		
+//		List<Order> lo = orderService.getOrderBook(order);
+//		
+//		if (lo == null) {
+//			return null; 
+//		}
+//		
+//		for (int i = 0; i < lo.size(); i++) {
+//			Order od = lo.get(i);
+//			System.out.println(od.getPrice() + " " + od.getSide() + " " + od.getQuantity());
+//		}
+//		
+//		return JSONArray.fromObject(lo);
+//    }
 	
 	@RequestMapping(value = "/testBlotter", method = RequestMethod.POST)
     @ResponseBody
