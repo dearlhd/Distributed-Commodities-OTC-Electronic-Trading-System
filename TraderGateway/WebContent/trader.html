@@ -374,7 +374,7 @@
 <script type="text/javascript">
 
   	//////////////////////////////////  8888 8888 8888 
-  	var myurl = "http://localhost:8888/TraderGateway/";
+  	var myurl = "http://localhost:8088/TraderGateway/";
   	var orderType = "";
 
   	function OrderSet(_orders){
@@ -475,7 +475,15 @@
 				var obj = eval(msg);
 				//console.log(obj);
 				if (jQuery.isEmptyObject(obj)){
-	               	alert("没有该期货相关的信息");
+	               	for (var i = 0; i < 3; ++i){
+	               		$("#up_" + i).children().eq(2).text("--");
+                		$("#up_" + i).children().eq(3).text("");
+                		$("#up_" + i).children().eq(4).text("");
+
+                		$("#down_" + i).children().eq(2).text("--");
+                		$("#down_" + i).children().eq(1).text("");
+                		$("#down_" + i).children().eq(0).text("");
+	               	}
                 }
                 else{
                 	$("#currentfuturesItem").text(" " + items);
@@ -495,7 +503,7 @@
                 	}
                 	while (pnt < 3){
                 		pnt++;
-                		$("#up_" + pnt).children().eq(2).text("");
+                		$("#up_" + pnt).children().eq(2).text("--");
                 		$("#up_" + pnt).children().eq(3).text("");
                 		$("#up_" + pnt).children().eq(4).text("");
                 	}
@@ -509,7 +517,7 @@
                 	}
                 	while (pnt < 3){
                 		pnt++;
-                		$("#down_" + pnt).children().eq(2).text("");
+                		$("#down_" + pnt).children().eq(2).text("--");
                 		$("#down_" + pnt).children().eq(1).text("");
                 		$("#down_" + pnt).children().eq(0).text("");
                 	}
