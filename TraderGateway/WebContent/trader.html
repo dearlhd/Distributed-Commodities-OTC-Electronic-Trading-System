@@ -475,6 +475,8 @@
 				var obj = eval(msg);
 				//console.log(obj);
 				if (jQuery.isEmptyObject(obj)){
+					$("#currentfuturesItem").text(" " + items);
+                	$("#currentfuturesItemDate").text(periods);
 	               	for (var i = 1; i < 4; ++i){
 	               		$("#up_" + i).children().eq(2).text("--");
                 		$("#up_" + i).children().eq(3).text("");
