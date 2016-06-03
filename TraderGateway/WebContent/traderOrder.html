@@ -75,8 +75,8 @@
 
 <section id="main-content">
 	<div id="blotterTableWhole">
-		<table class="table table-hover table-striped  my_blottertable" id="blotterTable">
-	
+		<table class="table table-hover table-striped my_blottertable" id="blotterTable">
+
 		</table>
 	</div>
 </section>
@@ -179,7 +179,7 @@
 	var futures_categorysEnergy = ["PVC"];
 	var futures_categorysMetal = ["CU", "AL", "ZN", "RB", "AU"];
 	//////////////////////////////////////////////////////////////////////  大写
-	var table_layer =　"<table class='table table-hover table-striped  my_blottertable' id='blotterTable'>"+
+	var table_layer =　"<table class='table table-hover table-striped my_blottertable' id='blotterTable'>"+
 					  "</table>";
 
 	var demo_head = "<hr class='my_blankhr'/>" + 
@@ -202,13 +202,13 @@
 		var oreder_quantity = $("#cancelorderquantity").val();
 		if (validateInt(order_number) == 0) alert("订单号非法");
 		else{
-			var orderitem = $("#blotterTable").children().eq(order_number);
+			var orderitem = $("#blotterTable").children().eq(0).next().children().eq(order_number - 1);
 			if (orderitem.html() == null){
 				alert("请输入正确订单号");
 			}
 			else{
 				//console.log(orderitem.children().eq(0).children().eq(2).text());
-				orderitem = orderitem.children().eq(0);
+				orderitem = orderitem;
 				var max_quantity = orderitem.children().eq(4).text();
 				if (oreder_quantity > max_quantity) alert("取消订单的数量过大");
 				else{
@@ -301,7 +301,7 @@
         		//console.log(obj);
         		//console.log("<> :" + query_category);
         		table_layer = "" +
-        			"<table class='table table-hover table-striped  my_blottertable' id='blotterTable'>" + 
+        			"<table class='table table-hover table-striped my_blottertable' id='blotterTable'>" + 
 						"<thead class='my_fontBold'>" +				
 							"<tr>" +
 								"<th>#</th>" +
@@ -314,10 +314,11 @@
 								"<th>orderTime</th>" +
 							"</tr>"　+
 						"</thead>";
+				table_layer += "" +
+        				"<tbody class='my_tbody'>";
 
         		for (var i = 0; i < obj.length; ++i){
         			table_layer += "" +
-        				"<tbody class='my_tbody'>"　+
 							"<tr class='my_tr'>"　+
 	    						"<td>" + (i + 1) + "</td>"　+
 								"<td>" + obj[i].orderType + "</td>"　+
@@ -327,10 +328,10 @@
 								"<td>" + obj[i].price + "</td>"　+								
 								"<td>" + obj[i].side + "</td>" +
 								"<td>" + obj[i].orderTime + "</td>" +
-							"</tr>" +
-						"</tbody>";
+							"</tr>";						
         		}
         		
+        		table_layer += "</tbody>";
         		table_layer += "</table>";
         		CategoryChooseList("#category_" + query_category);
           	}
@@ -362,30 +363,30 @@
 		else if (query_category == "Agricultural")
 		{
 			//console.log(GetCateGory("Silver"));
-			$(".my_tbody").filter(function(){
+			$(".my_tr").filter(function(){
 				return (GetCateGory($(".productType", this).text()) != 1);
 			}).remove();
 		}
 		else if (query_category == "Energy")
 		{
-			$(".my_tbody").filter(function(){
+			$(".my_tr").filter(function(){
 				return (GetCateGory($(".productType", this).text()) != 2);
 			}).remove();
 		}
 		else if (query_category == "Metal")
 		{
-			$(".my_tbody").filter(function(){
+			$(".my_tr").filter(function(){
 				return (GetCateGory($(".productType", this).text()) != 3);
 			}).remove();
 		}
 
-		var iter = $("#blotterTable").children().eq(0).next();
+		var iter = $("#blotterTable").children().eq(0).next().children().eq(0);
 		var cnt = 0;
 		//console.log(iter.html());
 		while (iter.html() != null){
 			//console.log(iter.html());
 			//console.log(iter.children().eq(0).children().eq(0).text());
-			iter.children().eq(0).children().eq(0).text(++cnt);
+			iter.children().eq(0).text(++cnt);
 			iter = iter.next();
 		}
 	}

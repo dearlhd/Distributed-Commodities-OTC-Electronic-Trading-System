@@ -236,10 +236,11 @@
 								"<th>Completion Side</th>"　+
 							"</tr>"　+
 						"</thead>";
+				table_layer += "" +
+        				"<tbody class='my_tbody'>";
 
         		for (var i = 0; i < obj.length; ++i){
         			table_layer += "" +
-        				"<tbody class='my_tbody'>"　+
 							"<tr class='my_tr'>"　+
 	    						"<td>" + obj[i].tradeID + "</td>"　+
 								"<td>" + obj[i].broker + "</td>"　+
@@ -253,10 +254,10 @@
 								"<td>" + obj[i].completionTrader + "</td>" +
 								"<td>" + obj[i].completionCompany + "</td>" +
 								"<td>" + obj[i].completionSide + "</td>" +
-							"</tr>" +
-						"</tbody>";
+							"</tr>";
         		}
         		
+        		table_layer += "</tbody>";
         		table_layer += "</table>";
         		CategoryChooseList("#category_" + query_category);
           	}
@@ -288,19 +289,19 @@
 		else if (query_category == "Agricultural")
 		{
 			//console.log(GetCateGory("Silver"));
-			$(".my_tbody").filter(function(){
+			$(".my_tr").filter(function(){
 				return (GetCateGory($(".productType", this).text()) != 1);
 			}).remove();
 		}
 		else if (query_category == "Energy")
 		{
-			$(".my_tbody").filter(function(){
+			$(".my_tr").filter(function(){
 				return (GetCateGory($(".productType", this).text()) != 2);
 			}).remove();
 		}
 		else if (query_category == "Metal")
 		{
-			$(".my_tbody").filter(function(){
+			$(".my_tr").filter(function(){
 				return (GetCateGory($(".productType", this).text()) != 3);
 			}).remove();
 		}
