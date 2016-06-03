@@ -734,3 +734,13 @@ h4.my_marketsubtitle
 {
 	background-color: rgba(0, 0, 0, 0);
 }
+
+.my_sidebarwidth
+{
+	/*min-width: 240px;*/
+}
+
+.my_containerwidth
+{
+	/*min-width: 960px;*/
+}

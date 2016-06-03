@@ -359,7 +359,7 @@ nav.primary ul li a:active, nav.primary ul li a.selected {	background:#ff9900;	c
 	@media only screen and (min-width: 768px) and (max-width: 959px) { 
 	
 	#wrap { max-width:828px; } 
-	#sidebar { width:200px;  margin:0 0 21px 1px; padding-left:18px; }
+	#sidebar { width:259px;  margin:0 0 21px 1px; padding-left:18px; border: none;}
     #main-content { width:502px; }
 	 #sidebar iframe { max-width:100%; }
 	.nivo-caption  { left:60px; margin-top:60px;} 
