@@ -350,7 +350,7 @@ public class OrderServiceImpl implements OrderService {
 			}
 
 			JSONObject jsonObject = JSONObject.fromObject(be);
-			jsonObject.put("msg", "blotterEntry");
+			// jsonObject.put("msg", "blotterEntry");
 			if (traderIndex1 == traderIndex2) {
 				msgService.postMessage(traderUrls.get(traderIndex1) + "/OrderBlotter", jsonObject);
 			} else {
@@ -480,7 +480,7 @@ public class OrderServiceImpl implements OrderService {
 			}
 		}
 		
-		if (buyCnt <= 3) {
+		if (buyCnt <= 3 && od.getPrice() != 0.0) {
 			orderBook.add(od);
 		}
 
@@ -518,7 +518,7 @@ public class OrderServiceImpl implements OrderService {
 			}
 		}
 		
-		if (sellCnt <= 3) {
+		if (sellCnt <= 3 && od.getPrice() != 0.0) {
 			orderBook.add(0, od);
 		}
 

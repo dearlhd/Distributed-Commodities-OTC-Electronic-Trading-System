@@ -110,7 +110,8 @@ public class MessagingServiceImpl implements MessagingService{
 		List<JSONArray> retMsgs = new ArrayList<JSONArray>();
 		for (int i = 0; i < brokerUrls.size(); i++) {
 			JSONObject obj = JSONObject.fromObject(order);
-			JSONArray ja = postMsgToBroker(brokerUrls.get(i) + "/OrderBook", obj);
+			String subUrl = "/OrderBook/" + "product=" + order.getProduct() + "&period=" + order.getPeriod();
+			JSONArray ja = getArrayFromBroker(brokerUrls.get(i) + subUrl);
 			retMsgs.add(i, ja);
 			double price = getMarketDepth(ja, order.getSide()); 
 			prices.add(i, price);
@@ -124,7 +125,10 @@ public class MessagingServiceImpl implements MessagingService{
 		
 		return index;
 	}
-	
-	
+
+	@Override
+	public JSONArray getArrayFromBroker(String url) {
+		return (JSONArray)httpClientUtil.getMessageRetArray(url);
+	}
 
 }

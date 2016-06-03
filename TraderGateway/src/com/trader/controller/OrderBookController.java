@@ -25,8 +25,8 @@ public class OrderBookController {
 	RedisService redisService;
 	
 	@RequestMapping(value = "/{conditions}", method = RequestMethod.GET)
-    @ResponseBody
-    public JSONArray getOrderBook(@PathVariable("conditions") String conditions) {
+    public @ResponseBody String getOrderBook(@PathVariable("conditions") String conditions) {
+		System.out.println("Trader!OrderBook: " + conditions);
 		conditions = conditions.replaceAll("\\s*", "");
 		String[] conds = conditions.split("&");
 		
@@ -39,8 +39,13 @@ public class OrderBookController {
 		
 		List<Order> orders = redisService.getOrderBook(key);
 		
+		if (orders == null) {
+			return null;
+		}
+		
 		JSONArray orderBook = JSONArray.fromObject(orders);
-        return orderBook;
+		
+        return orderBook.toString();
     }
 	
 	@RequestMapping(method = RequestMethod.POST)

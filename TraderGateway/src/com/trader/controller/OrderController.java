@@ -72,6 +72,12 @@ public class OrderController {
 	public @ResponseBody JSONObject addOrder(@RequestBody JSONObject obj) {
 		System.out.println(obj.toString());
 		Order order = parseRequest(obj);
+		
+		// TODO iceberg
+		if (order.getQuantity() > 1000) {
+			order.setQuantity(100);
+		}
+		
 		orderService.addOrder(order);
 		return obj;
 	}

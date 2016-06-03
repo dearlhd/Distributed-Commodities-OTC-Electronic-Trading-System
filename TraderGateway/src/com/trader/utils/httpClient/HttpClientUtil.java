@@ -7,6 +7,7 @@ import net.sf.json.JSONObject;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -17,27 +18,32 @@ public class HttpClientUtil {
 		
 	}
 
-//	public Object postMessage(String url, JSONObject obj) {
-//		try {
-//			HttpClient httpClient = new DefaultHttpClient();
-//			HttpPost postMethod = new HttpPost(url);
-//
-//			StringEntity entity = new StringEntity(obj.toString(), "utf-8");// 解决中文乱码问题
-//			entity.setContentEncoding("UTF-8");
-//			entity.setContentType("application/json");
-//			postMethod.setEntity(entity);
-//
-//			HttpResponse result = httpClient.execute(postMethod);
-//			String resData = EntityUtils.toString(result.getEntity());
-//			
-//			JSONArray resultArray = JSONArray.fromObject(resData); 
-//			System.out.println("client: " + obj.toString());
-//			return resultArray;
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		return null;
-//	}
+	public Object getMessageRetArray(String url) {
+		try {
+			System.out.println("trader post to " + url);
+			HttpClient httpClient = new DefaultHttpClient();
+			HttpGet getMethod = new HttpGet(url);
+
+
+			HttpResponse response = httpClient.execute(getMethod);
+			String resData = EntityUtils.toString(response.getEntity());
+			
+			if (resData == null) {
+				return new JSONArray();
+			}
+			
+			System.out.println("result from broker: " + resData);
+			
+			JSONArray resultArray = JSONArray.fromObject(resData); 
+			System.out.println("trader recieve: " + resData);
+			return resultArray;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
 	
 	public Object postMessageRetObject(String url, Object obj) {
 		try {
@@ -63,6 +69,8 @@ public class HttpClientUtil {
 	
 	public Object postMessageRetArray(String url, Object obj) {
 		try {
+			System.out.println("trader post to " + url);
+			System.out.println("post data: " + obj.toString());
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpPost postMethod = new HttpPost(url);
 
@@ -73,6 +81,12 @@ public class HttpClientUtil {
 
 			HttpResponse result = httpClient.execute(postMethod);
 			String resData = EntityUtils.toString(result.getEntity());
+			
+			if (resData == null) {
+				return new JSONArray();
+			}
+			
+			System.out.println("result from broker: " + resData);
 			
 			JSONArray resultArray = JSONArray.fromObject(resData); 
 			System.out.println("trader recieve: " + resData);

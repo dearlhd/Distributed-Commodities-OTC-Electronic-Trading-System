@@ -38,13 +38,12 @@ public class BlotterServiceImpl implements BlotterService{
 			blotters = blotterDao.getBlotterEntrys();
 		}
 		
-		String startTime = conds.getString("startTime");
-		String endTime = conds.getString("endTime");
+		String startTime = conds.getString("startTime") + " 00:00:00";
+		String endTime = conds.getString("endTime") + " 23:59:59";
 		try {
-			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date d1 = df.parse(startTime);
 			Date d2 = df.parse(endTime);
-			df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			for (int i = 0; i < blotters.size(); i++) {
 				BlotterEntry be = blotters.get(i);
 				Date date = df.parse(be.getDealTime());

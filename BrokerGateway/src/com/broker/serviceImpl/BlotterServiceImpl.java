@@ -47,13 +47,12 @@ public class BlotterServiceImpl implements BlotterService {
 		
 		List<BlotterEntry> results = new ArrayList<BlotterEntry>();
 		try {
-			SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
-			Date startTime = df1.parse(obj.get("startTime").toString());
-			Date endTime = df1.parse(obj.get("endTime").toString());
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date startTime = df.parse(obj.getString("startTime") + " 00:00:00") ;
+			Date endTime = df.parse(obj.getString("endTime") + "23:59:59");
 			
 
 			for (int i = 0; i < blotters.size(); i++) {
-				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				Date entryTime = df.parse(blotters.get(i).getDealTime());
 				if (entryTime.getTime() >= startTime.getTime() && entryTime.getTime() <= endTime.getTime()) {
 					results.add(blotters.get(i));

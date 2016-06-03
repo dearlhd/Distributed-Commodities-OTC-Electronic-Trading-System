@@ -11,4 +11,6 @@ public interface MessagingService {
 	public JSONObject postOrderToBroker (String subUrl, int brokerIndex, JSONObject msg);
 	
 	public JSONArray postMsgToBroker (String url, JSONObject msg);
+	
+	public JSONArray getArrayFromBroker(String url);
 }
