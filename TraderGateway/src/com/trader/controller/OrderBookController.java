@@ -46,7 +46,7 @@ public class OrderBookController {
 		}
 		
 		for (int i = 0; i < orders.size(); i++) {
-			System.out.println(orders.get(i).getProduct() + " " + orders.get(i).getPrice() + " " + orders.get(i).getSide());
+			System.out.println(orders.get(i).getProduct() + " " + orders.get(i).getPrice() + " " + orders.get(i).getQuantity() + " " + orders.get(i).getSide());
 		}
 		
 		JSONArray orderBook = JSONArray.fromObject(orders);
@@ -79,7 +79,7 @@ public class OrderBookController {
 		}
 		
 		Order order = orders.get(0);
-		String key = "Trader!OrderBook:" + order.getProduct() + " " + order.getPeriod();;
+		String key = "Trader!OrderBook:" + order.getProduct() + " " + order.getPeriod();
 		
 		redisService.setOrderBook( key, orders);
 		

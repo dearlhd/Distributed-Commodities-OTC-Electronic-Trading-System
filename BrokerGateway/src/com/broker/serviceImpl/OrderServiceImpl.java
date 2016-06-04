@@ -104,6 +104,7 @@ public class OrderServiceImpl implements OrderService {
 				if (order.getPrice() >= sellList.get(i).getPrice()) {
 					matchList.add(sellList.get(i));
 					sellList.remove(i);
+					i--;
 				}
 			}
 
@@ -122,6 +123,9 @@ public class OrderServiceImpl implements OrderService {
 				}
 				buyList.add(order);
 				redisService.setOrderList(buyKey, buyList);
+				
+				JSONArray jsonArray = JSONArray.fromObject(getOrderBook(order));
+				msgService.postPriceToAllTrader(jsonArray);
 			}
 		}
 		// sell
@@ -134,6 +138,7 @@ public class OrderServiceImpl implements OrderService {
 				if (order.getPrice() <= buyList.get(i).getPrice()) {
 					matchList.add(buyList.get(i));
 					buyList.remove(i);
+					i--;
 				}
 			}
 
@@ -152,6 +157,9 @@ public class OrderServiceImpl implements OrderService {
 				}
 				sellList.add(order);
 				redisService.setOrderList(sellKey, sellList);
+				
+				JSONArray jsonArray = JSONArray.fromObject(getOrderBook(order));
+				msgService.postPriceToAllTrader(jsonArray);
 			}
 		}
 		return marketDepth;
@@ -176,11 +184,13 @@ public class OrderServiceImpl implements OrderService {
 				matchList = redisService.getOrderList(key + 1);
 				matchOrder(matchList, new ArrayList<Order>(), stopOrder);
 				stopList.remove(i);
+				i--;
 			}
 			else if (stopOrder.getPrice() >= order.getPrice() && stopOrder.getSide() == 1) {
 				matchList = redisService.getOrderList(key + 0);
 				matchOrder(matchList, new ArrayList<Order>(), stopOrder);
 				stopList.remove(i);
+				i--;
 			}
 		}
 		
@@ -214,11 +224,11 @@ public class OrderServiceImpl implements OrderService {
 			if (stopOrder.getOrderID().equals(order.getOrderID())) {
 				if (stopOrder.getQuantity() == order.getQuantity()) {
 					matchList.remove(i);
+					i--;
 					redisService.setOrderList(key, matchList);
 					return;
 				} else if (stopOrder.getQuantity() > order.getQuantity()) {
-					stopOrder.setQuantity(stopOrder.getQuantity()
-							- order.getQuantity());
+					stopOrder.setQuantity(stopOrder.getQuantity() - order.getQuantity());
 					redisService.setOrderList(key, matchList);
 					return;
 				}
