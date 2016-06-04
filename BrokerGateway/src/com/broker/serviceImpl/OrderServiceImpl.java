@@ -97,7 +97,7 @@ public class OrderServiceImpl implements OrderService {
 		if (order.getSide() == 0) {
 			sellList = redisService.getOrderList(sellKey);
 			if (sellList == null) {
-				sellList = new ArrayList<Order>();
+				return addOrderDirectly(order);
 			}
 
 			for (int i = 0; i < sellList.size(); i++) {
@@ -107,7 +107,13 @@ public class OrderServiceImpl implements OrderService {
 				}
 			}
 
+			int oldQuantity = order.getQuantity();
 			int quantity = matchOrder(matchList, sellList, order);
+			
+			if (oldQuantity == quantity) {
+				return addOrderDirectly(order);
+			}
+			
 			if (quantity > 0) {
 				order.setQuantity(quantity);
 				buyList = redisService.getOrderList(buyKey);
@@ -122,7 +128,7 @@ public class OrderServiceImpl implements OrderService {
 		else if (order.getSide() == 1) {
 			buyList = redisService.getOrderList(buyKey);
 			if (buyList == null) {
-				buyList = new ArrayList<Order>();
+				return addOrderDirectly(order);
 			}
 			for (int i = 0; i < buyList.size(); i++) {
 				if (order.getPrice() <= buyList.get(i).getPrice()) {
@@ -131,7 +137,13 @@ public class OrderServiceImpl implements OrderService {
 				}
 			}
 
+			int oldQuantity = order.getQuantity();
 			int quantity = matchOrder(matchList, buyList, order);
+			
+			if (oldQuantity == quantity) {
+				return addOrderDirectly(order);
+			}
+			
 			if (quantity > 0) {
 				order.setQuantity(quantity);
 				sellList = redisService.getOrderList(sellKey);
@@ -263,6 +275,28 @@ public class OrderServiceImpl implements OrderService {
 		});
 	}
 
+	private double addOrderDirectly (Order order) {
+		if (order == null) {
+			return 0.0;
+		}
+		
+		String key = "Broker!OrderBook:" + order.getProduct() + " " + order.getPeriod() + order.getSide();
+		
+		List<Order> orders = redisService.getOrderList(key);
+		if (orders == null) {
+			orders = new ArrayList<Order>();
+		}
+		orders.add(order);
+		sortOrder(orders);
+		redisService.setOrderList(key, orders);
+		
+		JSONArray jsonArray = JSONArray.fromObject(getOrderBook(order));
+		msgService.postPriceToAllTrader(jsonArray);
+		
+		return orders.get(0).getPrice();
+	}
+	
+	// ret: the quantity matched
 	private int matchOrder(List<Order> matchList, List<Order> leftList, Order order) {
 		sortOrder(matchList);
 

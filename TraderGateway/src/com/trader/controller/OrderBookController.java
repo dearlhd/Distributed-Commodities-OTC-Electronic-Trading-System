@@ -1,5 +1,6 @@
 package com.trader.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -26,7 +27,7 @@ public class OrderBookController {
 	
 	@RequestMapping(value = "/{conditions}", method = RequestMethod.GET)
     public @ResponseBody String getOrderBook(@PathVariable("conditions") String conditions) {
-		System.out.println("Trader!OrderBook: " + conditions);
+		System.out.println("Trader!OrderBook: GET " + conditions);
 		conditions = conditions.replaceAll("\\s*", "");
 		String[] conds = conditions.split("&");
 		
@@ -40,23 +41,40 @@ public class OrderBookController {
 		List<Order> orders = redisService.getOrderBook(key);
 		
 		if (orders == null) {
+			System.out.println("Trader!OrderBook: GET orders is null");
 			return null;
 		}
 		
+		for (int i = 0; i < orders.size(); i++) {
+			System.out.println(orders.get(i).getProduct() + " " + orders.get(i).getPrice() + " " + orders.get(i).getSide());
+		}
+		
 		JSONArray orderBook = JSONArray.fromObject(orders);
+		
 		
         return orderBook.toString();
     }
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody JSONObject setOrderBook(@RequestBody String obj) {
-		System.out.println("trader: order book " + obj.toString());
+		System.out.println("Trader!OrderBook: POST " + obj.toString());
 		
 		JSONArray ja = JSONArray.fromObject(obj);
 		
-		List<Order> orders = (List<Order>) JSONArray.toCollection(ja, Order.class);
+		List<Order> orders = new ArrayList<Order>();
 		
-		if (orders == null) {
+//		for (int i = 0; i < ja.size(); i++) {
+//			JSONObject jsonObj = (JSONObject) ja.get(i);
+//			Order od = new Order();
+//			System.out.println("dong: " + jsonObj.toString());
+//			//od = (Order) JSONObject.toBean(jsonObj);
+//			orders.add(od);
+//		}
+		
+		orders = (List<Order>) JSONArray.toCollection(ja, Order.class);
+		
+		if (orders == null || orders.size() == 0) {
+			System.out.println("Trader!OrderBook: POST orders is null");
 			return new JSONObject();
 		}
 		

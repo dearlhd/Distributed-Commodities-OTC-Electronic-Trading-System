@@ -374,7 +374,7 @@
 <script type="text/javascript">
 
   	//////////////////////////////////  8888 8888 8888 
-  	var myurl = "http://localhost:8088/TraderGateway/";
+  	var myurl = "http://localhost:8888/TraderGateway/";
   	var orderType = "";
 
   	function OrderSet(_orders){
@@ -511,7 +511,8 @@
                 	}
 
                 	var pnt = 0;
-                	for (var i = max_0 - 1; i >= 0; --i){
+                	// lhd changes
+                	for (var i = 0; i < max_0; ++i){
                 		pnt++;
                 		$("#down_" + pnt).children().eq(2).text(obj[i].price);
                 		$("#down_" + pnt).children().eq(1).text(obj[i].quantity);
