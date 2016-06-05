@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Load</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<link rel="stylesheet" href="css/bootstrap.css" />
+	<link rel="stylesheet" href="css/my.css" />
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/my.js"></script>
+	<script src="js/bootstrap.min.js"> </script>
+
+</head>
+<body>
+
+
+<div id="wrap">
+	<header id="header" class="container my_loadheader">
+		<div class="my_title">Broker<a class="my_title_a">GateWay</a></div>		
+	</header>
+
+	<section id="full-width" >
+		<div class="theme-default" id="my_img">
+    	<div id="slider" class="my_slider" >
+    		<img src="images/hero-pic-home3.jpg" title="#htmlcaption" />
+      </div>
+			<div id="htmlcaption" class="nivo-html-caption">
+         <h2 class="my_h2">Start Your Journey Of Trading</h2>
+         <div class="my_loginTable">   
+           <p class="my_loginp">User Login</p>
+           <hr class="my_hr"/>
+           <form role="form my_form">
+   					<div class="form-group">
+      				<input type="text" class="form-control my_logininput" id="input_username" placeholder="  Input Account">
+   						<input type="password" class="form-control my_logininput" id="input_password" placeholder="  Input Password">
+   					</div>
+   				</form>
+   				<hr class="my_hr"/>
+   				<button class="btn  btn-default my_loginbutton" style="outline:none;" onclick="loginClick();" id="International_loginbutton">Login</button>
+   			</div>
+      </div>
+    </div>
+
+	</section>
+	<section id="latest-block" align="center">
+		<div class="latest-block-in container" align="right">
+			<div class="latest-blog-box eight columns my_help" style="float:right;">
+				<h2><a href="#">For More Help</a></h2>
+				<em>Wanna <a href="#" onclick="$('#contact').show(1000);" onblur="$('#contact').hide();">Contact Us </a>!</em><br/>
+				<em hidden id="contact">People In Charge: <a href="#">QiShengKai, LuoHaiDong</a></em>
+			</div>
+		</div>
+	</section>
+
+</div>	
+
+
+</body>
+</html>
+
+<script type="text/javascript">
+  //////////////////////////////////  8888 8888 8888 
+  var myurl = "http://localhost:8088/BrokerGateway/";
+
+	function loginClick(){
+    	if ($("#input_username").val() == "") alert("请输入用户名");
+    	else if ($("#input_password").val() == "") alert("请输入密码");
+    	else{
+          if ($("#input_username").val() != "broker1") alert("没有此用户");
+          else if ($("#input_password").val() != "123") alert("密码错误");
+          else{
+              localStorage.setItem("visitor", $("#input_username").val());
+              window.location.href = "broker.html";  
+          }
+        	/*$.ajax({
+              	url : myurl + "User/getUser/username=" + $("#input_username").val(),
+              	type : "GET",
+              	success : function(msg){
+              		var obj = eval(msg);
+                	if (jQuery.isEmptyObject(obj)){
+	                	alert("没有此用户");
+                	}
+                	else{
+                  		console.log(obj[0].password);
+                  		if ($("#input_password").val() != obj[0].password){
+                    		alert("密码错误");
+                  		}
+                  		else{
+                    		localStorage.setItem("visitor", $("#input_username").val());
+                    		window.location.href = "trader.html";
+                    		//alert(localStorage.getItem("visitor"));
+                  		}
+                	}
+             	}
+        	});*/
+
+        }
+    }
+
+	$(window).load(function() {
+    	$('#slider').nivoSlider();
+
+  });
+
+  $(document).ready(function(){
+      localStorage.clear();
+  });
+
+</script>
