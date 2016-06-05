@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<title>Trader Order</title>
+	<title>Broker Order</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
@@ -81,13 +81,13 @@
 
 <section class="container page-content" id="main-container">
 
-<section id="main-content">
+
 	<div id="blotterTableWhole">
 		<table class="table table-hover table-striped my_blottertable" id="blotterTable">
 
 		</table>
 	</div>
-</section>
+
 
 </section>
 
@@ -220,7 +220,7 @@
 	var demo_tail = "</h4>" +
 					"</article>";
 
-	var myurl = "http://localhost:8088/BrokerGateway/";
+	var myurl = "https://localhost:8443/BrokerGateway/rest/";
 
 	function validateInt(numbers){
 		for (var i = 0; i < numbers.length; ++i)
@@ -247,7 +247,7 @@
 		if (query_time_type == 0){
 			if (query_time == "All"){
 				blotterInfo.startTime = "0000-00-00";
-				blotterInfo.endTime = "9999-99-99";
+				blotterInfo.endTime = "9999-00-00";
 			}
 			else if (query_time == "Today"){
 				var myDate = new Date();
@@ -269,17 +269,27 @@
 			blotterInfo.startTime = query_StartTime.replace(new RegExp(":", "gm"), "-");
 			blotterInfo.endTime = query_EndTime.replace(new RegExp(":", "gm"), "-");	
 		}
+		var cur_url = myurl + "Order/";
+
 		if (query_user == "All") blotterInfo.trader = "";
-		else blotterInfo.trader = query_user;
+		else{
+			blotterInfo.trader = query_user;
+			cur_url += "trader=" + query_user + "&";
+		}
 		if (query_company == "All") blotterInfo.traderCompany = "";
-		else blotterInfo.traderCompany  = query_company;
+		else{
+			blotterInfo.traderCompany  = query_company;
+			cur_url += "traderCompany=" + query_company + "&";
+		}
 
         $.ajax({
-        	url: myurl + "Order/trader=" + blotterInfo.trader + "&traderCompany=" + blotterInfo.traderCompany + "&startTime=" + blotterInfo.startTime + "&endTime=" + blotterInfo.endTime,
+        	url: cur_url + "startTime=" + blotterInfo.startTime + "&endTime=" + blotterInfo.endTime,
           	type: "GET",
           	success: function(msg){
+          		console.log(cur_url + blotterInfo.traderCompany + "startTime=" + blotterInfo.startTime + "&endTime=" + blotterInfo.endTime);
           		var obj = eval(msg);
           		//if null print null message
+          		console.log(obj);
 				if (jQuery.isEmptyObject(obj)){
 					table_layer = demo_head + ":( No Such Order. Maybe Change The Time Or Trader." + demo_tail;
 					$("#blotterTableWhole").html(table_layer);
@@ -299,6 +309,8 @@
 								"<th>Price</th>" +
 								"<th>Side</th>" +
 								"<th>orderTime</th>" +
+								"<th>trader</th>" +
+								"<th>traderCompany</th>" +
 							"</tr>"　+
 						"</thead>";
 				table_layer += "" +
@@ -315,6 +327,8 @@
 								"<td>" + obj[i].price + "</td>"　+								
 								"<td>" + obj[i].side + "</td>" +
 								"<td>" + obj[i].orderTime + "</td>" +
+								"<td>" + obj[i].trader + "</td>" +
+								"<td>" + obj[i].traderCompany + "</td>" +
 							"</tr>";						
         		}
         		
