@@ -53,4 +53,20 @@ public class OrderDaoImpl implements OrderDao {
         List<Order> orders= (List<Order>)query.list();
 		return orders;
 	}
+
+	@Override
+	public Order getOrderByID(int id) {
+		String hql="from torder where orderID=:id";
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(hql);
+        query.setInteger("id", id);
+        
+        List<Order> orders= (List<Order>)query.list();
+		
+        if (orders != null && orders.size() != 0) {
+        	return orders.get(0);
+        }
+        
+		return null;
+	}
 }

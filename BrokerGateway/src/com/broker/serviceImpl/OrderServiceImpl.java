@@ -167,10 +167,10 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public void dealStopOrder(Order order) {
-		String stopKey = "Broker!StopOrder:" + order.getProduct() + " "
-				+ order.getPeriod();
-		final String key = "Broker!OrderBook:" + order.getProduct() + " "
-				+ order.getPeriod();
+		System.out.println("Broker! excute stop order...");
+		
+		String stopKey = "Broker!StopOrder:" + order.getProduct() + " " + order.getPeriod();
+		final String key = "Broker!OrderBook:" + order.getProduct() + " " + order.getPeriod();
 
 		List<Order> stopList = redisService.getOrderList(stopKey);
 		if (stopList == null) {
@@ -199,8 +199,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public void dealCancelOrder(Order order) {
-		String key = "Broker!OrderBook:" + order.getProduct() + " "
-				+ order.getPeriod();
+		String key = "Broker!OrderBook:" + order.getProduct() + " " + order.getPeriod();
 		List<Order> matchList = new ArrayList<Order>();
 		if (order.getOrderType() == "stop") {
 			key = "Broker!StopOrder:" + order.getProduct() + " " + order.getPeriod();
@@ -224,16 +223,18 @@ public class OrderServiceImpl implements OrderService {
 			if (stopOrder.getOrderID().equals(order.getOrderID())) {
 				if (stopOrder.getQuantity() == order.getQuantity()) {
 					matchList.remove(i);
-					i--;
 					redisService.setOrderList(key, matchList);
-					return;
+					break;
 				} else if (stopOrder.getQuantity() > order.getQuantity()) {
 					stopOrder.setQuantity(stopOrder.getQuantity() - order.getQuantity());
 					redisService.setOrderList(key, matchList);
-					return;
+					break;
 				}
 			}
 		}
+		
+		JSONArray jsonArray = JSONArray.fromObject(getOrderBook(order));
+		msgService.postPriceToAllTrader(jsonArray);
 	}
 
 	private static int compareOrder(Order order1, Order order2) {
@@ -459,8 +460,8 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public void addStopOrder(Order order) {
-		String key = "Broker!StopOrder:" + order.getProduct() + " "
-				+ order.getPeriod();
+		System.out.println("Broker! Adding stop order...");
+		String key = "Broker!StopOrder:" + order.getProduct() + " " + order.getPeriod();
 
 		List<Order> stopList = redisService.getOrderList(key);
 		if (stopList == null) {

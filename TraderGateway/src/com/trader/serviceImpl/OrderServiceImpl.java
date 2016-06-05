@@ -32,6 +32,22 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Order addOrder(Order order) {
+		if (order.getOrderType().equals("cancel")) {
+			Order od = orderDao.getOrderByID(order.getOrderID());
+			if (od == null) {
+				return new Order();
+			}
+			int quantity = order.getQuantity();
+			order = od;
+			order.setQuantity(quantity);
+			
+			for (int i = 0; i < 3; i++) {
+				JSONObject msg = JSONObject.fromObject(order);
+				msgService.postOrderToBroker("/Order", i, msg);
+			}
+			return order;
+		}
+		
 		int brokerIndex = msgService.queryMartketPrice(order);
 		JSONObject msg = JSONObject.fromObject(order);
 		msgService.postOrderToBroker("/Order", brokerIndex, msg);

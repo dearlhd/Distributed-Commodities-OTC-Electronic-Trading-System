@@ -38,7 +38,8 @@ public class OrderController {
 
 	private Order parseMessage(JSONObject obj) {
 		Order order = new Order();
-		order.setOrderID(obj.get("orderID").toString());
+		
+		//order.setOrderID(obj.getInt("orderID"));
 		order.setOrderType(obj.get("orderType").toString());
 		order.setPeriod(obj.get("period").toString());
 		order.setProduct(obj.get("product").toString());
@@ -47,6 +48,19 @@ public class OrderController {
 		order.setSide(Integer.parseInt(obj.get("side").toString()));
 		order.setTrader(obj.get("trader").toString());
 		order.setTraderCompany(obj.get("traderCompany").toString());
+		
+		if (order.getTraderCompany().equals("traderCompany1")) {
+			order.setOrderID("1"+obj.getInt("orderID"));
+		}
+		else if (order.getTraderCompany().equals("traderCompany2")) {
+			order.setOrderID("2"+obj.getInt("orderID"));
+		}
+		else if (order.getTraderCompany().equals("traderCompany3")) {
+			order.setOrderID("3"+obj.getInt("orderID"));
+		}
+		else {
+			order.setOrderID("0"+obj.getInt("orderID"));
+		}
 
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 设置日期格式
 		Date date = new Date();
@@ -96,6 +110,7 @@ public class OrderController {
 			orderService.addStopOrder(order);
 		}
 		else if (order.getOrderType().equals("cancel")) {
+			
 			orderService.dealCancelOrder(order);
 		}
 		if (order.getOrderType().equals("add")) {
