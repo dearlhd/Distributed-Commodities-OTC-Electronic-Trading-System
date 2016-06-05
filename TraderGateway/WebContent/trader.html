@@ -373,7 +373,6 @@
 
 <script type="text/javascript">
 
-  	//////////////////////////////////  8888 8888 8888 
   	var myurl = "https://localhost:8443/TraderGateway/";
   	var orderType = "";
 
@@ -460,6 +459,7 @@
 						}
 						else{
 							alert("下单成功");
+							$("#myOrderModalClose").click();
 						}
 					}          	
 				});
@@ -496,33 +496,35 @@
                 		if (obj[max_0].side == 0){
                 			break;
                 		}
+                	//console.log(max_0);
+                	//console.log(max_1);
                 	var pnt = 0;
                 	for (var i = max_0; i < max_1; ++i){
                 		pnt++;
                 		$("#down_" + pnt).children().eq(2).text(obj[i].price);
-                		$("#down_" + pnt).children().eq(3).text(obj[i].quantity);
-                		$("#down_" + pnt).children().eq(4).text(pnt);
+                		$("#down_" + pnt).children().eq(1).text(obj[i].quantity);
+                		$("#down_" + pnt).children().eq(0).text(pnt);
+                		
                 	}
                 	while (pnt < 3){
                 		pnt++;
                 		$("#down_" + pnt).children().eq(2).text("--");
-                		$("#down_" + pnt).children().eq(3).text("");
-                		$("#down_" + pnt).children().eq(4).text("");
+                		$("#down_" + pnt).children().eq(1).text("");
+                		$("#down_" + pnt).children().eq(0).text("");                		
                 	}
 
                 	var pnt = 0;
-                	// lhd changes
-                	for (var i = 0; i < max_0; ++i){
+                	for (var i = max_0 - 1; i >= 0; --i){
                 		pnt++;
                 		$("#up_" + pnt).children().eq(2).text(obj[i].price);
-                		$("#up_" + pnt).children().eq(1).text(obj[i].quantity);
-                		$("#up_" + pnt).children().eq(0).text(pnt);
+                		$("#up_" + pnt).children().eq(3).text(obj[i].quantity);
+                		$("#up_" + pnt).children().eq(4).text(pnt);
                 	}
                 	while (pnt < 3){
                 		pnt++;
                 		$("#up_" + pnt).children().eq(2).text("--");
-                		$("#up_" + pnt).children().eq(1).text("");
-                		$("#up_" + pnt).children().eq(0).text("");
+                		$("#up_" + pnt).children().eq(3).text("");
+                		$("#up_" + pnt).children().eq(4).text("");
                 	}
                 }
 			}
@@ -708,7 +710,7 @@
     $(document).ready(function(){
     	//addredis();
     	//getredis();
-    	getMarketDepth("AU", "OCT13");
+    	getMarketDepth("AU", "JAN01");
 //    	if (localStorage.getItem("visitor") == null)
  //   		window.location.href = "index.html";////////////////////////////////////////////////////////////////
     	//$("#ada_01").css("background-color", "rgba(240, 240, 240, 1)");

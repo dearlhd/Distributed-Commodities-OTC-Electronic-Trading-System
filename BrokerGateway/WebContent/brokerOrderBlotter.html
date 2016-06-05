@@ -218,7 +218,7 @@
 	var demo_tail = "</h4>" +
 					"</article>";
 
-	var myurl = "http://localhost:8088/BrokerGateway/rest/";
+	var myurl = "https://localhost:8443/BrokerGateway/rest/";
 
 	function GetCateGory(producttypes){
 		for (var i = 0; i < futures_categorysAgricultural.length; ++i)
@@ -261,13 +261,20 @@
 			blotterInfo.startTime = query_StartTime.replace(new RegExp(":", "gm"), "-");
 			blotterInfo.endTime = query_EndTime.replace(new RegExp(":", "gm"), "-");	
 		}
-		if (query_user == "All") blotterInfo.trader = "";
-		else blotterInfo.trader = query_user;
-		if (query_company == "All") blotterInfo.traderCompany = "";
-		else blotterInfo.traderCompany  = query_company;
+		var cur_url = myurl + "OrderBlotter/";
 
+		if (query_user == "All") blotterInfo.trader = "";
+		else{
+			blotterInfo.trader = query_user;
+			cur_url += "trader=" + query_user + "&";
+		}
+		if (query_company == "All") blotterInfo.traderCompany = "";
+		else{
+			blotterInfo.traderCompany  = query_company;
+			cur_url += "traderCompany=" + query_company + "&";
+		}
         $.ajax({
-        	url: myurl + "OrderBlotter/trader=" + blotterInfo.trader + "&traderCompany=" + blotterInfo.traderCompany + "&startTime=" + blotterInfo.startTime + "&endTime=" + blotterInfo.endTime,
+        	url: cur_url + "startTime=" + blotterInfo.startTime + "&endTime=" + blotterInfo.endTime,
           	type: "GET",
           	success: function(msg){
           		var obj = eval(msg);
@@ -297,10 +304,11 @@
 								"<th>Completion Side</th>"　+
 							"</tr>"　+
 						"</thead>";
+				table_layer += "" +
+        				"<tbody>";
 
         		for (var i = 0; i < obj.length; ++i){
         			table_layer += "" +
-        				"<tbody>"　+
 							"<tr class='my_tr'>"　+
 	    						"<td>" + obj[i].tradeID + "</td>"　+
 								"<td>" + obj[i].broker + "</td>"　+
@@ -314,10 +322,10 @@
 								"<td>" + obj[i].completionTrader + "</td>" +
 								"<td>" + obj[i].completionCompany + "</td>" +
 								"<td>" + obj[i].completionSide + "</td>" +
-							"</tr>" +
-						"</tbody>";
+							"</tr>";
         		}
-        		
+
+        		table_layer += "</tbody>";
         		table_layer += "</table>";
         		CategoryChooseList("#category_" + query_category);
           	}
