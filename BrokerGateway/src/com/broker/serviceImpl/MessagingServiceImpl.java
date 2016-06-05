@@ -19,7 +19,7 @@ public class MessagingServiceImpl implements MessagingService{
 
 	public MessagingServiceImpl () {
 		traderUrls = new ArrayList<String>();
-		traderUrls.add("http://localhost:8888/TraderGateway");
+		traderUrls.add("https://localhost:8443/TraderGateway");
 		//traderUrls.add("");
 		//traderUrls.add("");
 	}

@@ -36,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
 
 	public OrderServiceImpl () {
 		traderUrls = new ArrayList<String>();
-		traderUrls.add("http://localhost:8888/TraderGateway");
+		traderUrls.add("https://localhost:8443/TraderGateway");
 		//traderUrls.add("");
 		//traderUrls.add("");
 	}

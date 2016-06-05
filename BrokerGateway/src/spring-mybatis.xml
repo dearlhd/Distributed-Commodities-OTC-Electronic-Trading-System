@@ -94,7 +94,6 @@
 
 	<!-- ====Consumer side end==== -->
 
-
 	<bean id="redisService" class="com.broker.serviceImpl.RedisServiceImpl"></bean>
 	<bean id="orderService" class="com.broker.serviceImpl.OrderServiceImpl"></bean>
 	<bean id="blotterService" class="com.broker.serviceImpl.BlotterServiceImpl"></bean>

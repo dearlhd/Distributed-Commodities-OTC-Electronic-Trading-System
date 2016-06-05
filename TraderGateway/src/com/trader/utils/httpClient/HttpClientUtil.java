@@ -13,6 +13,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import com.trader.utils.httpClient.SSLClient;
+
 public class HttpClientUtil {
 	public HttpClientUtil() {
 		
@@ -21,7 +23,7 @@ public class HttpClientUtil {
 	public Object getMessageRetArray(String url) {
 		try {
 			System.out.println("trader post to " + url);
-			HttpClient httpClient = new DefaultHttpClient();
+			HttpClient httpClient = new SSLClient();
 			HttpGet getMethod = new HttpGet(url);
 
 
@@ -39,6 +41,8 @@ public class HttpClientUtil {
 			return resultArray;
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -47,7 +51,7 @@ public class HttpClientUtil {
 	
 	public Object postMessageRetObject(String url, Object obj) {
 		try {
-			HttpClient httpClient = new DefaultHttpClient();
+			HttpClient httpClient = new SSLClient();
 			HttpPost postMethod = new HttpPost(url);
 
 			StringEntity entity = new StringEntity(obj.toString(), "utf-8");// 解决中文乱码问题
@@ -63,6 +67,8 @@ public class HttpClientUtil {
 			return resultObject;
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -71,7 +77,7 @@ public class HttpClientUtil {
 		try {
 			System.out.println("trader post to " + url);
 			System.out.println("post data: " + obj.toString());
-			HttpClient httpClient = new DefaultHttpClient();
+			HttpClient httpClient = new SSLClient();
 			HttpPost postMethod = new HttpPost(url);
 
 			StringEntity entity = new StringEntity(obj.toString(), "utf-8");// 解决中文乱码问题
@@ -92,6 +98,8 @@ public class HttpClientUtil {
 			System.out.println("trader recieve: " + resData);
 			return resultArray;
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;

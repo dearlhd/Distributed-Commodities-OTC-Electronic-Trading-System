@@ -12,37 +12,16 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import com.broket.utils.httpClient.SSLClient;
+
 public class HttpClientUtil {
 	public HttpClientUtil() {
 		
 	}
-
-//	public Object postMessage(String url, Object obj) {
-//		try {
-//			HttpClient httpClient = new DefaultHttpClient();
-//			HttpPost postMethod = new HttpPost(url);
-//
-//			StringEntity entity = new StringEntity(obj.toString(), "utf-8");// 解决中文乱码问题
-//			entity.setContentEncoding("UTF-8");
-//			entity.setContentType("application/json");
-//			postMethod.setEntity(entity);
-//
-//			HttpResponse result = httpClient.execute(postMethod);
-//			String resData = EntityUtils.toString(result.getEntity());
-//			System.out.println("Broker postMessage: " + resData);
-//			//JSONArray resultArray = JSONArray.fromObject(resData);
-//			
-//			System.out.println("client: " + obj.toString());
-//			return resData;
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		return obj;
-//	}
 	
 	public Object postMessageRetObject(String url, Object obj) {
 		try {
-			HttpClient httpClient = new DefaultHttpClient();
+			HttpClient httpClient = new SSLClient();
 			HttpPost postMethod = new HttpPost(url);
 
 			StringEntity entity = new StringEntity(obj.toString(), "utf-8");// 解决中文乱码问题
@@ -59,12 +38,15 @@ public class HttpClientUtil {
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 	
 	public Object postMessageRetArray(String url, Object obj) {
 		try {
-			HttpClient httpClient = new DefaultHttpClient();
+			HttpClient httpClient = new SSLClient();
 			HttpPost postMethod = new HttpPost(url);
 
 			StringEntity entity = new StringEntity(obj.toString(), "utf-8");// 解决中文乱码问题
@@ -79,6 +61,8 @@ public class HttpClientUtil {
 			System.out.println("trader recieve: " + resData);
 			return resultArray;
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;

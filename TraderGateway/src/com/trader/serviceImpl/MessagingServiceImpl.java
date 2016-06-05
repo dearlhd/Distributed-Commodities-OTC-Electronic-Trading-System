@@ -20,7 +20,7 @@ public class MessagingServiceImpl implements MessagingService{
 	
 	public MessagingServiceImpl () {
 		brokerUrls = new ArrayList<String>();
-		brokerUrls.add("http://localhost:8888/BrokerGateway/rest");
+		brokerUrls.add("https://localhost:8443/BrokerGateway/rest");
 		//brokerUrls.add("");
 		//brokerUrls.add("");
 	}
