@@ -113,8 +113,8 @@
   var myurl = "https://localhost:8443/TraderGateway/";
 
 	function loginClick(){
-    	if ($("#input_username").val() == "") alert("请输入用户名");
-    	else if ($("#input_password").val() == "") alert("请输入密码");
+    	if ($("#input_username").val() == "") alert("Please Input UserName");
+    	else if ($("#input_password").val() == "") alert("Please Input Password");
     	else{
         	$.ajax({
               	url : myurl + "User/getUser/username=" + $("#input_username").val(),
@@ -122,12 +122,12 @@
               	success : function(msg){
               		var obj = eval(msg);
                 	if (jQuery.isEmptyObject(obj)){
-	                	alert("没有此用户");
+	                	alert("User doesn't exist");
                 	}
                 	else{
                   		console.log(obj[0].password);
                   		if ($("#input_password").val() != obj[0].password){
-                    		alert("密码错误");
+                    		alert("Wrong Password");
                   		}
                   		else{
                     		localStorage.setItem("visitor", $("#input_username").val());
@@ -146,8 +146,8 @@
     	var passwordsecond = $("#register_passwordsecond").val();
     	var tradergateway = $("#register_tradergateway").val();
       	var gender = $("#register_gender").val();
-    	if ((username == "") || (passwordfirst == "") || (passwordsecond == "")) alert("内容不能为空");
-      	else if (passwordfirst != passwordsecond) alert("两次输入密码不相同");
+    	if ((username == "") || (passwordfirst == "") || (passwordsecond == "")) alert("Content Cannot Be Empty");
+      	else if (passwordfirst != passwordsecond) alert("The Passwords You Entered Must Be The Same");
       	else{
       		var userInfo = {
       				"username" : username,
@@ -161,7 +161,7 @@
               	success : function(msg){
               		var obj = eval(msg);
               		if (jQuery.isEmptyObject(obj)){
-	                	alert("该用户已经被注册");
+	                	alert("This User Has Already Been Registered");
                 	}
               		else{
               			localStorage.setItem("visitor", username);

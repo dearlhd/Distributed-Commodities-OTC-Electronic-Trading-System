@@ -149,10 +149,10 @@
 	var query_StartTime = "";
 	var query_EndTime = "";
 	var query_time = "Today";
-	var futures_categorysAgricultural = ["Bean", "Cotton", "Sugar", "WS", "WT", "ER", "PalmOil", "Corn", "Wheat", "RO"];
-	var futures_categorysEnergy = ["PVC"];
-	var futures_categorysMetal = ["CU", "AL", "ZN", "RB", "AU"];
-	//////////////////////////////////////////////////////////////////////  大写
+	var futures_categorysAgricultural = ["JR", "C", "WH", "CF", "SR", "RO", "ER", "P", "WS", "WT", "A", "B", "M", "Y", "JD"];
+	var futures_categorysEnergy = ["LLDPE", "PVC", "PTA", "RU", "FU", "WR", "ME", "J", "I", "BU", "FG", "TC"];
+	var futures_categorysMetal = ["CU", "AL", "ZN", "PB", "SF", "RB", "AU", "AG"];
+
 	var table_layer =　"<table class='table table-bordered table-hover table-striped my_blottertable' id='blotterTable'>" +
 					  "</table>";
 
@@ -199,7 +199,7 @@
 		}
 		else{
 			if ((query_StartTime == "") || (query_EndTime == "")){
-				alert("请输入完整的时间段!");
+				alert("Please Input The Whole Time Quantum!");
 				return;
 			}
 			blotterInfo.startTime = query_StartTime.replace(new RegExp(":", "gm"), "-");
@@ -340,17 +340,17 @@
 		var Tyear = $("#Time_Year").val();
 		var Tmonth = $("#Time_Month").val();
 		var Tdate = $("#Time_Date").val();
-		if (Tyear == "") alert("请输入年份");
-		else if (Tdate == "") alert("请输入日期");
+		if (Tyear == "") alert("Please Input The Year");
+		else if (Tdate == "") alert("Please Input The Date");
 		else{
 			var _year = validateYear(Tyear);
 			var _month = Tmonth * 1;
 			if (_year == 0){
-				alert("非法年份!");
+				alert("Illegal Year");
 			}
 			else{
 				var _date = validateDate(_year, _month, Tdate);
-				if (_date == 0) alert("非法日期");
+				if (_date == 0) alert("Illegal Date");
 				else{
 					var new_starttime = _year + ":";
 					if (_month < 10) new_starttime += ("" + 0 + _month + ":");
@@ -358,7 +358,7 @@
 					if (_date < 10) new_starttime += ("" + 0 + _date);
 					else new_starttime += (_date);
 					if ((query_EndTime != "") && (query_EndTime < new_starttime)){
-						alert("起始日期超过截止日期!");
+						alert("The Start Date Is Beyond The Deadline!");
 					}
 					else{
 						query_StartTime = new_starttime;
@@ -378,17 +378,17 @@
 		var Tyear = $("#Time_Year").val();
 		var Tmonth = $("#Time_Month").val();
 		var Tdate = $("#Time_Date").val();
-		if (Tyear == "") alert("请输入年份");
-		else if (Tdate == "") alert("请输入日期");
+		if (Tyear == "") alert("Please Input The Year");
+		else if (Tdate == "") alert("Please Input The Date");
 		else{
 			var _year = validateYear(Tyear);
 			var _month = Tmonth * 1;
 			if (_year == 0){
-				alert("非法年份!");
+				alert("Illegal Year");
 			}
 			else{
 				var _date = validateDate(_year, _month, Tdate);
-				if (_date == 0) alert("非法日期");
+				if (_date == 0) alert("Illegal Date");
 				else{
 					var new_starttime = _year + ":";
 					if (_month < 10) new_starttime += ("" + 0 + _month + ":");
@@ -396,7 +396,7 @@
 					if (_date < 10) new_starttime += ("" + 0 + _date);
 					else new_starttime += (_date);
 					if ((query_StartTime != "") && (query_StartTime > new_starttime)){
-						alert("截止日期不到起始日期!");
+						alert("The Deadline Is Not Beyond The Start Date!");
 					}
 					else{
 						query_EndTime = new_starttime;
