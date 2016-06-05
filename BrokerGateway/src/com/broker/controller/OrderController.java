@@ -21,6 +21,7 @@ import com.broker.entity.BlotterEntry;
 import com.broker.entity.Order;
 import com.broker.service.BlotterService;
 import com.broker.service.OrderService;
+import com.broker.utils.jms.QueueSender;
 
 /*
  *  使用jms处理请求
@@ -34,7 +35,7 @@ public class OrderController {
 	private OrderService orderService;
 	
 	@Resource
-	private BlotterService blotterService;
+	private QueueSender queueSender;
 
 	private Order parseMessage(JSONObject obj) {
 		Order order = new Order();
@@ -91,76 +92,40 @@ public class OrderController {
 	public Object addOrder(@RequestBody JSONObject obj) {
 		System.out.println("in order controller, post method");
 		Order order = parseMessage(obj);
-
-		if (order.getOrderType().equals("market")) {
-			double marketDepth = orderService.dealMarketOrder(order);
-			if (marketDepth != 0.0) {
-				order.setPrice(marketDepth);
-				orderService.dealStopOrder(order);
-			}
-		}
-		else if (order.getOrderType().equals("limit")){
-			double marketDepth = orderService.dealLimitOrder(order);
-			if (marketDepth != 0.0) {
-				order.setPrice(marketDepth);
-				orderService.dealStopOrder(order);
-			}
-		}
-		else if (order.getOrderType().equals("stop")) {
-			orderService.addStopOrder(order);
-		}
-		else if (order.getOrderType().equals("cancel")) {
-			
-			orderService.dealCancelOrder(order);
-		}
-		if (order.getOrderType().equals("add")) {
-			orderService.addOrder(order);
-		}
+		queueSender.send("brokerOrder.queue", order);
+//		if (order.getOrderType().equals("market")) {
+//			double marketDepth = orderService.dealMarketOrder(order);
+//			if (marketDepth != 0.0) {
+//				order.setPrice(marketDepth);
+//				orderService.dealStopOrder(order);
+//			}
+//		}
+//		else if (order.getOrderType().equals("limit")){
+//			double marketDepth = orderService.dealLimitOrder(order);
+//			if (marketDepth != 0.0) {
+//				order.setPrice(marketDepth);
+//				orderService.dealStopOrder(order);
+//			}
+//		}
+//		else if (order.getOrderType().equals("stop")) {
+//			orderService.addStopOrder(order);
+//		}
+//		else if (order.getOrderType().equals("cancel")) {
+//			
+//			orderService.dealCancelOrder(order);
+//		}
+//		if (order.getOrderType().equals("add")) {
+//			orderService.addOrder(order);
+//		}
 
 		return obj;
 	}
 	
-//	@RequestMapping(value = "/OrderBook", method = RequestMethod.POST)
-//    @ResponseBody
-//    public JSONArray getOrderBook(@RequestBody JSONObject obj) {
-//		Order order = parseMessage(obj);
-//		
-//		List<Order> lo = orderService.getOrderBook(order);
-//		
-//		if (lo == null) {
-//			return null; 
-//		}
-//		
-//		for (int i = 0; i < lo.size(); i++) {
-//			Order od = lo.get(i);
-//			System.out.println(od.getPrice() + " " + od.getSide() + " " + od.getQuantity());
-//		}
-//		
-//		return JSONArray.fromObject(lo);
-//    }
-	
 	@RequestMapping(value = "/testBlotter", method = RequestMethod.POST)
     @ResponseBody
-    public Object getUser(@RequestBody JSONObject obj) {
+    public Object testBlotter(@RequestBody JSONObject obj) {
 		Order order = parseMessage(obj);
-		BlotterEntry be = new BlotterEntry();
-		be.setTradeID(1);
-		be.setBroker("broker1");
-		be.setProduct(order.getProduct());
-		be.setPeriod(order.getPeriod());
-		be.setPrice(order.getPrice());
-		be.setInitiatorTrader(order.getTrader());
-		be.setInitiatorCompany(order.getTraderCompany());
-		be.setInitiatorSide(1);
-		be.setCompletionTrader(order.getTrader());
-		be.setCompletionCompany(order.getTraderCompany());
-		be.setCompletionSide(0);
-		be.setQuantity(order.getQuantity());
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 设置日期格式
-		Date date = new Date();
-		be.setDealTime(df.format(date));
-		
-		blotterService.addBlotterEntry(be);
+		queueSender.send("brokerOrder.queue", order);
 		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("msg", "注册人员信息成功");

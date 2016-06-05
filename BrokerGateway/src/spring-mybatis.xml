@@ -2,13 +2,18 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:amq="http://activemq.apache.org/schema/core"
+	xmlns:jms="http://www.springframework.org/schema/jms"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans    
                         http://www.springframework.org/schema/beans/spring-beans-4.0.xsd    
                         http://www.springframework.org/schema/context    
                         http://www.springframework.org/schema/context/spring-context-4.0.xsd    
                         http://www.springframework.org/schema/mvc    
-                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+                        http://www.springframework.org/schema/jms
+                        http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
+                        http://activemq.apache.org/schema/core
+                        http://activemq.apache.org/schema/core/activemq-core-5.13.3.xsd">
 	<!-- 自动扫描 -->
 	<context:component-scan base-package="com.broker" />
 	<!-- 引入配置文件 -->
@@ -54,11 +59,47 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
+
+	<!-- jms and activeMQ -->
+	<bean id="connectionFactory" class="org.apache.activemq.spring.ActiveMQConnectionFactory">
+		<property name="brokerURL" value="tcp://localhost:61616" />
+		<property name="trustAllPackages" value="true" />
+	</bean>
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+	<bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+		<property name="configuration" ref="jmsConfig" />
+	</bean>
+
+	<!-- ====Producer side start==== -->
+
+	<!-- 定义JmsTemplate的Queue类型 -->
+	<bean id="jmsQueueTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<constructor-arg ref="connectionFactory" />
+		<!-- 非pub/sub模型（发布/订阅），即队列模式 -->
+		<property name="pubSubDomain" value="false" />
+	</bean>
+
+	<!-- ====Producer side end==== -->
+
+	<!-- ====Consumer side start==== -->
+
+	<!-- 定义Queue监听器 -->
+	<jms:listener-container destination-type="queue"
+		container-type="default" connection-factory="connectionFactory"
+		acknowledge="auto">
+		<jms:listener destination="brokerOrder.queue" ref="queueReceiver" />
+	</jms:listener-container>
+
+	<!-- ====Consumer side end==== -->
+
+
 	<bean id="redisService" class="com.broker.serviceImpl.RedisServiceImpl"></bean>
 	<bean id="orderService" class="com.broker.serviceImpl.OrderServiceImpl"></bean>
 	<bean id="blotterService" class="com.broker.serviceImpl.BlotterServiceImpl"></bean>
 	<bean id="messagingService" class="com.broker.serviceImpl.MessagingServiceImpl"></bean>
-	
+
 	<bean id="redisClient" class="com.broker.utils.jedis.RedisClient"></bean>
 	<bean id="httpClientUtil" class="com.broket.utils.httpClient.HttpClientUtil"></bean>
 </beans>  
