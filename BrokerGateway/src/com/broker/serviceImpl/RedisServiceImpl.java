@@ -29,7 +29,7 @@ public class RedisServiceImpl implements RedisService{
 
 	@Override
 	public List<Order> queryOrderByCondition(JSONObject conds) {
-		List<String> keys = redisClient.getKeys("Broker!");
+		List<String> keys = redisClient.getKeys("Broker!*");
 		List<Order> orders = redisClient.getAllOrder(keys);
 		
 		if (conds.containsKey("trader")) {

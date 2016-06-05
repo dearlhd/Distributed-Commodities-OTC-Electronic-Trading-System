@@ -1,8 +1,13 @@
 package com.trader.serviceImpl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
+
+import net.sf.json.JSONObject;
 
 import com.trader.entity.Order;
 import com.trader.service.RedisService;
@@ -13,13 +18,19 @@ public class RedisServiceImpl implements RedisService{
 	private RedisClient redisClient;
 	
 	@Override
-	public void setOrderBook(String key, List<Order> orders) {
-		redisClient.setOrderBook(key, orders);
+	public void setOrderList(String key, List<Order> orders) {
+		redisClient.setOrderList(key, orders);
 	}
 
 	@Override
-	public List<Order> getOrderBook(String key) {
-		return redisClient.getOrderBook(key);
+	public List<Order> getOrderList(String key) {
+		return redisClient.getOrderList(key);
 	}
 
+	@Override
+	public List<Order> getLargeOrders() {
+		String key = "Trader!LargeOrders";
+		List<Order> orders = redisClient.getOrderList(key);
+		return orders;
+	}
 }

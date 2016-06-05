@@ -9,4 +9,5 @@ import com.trader.entity.Order;
 public interface OrderService {
 	public Order addOrder(Order order);
 	public List<Order> queryOrderByConditions(JSONObject conds);
+	public void dealIceberg();
 }

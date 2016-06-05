@@ -14,7 +14,7 @@ public class BlotterEntry implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "traderID")
+	@Column(name = "tradeID")
 	private int tradeID;
 
 	@Column(name = "broker", length = 32)

@@ -38,7 +38,7 @@ public class OrderBookController {
 		}
 		String key = "Trader!OrderBook:" + condObj.getString("product") + " " + condObj.getString("period");
 		
-		List<Order> orders = redisService.getOrderBook(key);
+		List<Order> orders = redisService.getOrderList(key);
 		
 		if (orders == null) {
 			System.out.println("Trader!OrderBook: GET orders is null");
@@ -81,7 +81,7 @@ public class OrderBookController {
 		Order order = orders.get(0);
 		String key = "Trader!OrderBook:" + order.getProduct() + " " + order.getPeriod();
 		
-		redisService.setOrderBook( key, orders);
+		redisService.setOrderList( key, orders);
 		
 		return new JSONObject();
 	}

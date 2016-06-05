@@ -1,9 +1,12 @@
 package com.trader.utils.jedis;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
+
+import java.util.Set;
 
 import com.trader.entity.Order;
 
@@ -46,12 +49,33 @@ public class RedisClient {
 		shardedJedisPool = new ShardedJedisPool(config, shards);
 	}
 
-	public void setOrderBook(String key, List<Order> orders) {
+	public void setOrderList(String key, List<Order> orders) {
 		jedis.set(key.getBytes(), SerializeUtil.serialize(orders));
 	}
 
-	public List<Order> getOrderBook(String key) {
+	public List<Order> getOrderList(String key) {
 		return (List<Order>) SerializeUtil.unserialize(jedis.get(key.getBytes()));
+	}
+	
+	public List<String> getKeys(String conds) {
+		Set s = jedis.keys(conds);
+		Iterator it = s.iterator();
+		
+		List<String> keys = new ArrayList<String>();
+		while (it.hasNext()) {
+			keys.add((String)it.next());
+		}
+		
+		return keys;
+	}
+	
+	public List<Order> getAllOrder(List<String> keys) {
+		List<Order> orders = new ArrayList<Order>();
+		for (int i = 0; i < keys.size(); i++) {
+			orders.addAll(getOrderList(keys.get(i)));
+		}
+		
+		return orders;
 	}
 
 }

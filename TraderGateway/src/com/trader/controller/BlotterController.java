@@ -1,5 +1,8 @@
 package com.trader.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import net.sf.json.JSONArray;
@@ -13,13 +16,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.trader.entity.BlotterEntry;
+import com.trader.entity.Order;
 import com.trader.service.BlotterService;
+import com.trader.service.RedisService;
 
 @Controller
 @RequestMapping("/OrderBlotter")
 public class BlotterController {
 	@Resource(name = "blotterService")
 	private BlotterService blotterService;
+	
+	@Resource
+	RedisService redisService;
 
 	private BlotterEntry parseRequest(JSONObject obj) {
 		BlotterEntry be = new BlotterEntry();
@@ -66,6 +74,20 @@ public class BlotterController {
 	public @ResponseBody JSONObject addOrder(@RequestBody JSONObject obj) {
 		System.out.println(obj.toString());
 		BlotterEntry be = parseRequest(obj);
+		
+		Order order = new Order();
+		order.setProduct(be.getProduct());
+		order.setPeriod(be.getPeriod());
+		order.setQuantity(be.getQuantity());
+		order.setPrice(be.getPrice());
+		String key = "Trader!DealOrder:" + order.getProduct() + " " + order.getPeriod();
+		List<Order> orders = redisService.getOrderList(key);
+		if (orders == null) {
+			orders = new ArrayList<Order>();
+		}
+		orders.add(order);
+		redisService.setOrderList(key, orders);
+		
 		blotterService.addBlotterEntry(be);
 		return obj;
 	}

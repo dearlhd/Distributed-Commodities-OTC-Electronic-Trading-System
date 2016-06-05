@@ -34,7 +34,7 @@ public class BlotterServiceImpl implements BlotterService {
 
 		List<BlotterEntry> blotters = new ArrayList<BlotterEntry>();
 		
-		if (obj.get("trader").toString().equals("")) {
+		if (!obj.containsKey("trader") || obj.get("trader").toString().equals("")) {
 			blotters = getBlotterByTrader(null);
 		}
 		else {
@@ -49,7 +49,7 @@ public class BlotterServiceImpl implements BlotterService {
 		try {
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date startTime = df.parse(obj.getString("startTime") + " 00:00:00") ;
-			Date endTime = df.parse(obj.getString("endTime") + "23:59:59");
+			Date endTime = df.parse(obj.getString("endTime") + " 23:59:59");
 			
 
 			for (int i = 0; i < blotters.size(); i++) {

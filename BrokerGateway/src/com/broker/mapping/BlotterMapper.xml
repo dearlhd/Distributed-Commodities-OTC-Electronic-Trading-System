@@ -29,9 +29,9 @@
 		completionTrader,
 		completionCompany, completionSide, dealTime
 	</sql>
-	<insert id="addBlotterEntry" parameterType="com.broker.entity.BlotterEntry">
+	<insert id="addBlotterEntry" parameterType="com.broker.entity.BlotterEntry" useGeneratedKeys="true" keyProperty="traderID">
 		insert into
-		orderBlotter (tradeID, broker, product, period, price,
+		orderBlotter ( broker, product, period, price,
 		quantity,
 		initiatorTrader, initiatorCompany, initiatorSide,
 		completionTrader,
