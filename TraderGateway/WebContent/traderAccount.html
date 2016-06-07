@@ -18,7 +18,7 @@
 <div id="wrap">
 	<header id="header" class="container">
 		<div class="top-link">
-			<a href="login.html" class="my_logout">Log Out</a>
+			<a href="index.html" class="my_logout">Log Out</a>
 		</div>
 		<div class="my_title">Futures<a class="my_title_a">Trader</a></div>
 		<nav id="nav-wrap">
@@ -52,7 +52,7 @@
 			<hr/>
 			<h4 class="my_accountTitle">Account Name</h4>
 			<hr class="my_nullhr"/>
-			<input type="" class="my_accountsettingInput my_disabled" disabled="disabled" value="asd"/>
+			<input type="" class="my_accountsettingInput my_disabled" disabled="disabled" value="asd" id="myaccountname"/>
 			<hr class="my_hr_T"/>
 
 			
@@ -77,11 +77,11 @@
 		<div class="listbox1">
 			<ul>
 				<li>
-					<a href="#" class="my_fund">10.66$</a>
+					<a href="#" class="my_fund" id="AvailableFund">10.66$</a>
 					<a href="#" class="my_fundType">Available Fund</a>
 				</li>
 				<li>
-					<a href="#" class="my_fund">2.03$</a>
+					<a href="#" class="my_fund" id="FrozenFund">2.03$</a>
 					<a href="#" class="my_fundType">Frozen Fund</a>					
 				</li>
 				<li><a href="#" onclick="showHiddenFoundInjection();">Fund Injection</a></li>
@@ -113,6 +113,8 @@
 </html>
 
 <script type="text/javascript">
+	var myurl = "https://localhost:8443/TraderGateway/";
+	var visitor = localStorage.getItem("visitor");
 
 	function queryMarketClick(){
 		window.location.href = "trader.html";
@@ -126,8 +128,49 @@
 		window.location.href = "traderOrderBlotter.html";
 	}
 
+	function validateInt(numbers){
+		for (var i = 0; i < numbers.length; ++i)
+			if (!((numbers.charAt(i) <= '9') && (numbers.charAt(i) >= '0')))
+				return 0;
+		return numbers * 1;
+	}
+
+	function showFunds(){
+		$.ajax({
+           	url : myurl + "User/getUser/username=" + visitor,
+           	type : "GET",
+            success : function(msg){
+            	var obj = eval(msg);
+            	//console.log(obj);
+            	//console.log(obj[0].availableBalance);
+            	$("#AvailableFund").text(obj[0].availableBalance + "$");
+            	$("#FrozenFund").text(obj[0].frozenCapital + "$");
+            }
+        });
+	}
+
+
 	function fundinjectionConfirmClick(){
-		alert(1);
+		var funds = $("#foundinjection").val();
+		if (funds == "") alert("Funds can not be null");
+		else if (validateInt(funds) == 0) alert("Order Price Must Be A Integer");
+		else{
+			//console.log(funds);
+			$.ajax({
+				url : myurl + "Account/trader=" + visitor + "&amount=" + funds,
+				type : "GET",
+				success : function(msg){
+					var obj = eval(msg);
+					console.log(obj.msg);
+					if (obj.msg == 1){
+						alert("Funds Injection Success");
+					}
+					else alert("Funds Injection Failed");
+					showFunds();
+				}
+			});
+		}
+		
 	}
 
 	function showHiddenFoundInjection(){
@@ -141,6 +184,8 @@
     });
 
     $(document).ready(function(){
+    	$("#myaccountname").val(visitor);
+    	showFunds();
 
     });
 </script>

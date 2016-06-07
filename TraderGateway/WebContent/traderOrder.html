@@ -210,10 +210,12 @@
 			else{
 				//console.log(orderitem.children().eq(0).children().eq(2).text());
 				orderitem = orderitem;
+				//console.log(orderitem.children().eq(8).text());
 				var max_quantity = orderitem.children().eq(4).text();
 				if (oreder_quantity > max_quantity) alert("The Cancel Order Quantity Is Too Large");
 				else{
 					orderInfo = {
+						"orderID" : orderitem.children().eq(8).text(),
 						"trader" : localStorage.getItem("visitor"),
 						"side" : orderitem.children().eq(6).text() * 1,
 						"price" : orderitem.children().eq(5).text() * 1,
@@ -329,6 +331,7 @@
 								"<td>" + obj[i].price + "</td>"　+								
 								"<td>" + obj[i].side + "</td>" +
 								"<td>" + obj[i].orderTime + "</td>" +
+								"<td hidden>" + obj[i].orderID + "</td>" +
 							"</tr>";						
         		}
         		
