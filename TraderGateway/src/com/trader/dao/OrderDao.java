@@ -10,4 +10,6 @@ public interface OrderDao {
 	public List<Order> getOrderByUser(String username);
 	
 	public Order getOrderByID(int id);
+	
+	public Order cancelOrder(int id, int quantity);
 }

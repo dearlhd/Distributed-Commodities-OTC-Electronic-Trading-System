@@ -26,6 +26,11 @@ public class AccountServiceImpl implements AccountService{
 	}
 	
 	@Override
+	public double getFrozenCapital(String traderName) {
+		return userDao.getFrozenCapital(traderName);
+	}
+	
+	@Override
 	public double changeFrozenCapital(String traderName, double amount) {
 		return userDao.changeFrozenCapital(traderName, amount);
 	}

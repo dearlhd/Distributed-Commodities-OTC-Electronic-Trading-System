@@ -13,6 +13,8 @@ public interface UserDao {
 	
 	public double getAvailableBalance (String traderName);
 	
+	public double getFrozenCapital (String traderName);
+	
 	public double changeAvailableBalance (String traderName, double cash);
 	
 	public double changeFrozenCapital (String traderName, double cash);

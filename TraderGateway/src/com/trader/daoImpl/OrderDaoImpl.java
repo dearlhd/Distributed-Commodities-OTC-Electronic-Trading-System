@@ -69,4 +69,28 @@ public class OrderDaoImpl implements OrderDao {
         
 		return null;
 	}
+
+	@Override
+	public Order cancelOrder(int id, int quantity) {
+		Order order = getOrderByID(id);
+		if (order == null || order.getQuantity() < quantity)
+			return null;
+		
+		if (order.getQuantity() == quantity) {
+			Session session = sessionFactory.openSession();
+			Transaction tx = session.beginTransaction();
+			session.delete(order);
+			tx.commit(); 
+			session.close();
+			return null;
+		}
+		
+		order.setQuantity(order.getQuantity() - quantity);
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		session.update(order);
+		tx.commit(); 
+		session.close();
+		return order;
+	}
 }

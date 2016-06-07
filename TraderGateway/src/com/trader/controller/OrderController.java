@@ -40,6 +40,10 @@ public class OrderController {
 			order.setSide(Integer.parseInt(obj.get("side").toString()));
 			order.setTrader(obj.get("trader").toString());
 			
+			if (obj.containsKey("orderID")) {
+				order.setOrderID(obj.getInt("orderID"));
+			}
+			
 			order.setTraderCompany("traderCompany1");
 		} catch (Exception e) {
 			e.printStackTrace();

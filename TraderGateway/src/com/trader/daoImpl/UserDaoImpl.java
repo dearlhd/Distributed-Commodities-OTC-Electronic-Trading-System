@@ -67,6 +67,19 @@ public class UserDaoImpl implements UserDao{
 		
 		return user.getAvailableBalance();
 	}
+	
+	@Override
+	public double getFrozenCapital(String traderName) {
+		User user = new User();
+		user.setUsername(traderName);
+		user = getUsersByUsername(user).get(0);
+		
+		if (user == null) {
+			return -1;
+		}
+		
+		return user.getFrozenCapital();
+	}
 
 	@Override
 	public double changeAvailableBalance(String traderName, double cash) {
@@ -86,7 +99,7 @@ public class UserDaoImpl implements UserDao{
 		
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-		session.update(user);;
+		session.update(user);
 		tx.commit(); 
 		session.close();
 		return user.getAvailableBalance();
