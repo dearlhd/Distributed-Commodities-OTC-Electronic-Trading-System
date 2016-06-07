@@ -26,6 +26,7 @@
 				<li><a href="#" onclick="queryMarketClick();">Market</a></li>
 				<li><a href="#" onclick="queryOrderClick();">My Order</a></li>
 				<li><a href="#" onclick="queryBlotter();">Order Blotter</a></li>
+				<li><a href="#" onclick="queryFutures();">My Futures</a></li>
 				<li><a href="#" class="my_account">My Account</a>
 					<ul>
 						<li><a href="traderAccount.html">Setting</a></li>
@@ -219,7 +220,7 @@
 						"trader" : localStorage.getItem("visitor"),
 						"side" : orderitem.children().eq(6).text() * 1,
 						"price" : orderitem.children().eq(5).text() * 1,
-						"quantity" : orderitem.children().eq(4).text() * 1,
+						"quantity" : oreder_quantity * 1,
 						"product" : orderitem.children().eq(2).text(),
 						"period" : orderitem.children().eq(3).text(),
 						"orderType" : "cancel"
@@ -352,6 +353,10 @@
 
 	function queryBlotter(){
 		window.location.href = "traderOrderBlotter.html";
+	}
+
+	function queryFutures(){
+		window.location.href = "traderFutures.html";
 	}
 
 	function CategoryChooseList(categorys){

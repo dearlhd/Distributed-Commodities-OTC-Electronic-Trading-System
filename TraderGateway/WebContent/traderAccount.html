@@ -26,6 +26,7 @@
 				<li><a href="#" onclick="queryMarketClick();">Market</a></li>
 				<li><a href="#" onclick="queryOrderClick();">My Order</a></li>
 				<li><a href="#" onclick="queryBlotter();">Order Blotter</a></li>
+				<li><a href="#" onclick="queryFutures();">My Futures</a></li>
 				<li><a href="#" class="my_account">My Account</a>
 					<ul>
 						<li><a href="traderAccount.html">Setting</a></li>
@@ -126,6 +127,10 @@
 
 	function queryBlotter(){
 		window.location.href = "traderOrderBlotter.html";
+	}
+
+	function queryFutures(){
+		window.location.href = "traderFutures.html";
 	}
 
 	function validateInt(numbers){

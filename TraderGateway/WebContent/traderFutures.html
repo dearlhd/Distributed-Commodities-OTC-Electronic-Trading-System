@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Trader Futures</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<link rel="stylesheet" href="css/bootstrap.css" />
+	<link rel="stylesheet" href="css/my.css" />
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/my.js"></script>
+	<script src="js/bootstrap.min.js"> </script>
+
+</head>
+<body>
+
+<div id="wrap">
+	<header id="header" class="container">
+		<div class="top-link">
+			<a href="index.html" class="my_logout">Log Out</a>
+		</div>
+		<div class="my_title">Futures<a class="my_title_a">Trader</a></div>
+		<nav id="nav-wrap">
+			<ul id="nav">
+				<li><a href="#" onclick="queryMarketClick();">Market</a></li>
+				<li><a href="#" onclick="queryOrderClick();">My Order</a></li>
+				<li><a href="#" onclick="queryBlotter();">Order Blotter</a></li>
+				<li><a href="#" onclick="queryFutures();">My Futures</a></li>
+				<li><a href="#" class="my_account">My Account</a>
+					<ul>
+						<li><a href="traderAccount.html">Setting</a></li>
+						<li><a href="traderAccount.html">MyFund</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</header>
+
+	<hr class="my_blankheaderhr"/>
+
+	<div class="my_searchlist" id="searchlist">
+		<section class="container page-content">
+			<hr class="my_blanklisthr"/>
+			<p class="my_blottertitle">My Futures</p>
+			<hr class="my_hr_T my_hr_Add"/>
+
+			<div class="my_listitems">
+				<label>Category:</label>
+				<a id="category_all" onclick="CategoryChooseList(this);">All</a>
+				<a id="category_Agricultural" onclick="CategoryChooseList(this);">Agricultural</a>
+				<a id="category_Energy" onclick="CategoryChooseList(this);">Energy</a>
+				<a id="category_Metal" onclick="CategoryChooseList(this);">Metal</a>		
+				<label class="my_listsearchbuttom" onclick="searchButtomClick();">Search</label>		
+			</div>
+
+			<hr class="my_blanklisthr"/>
+		</section>
+	</div>
+
+	<hr class="my_blanklisthr"/>
+
+<section class="container page-content" id="main-container">
+
+	<div id="blotterTableWhole">
+		<table class="table table-hover table-striped my_blottertable" id="blotterTable">
+
+		</table>
+	</div>
+
+</section>
+
+<section class="container page-content">
+	<hr class="my_blankhr"/>
+</section>
+
+
+<footer id="footer" align="center" class="my_footer">
+	<div class="container footer-in">
+		<p>CopyRights@</p>
+	</div>
+</footer>
+
+</div>
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+	var query_category = "All";
+	var futures_categorysAgricultural = ["JR", "C", "WH", "CF", "SR", "RO", "ER", "P", "WS", "WT", "A", "B", "M", "Y", "JD"];
+	var futures_categorysEnergy = ["LLDPE", "PVC", "PTA", "RU", "FU", "WR", "ME", "J", "I", "BU", "FG", "TC"];
+	var futures_categorysMetal = ["CU", "AL", "ZN", "PB", "SF", "RB", "AU", "AG"];
+
+	var table_layer =　"<table class='table table-hover table-striped my_blottertable' id='blotterTable'>"+
+					  "</table>";
+
+	var demo_head = "<hr class='my_blankhr'/>" + 
+					"<article class='eleven columns blog-post my_accountarticle my_textleft'>" +
+						"<h4 class='my_accountTitle'>";
+	var demo_tail = "</h4>" +
+					"</article>";
+
+	var myurl = "https://localhost:8443/TraderGateway/";
+
+	function validateInt(numbers){
+		for (var i = 0; i < numbers.length; ++i)
+			if (!((numbers.charAt(i) <= '9') && (numbers.charAt(i) >= '0')))
+				return 0;
+		return numbers * 1;
+	}
+
+	function GetCateGory(producttypes){
+		for (var i = 0; i < futures_categorysAgricultural.length; ++i)
+			if (futures_categorysAgricultural[i] == producttypes)
+				return 1;
+		for (var i = 0; i < futures_categorysEnergy.length; ++i)
+			if (futures_categorysEnergy[i] == producttypes)
+				return 2;
+		for (var i = 0; i < futures_categorysMetal.length; ++i)
+			if (futures_categorysMetal[i] == producttypes)
+				return 3;
+		return 0;
+	}
+
+	function searchButtomClick(){
+		var blotterInfo =　{};
+		blotterInfo.trader = localStorage.getItem("visitor");
+
+        $.ajax({
+        	url: myurl + "Order/trader=" + blotterInfo.trader,
+          	type: "GET",
+          	success: function(msg){
+          		var obj = eval(msg);
+				if (jQuery.isEmptyObject(obj)){
+					table_layer = demo_head + ":( No Such Futures. Maybe Change The Time Or Trader." + demo_tail;
+					$("#blotterTableWhole").html(table_layer);
+          			return false;
+        		}
+        		//console.log(obj);
+        		//console.log("<> :" + query_category);
+        		table_layer = "" +
+        			"<table class='table table-hover table-striped my_blottertable' id='blotterTable'>" + 
+						"<thead class='my_fontBold'>" +				
+							"<tr>" +
+								"<th>#</th>" +
+								"<th>OrderType</th>" +
+								"<th>Product</th>" +
+								"<th>Period</th>" +
+								"<th>Quantity</th>" +
+								"<th>Price</th>" +
+								"<th>Side</th>" +
+								"<th>orderTime</th>" +
+							"</tr>"　+
+						"</thead>";
+				table_layer += "" +
+        				"<tbody class='my_tbody'>";
+
+        		for (var i = 0; i < obj.length; ++i){
+        			table_layer += "" +
+							"<tr class='my_tr'>"　+
+	    						"<td>" + (i + 1) + "</td>"　+
+								"<td>" + obj[i].orderType + "</td>"　+
+								"<td class='productType'>" + obj[i].product + "</td>"　+
+								"<td>" + obj[i].period + "</td>"　+
+								"<td>" + obj[i].quantity + "</td>"　+
+								"<td>" + obj[i].price + "</td>"　+								
+								"<td>" + obj[i].side + "</td>" +
+								"<td>" + obj[i].orderTime + "</td>" +
+								"<td hidden>" + obj[i].orderID + "</td>" +
+							"</tr>";						
+        		}
+        		
+        		table_layer += "</tbody>";
+        		table_layer += "</table>";
+        		CategoryChooseList("#category_" + query_category);
+          	}
+        });
+	}
+
+	function queryMarketClick(){
+		window.location.href = "trader.html";
+	}
+
+	function queryOrderClick(){
+		window.location.href = "traderOrder.html";
+	}
+
+	function queryBlotter(){
+		window.location.href = "traderOrderBlotter.html";
+	}
+
+	function queryFutures(){
+		window.location.href = "traderFutures.html";
+	}
+
+	function CategoryChooseList(categorys){
+		$(categorys).parent().children("a").css("background-color", "rgba(240, 240, 240, 1)");
+		$(categorys).css("background-color", "rgba(211, 211, 211, 1)");
+		query_category = $(categorys).text();
+		$("#blotterTableWhole").html(table_layer);
+		if (query_category == "All")
+		{
+			//do nothing
+		}
+		else if (query_category == "Agricultural")
+		{
+			$(".my_tr").filter(function(){
+				return (GetCateGory($(".productType", this).text()) != 1);
+			}).remove();
+		}
+		else if (query_category == "Energy")
+		{
+			$(".my_tr").filter(function(){
+				return (GetCateGory($(".productType", this).text()) != 2);
+			}).remove();
+		}
+		else if (query_category == "Metal")
+		{
+			$(".my_tr").filter(function(){
+				return (GetCateGory($(".productType", this).text()) != 3);
+			}).remove();
+		}
+
+		var iter = $("#blotterTable").children().eq(0).next().children().eq(0);
+		var cnt = 0;
+		while (iter.html() != null){
+			iter.children().eq(0).text(++cnt);
+			iter = iter.next();
+		}
+	}
+
+	function validateYear(year){
+		if (year.length != 4) return 0;
+		else{
+			for (var i = 0; i < 4; ++i)
+				if (!(year.charAt(i) <= '9') && (year.charAt(i) >= '0'))
+					return 0;
+			return year * 1;
+		}
+	}
+
+	function InitChooseList(){
+		searchButtomClick();
+		CategoryChooseList("#category_all");
+
+	}
+
+	$(window).load(function() {
+    	$('#slider').nivoSlider();
+    });
+
+    $(document).ready(function(){
+    	InitChooseList();
+    });
+</script>
