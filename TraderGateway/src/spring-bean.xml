@@ -45,4 +45,8 @@
 	
 	<bean id="redisService" class="com.trader.serviceImpl.RedisServiceImpl"></bean>
 	<bean id="redisClient" class="com.trader.utils.jedis.RedisClient"></bean>
+	
+	<bean id="accountService" class="com.trader.serviceImpl.AccountServiceImpl">
+		<property name="userDao" ref="userDAO"></property>
+	</bean>
 </beans>

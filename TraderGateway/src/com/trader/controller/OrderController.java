@@ -2,7 +2,6 @@ package com.trader.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -16,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.trader.dao.OrderDao;
 import com.trader.entity.Order;
+import com.trader.service.AccountService;
 import com.trader.service.OrderService;
 
 @Controller
@@ -25,6 +24,9 @@ import com.trader.service.OrderService;
 public class OrderController {
 	@Resource(name = "orderService")
 	private OrderService orderService;
+	
+	@Resource(name = "accountService")
+	private AccountService accountService;
 
 	private Order parseRequest(JSONObject obj) {
 		Order order = new Order();
@@ -70,8 +72,21 @@ public class OrderController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody JSONObject addOrder(@RequestBody JSONObject obj) {
-		System.out.println(obj.toString());
+		System.out.println("Trader!Post Order "+obj.toString());
 		Order order = parseRequest(obj);
+		
+		double amount = order.getPrice() * order.getQuantity();
+		
+		if (!order.getOrderType().equals("cancel") && accountService.depositCash(order.getTrader(), amount) < 0) {
+			JSONObject retObj = new JSONObject();
+			retObj.put("msg", -1);
+			return retObj;
+		}
+		
+		if (order.getOrderType().equals("cancel")) {
+			accountService.refundCash(order.getTrader(), amount);
+		}
+		
 		orderService.addOrder(order);
 		return obj;
 	}

@@ -54,4 +54,65 @@ public class UserDaoImpl implements UserDao{
 		session.close();
 		return user;
 	}
+	
+	@Override
+	public double getAvailableBalance(String traderName) {
+		User user = new User();
+		user.setUsername(traderName);
+		user = getUsersByUsername(user).get(0);
+		
+		if (user == null) {
+			return -1;
+		}
+		
+		return user.getAvailableBalance();
+	}
+
+	@Override
+	public double changeAvailableBalance(String traderName, double cash) {
+		User user = new User();
+		user.setUsername(traderName);
+		user = getUsersByUsername(user).get(0);
+		
+		if (user == null) {
+			return -1;
+		}
+		
+		if (user.getAvailableBalance() + cash < 0) {
+			return -1;
+		}
+		
+		user.setAvailableBalance(user.getAvailableBalance() + cash);
+		
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		session.update(user);;
+		tx.commit(); 
+		session.close();
+		return user.getAvailableBalance();
+	}
+
+	@Override
+	public double changeFrozenCapital(String traderName, double cash) {
+		User user = new User();
+		user.setUsername(traderName);
+		user = getUsersByUsername(user).get(0);
+		
+		if (user == null) {
+			return -1;
+		}
+		
+		if (user.getFrozenCapital() + cash < 0) {
+			return -1;
+		}
+		
+		user.setFrozenCapital(user.getFrozenCapital() + cash);
+		
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		session.update(user);
+		tx.commit(); 
+		session.close();
+		return user.getFrozenCapital();
+	}
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.trader.entity.BlotterEntry;
 import com.trader.entity.Order;
+import com.trader.service.AccountService;
 import com.trader.service.BlotterService;
 import com.trader.service.RedisService;
 
@@ -28,6 +29,9 @@ public class BlotterController {
 	
 	@Resource
 	RedisService redisService;
+	
+	@Resource(name = "accountService")
+	private AccountService accountService;
 
 	private BlotterEntry parseRequest(JSONObject obj) {
 		BlotterEntry be = new BlotterEntry();
@@ -75,6 +79,40 @@ public class BlotterController {
 		System.out.println(obj.toString());
 		BlotterEntry be = parseRequest(obj);
 		
+		double price = be.getPrice() * be.getQuantity();
+		
+		// deal with account changes
+		Order initiatorOrder = new Order();
+		initiatorOrder.setTraderCompany(be.getInitiatorTrader());
+		initiatorOrder.setTrader(be.getInitiatorTrader());
+		initiatorOrder.setSide(be.getInitiatorSide());
+		initiatorOrder.setPrice(price);
+		
+		Order completeOrder = new Order();
+		completeOrder.setTraderCompany(be.getCompletionCompany());
+		completeOrder.setTrader(be.getCompletionTrader());
+		completeOrder.setSide(be.getCompletionSide());
+		completeOrder.setPrice(price);
+		
+		if (initiatorOrder.getTraderCompany().equals("traderCompany1")) {
+			if (initiatorOrder.getSide() == 0) {
+				dealBuyerAccount(initiatorOrder);
+			}
+			else if (initiatorOrder.getSide() == 1) {
+				dealSellerAccount(initiatorOrder);
+			}
+		}
+		
+		if (completeOrder.getTraderCompany().equals("traderCompany1")) {
+			if (completeOrder.getSide() == 0) {
+				dealBuyerAccount(completeOrder);
+			}
+			else if (completeOrder.getSide() == 1) {
+				dealSellerAccount(completeOrder);
+			}
+		}
+		
+		// store deal orders
 		Order order = new Order();
 		order.setProduct(be.getProduct());
 		order.setPeriod(be.getPeriod());
@@ -92,4 +130,13 @@ public class BlotterController {
 		return obj;
 	}
 	
+	private void dealBuyerAccount (Order order) {
+		double amount = order.getPrice();
+		accountService.payBill(order.getTrader(), amount);
+	}
+	
+	private void dealSellerAccount (Order order) {
+		double amount = order.getPrice();
+		accountService.collectBill(order.getTrader(), amount);
+	}
 }
