@@ -213,7 +213,8 @@
 				orderitem = orderitem;
 				//console.log(orderitem.children().eq(8).text());
 				var max_quantity = orderitem.children().eq(4).text();
-				if (oreder_quantity > max_quantity) alert("The Cancel Order Quantity Is Too Large");
+				//if (oreder_quantity > max_quantity) alert("The Cancel Order Quantity Is Too Large");
+				if (oreder_quantity == 0) alert("The Cancel Order Quantity Cannot be Zero");
 				else{
 					orderInfo = {
 						"orderID" : orderitem.children().eq(8).text(),
