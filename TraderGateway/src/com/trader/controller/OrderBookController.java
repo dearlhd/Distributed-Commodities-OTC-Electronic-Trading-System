@@ -46,7 +46,7 @@ public class OrderBookController {
 		}
 		
 		for (int i = 0; i < orders.size(); i++) {
-			System.out.println(orders.get(i).getProduct() + " " + orders.get(i).getPrice() + " " + orders.get(i).getQuantity() + " " + orders.get(i).getSide());
+			System.out.println(orders.get(i).getOrderID() + " " +orders.get(i).getProduct() + " " + orders.get(i).getPrice() + " " + orders.get(i).getQuantity() + " " + orders.get(i).getSide());
 		}
 		
 		JSONArray orderBook = JSONArray.fromObject(orders);

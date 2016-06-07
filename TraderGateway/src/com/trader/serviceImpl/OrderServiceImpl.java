@@ -64,11 +64,12 @@ public class OrderServiceImpl implements OrderService {
 			return order;
 		}
 		
+		order = orderDao.addOrder(order);
 		int brokerIndex = msgService.queryMartketPrice(order);
 		JSONObject msg = JSONObject.fromObject(order);
 		msgService.postOrderToBroker("/Order", brokerIndex, msg);
 		
-		return orderDao.addOrder(order);
+		return order;
 	}
 
 	@Override

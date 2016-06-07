@@ -27,7 +27,9 @@ public class OrderDaoImpl implements OrderDao {
 		Session session = sessionFactory.openSession();
 		
 		Transaction tx = session.beginTransaction();
-		session.save(order);
+		int n = (int)session.save(order);
+		System.out.println("After save: " + n);
+		order.setOrderID(n);
 		tx.commit(); 
 		session.close();
 		return order;
