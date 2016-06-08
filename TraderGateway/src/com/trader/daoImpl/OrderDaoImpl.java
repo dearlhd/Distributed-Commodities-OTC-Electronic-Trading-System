@@ -38,7 +38,7 @@ public class OrderDaoImpl implements OrderDao {
 	@Override
 	public List<Order> getOrders() {
 		String hql="from torder";
-        Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.openSession();
         Query query = session.createQuery(hql);
         
         List<Order> orders= (List<Order>)query.list();
@@ -48,7 +48,7 @@ public class OrderDaoImpl implements OrderDao {
 	@Override
 	public List<Order> getOrderByUser(String username) {
 		String hql="from torder where trader=:name";
-        Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.openSession();
         Query query = session.createQuery(hql);
         query.setString("name", username);
         
@@ -59,7 +59,7 @@ public class OrderDaoImpl implements OrderDao {
 	@Override
 	public Order getOrderByID(int id) {
 		String hql="from torder where orderID=:id";
-        Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.openSession();
         Query query = session.createQuery(hql);
         query.setInteger("id", id);
         

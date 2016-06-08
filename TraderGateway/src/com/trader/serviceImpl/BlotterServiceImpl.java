@@ -18,7 +18,6 @@ public class BlotterServiceImpl implements BlotterService{
 	@Resource (name="blotterDAO")
 	BlotterDao blotterDao;
 
-
 	public void setBlotterDao(BlotterDao blotterDao) {
 		this.blotterDao = blotterDao;
 	}

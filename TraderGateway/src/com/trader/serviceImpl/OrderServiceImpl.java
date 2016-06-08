@@ -56,11 +56,17 @@ public class OrderServiceImpl implements OrderService {
 			od.setQuantity(quantity);
 			od.setOrderType("cancel");
 			
+			int index = 0;
+			
 			for (int i = 0; i < 3; i++) {
 				JSONObject msg = JSONObject.fromObject(od);
-				msgService.postOrderToBroker("/Order", i, msg);
+				msgService.postOrderToBroker("/Order", index, msg);
 			}
+			
+			JSONObject msg = JSONObject.fromObject(od);
+			msgService.postOrderToBroker("/Order", index, msg);
 			orderDao.cancelOrder(order.getOrderID(), quantity);
+			
 			return order;
 		}
 		

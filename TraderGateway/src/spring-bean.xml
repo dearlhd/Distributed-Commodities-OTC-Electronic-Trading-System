@@ -49,4 +49,11 @@
 	<bean id="accountService" class="com.trader.serviceImpl.AccountServiceImpl">
 		<property name="userDao" ref="userDAO"></property>
 	</bean>
+	
+	<bean id="userProductDAO" class="com.trader.daoImpl.UserProductDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="productService" class="com.trader.serviceImpl.ProductServiceImpl">
+		<property name="userProductDao" ref="userProductDAO"></property>
+	</bean>
 </beans>

@@ -75,7 +75,7 @@ public class BlotterController {
     }
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public @ResponseBody JSONObject addOrder(@RequestBody JSONObject obj) {
+	public @ResponseBody JSONObject addBlotter(@RequestBody JSONObject obj) {
 		System.out.println(obj.toString());
 		BlotterEntry be = parseRequest(obj);
 		

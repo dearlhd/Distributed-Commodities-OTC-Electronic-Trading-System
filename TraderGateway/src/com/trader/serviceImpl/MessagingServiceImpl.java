@@ -20,13 +20,19 @@ public class MessagingServiceImpl implements MessagingService{
 	
 	public MessagingServiceImpl () {
 		brokerUrls = new ArrayList<String>();
-		brokerUrls.add("https://localhost:8443/BrokerGateway/rest");
+		brokerUrls.add("https://localhost:8443/BrokerGateway1/rest");
+		brokerUrls.add("https://localhost:8443/BrokerGateway2/rest");
+		brokerUrls.add("https://localhost:8443/BrokerGateway3/rest");
 		//brokerUrls.add("");
 		//brokerUrls.add("");
 	}
 
 	@Override
 	public JSONObject postOrderToBroker(String subUrl, int brokerIndex, JSONObject msg) {
+		if (brokerIndex >= brokerUrls.size()) {
+			return new JSONObject();
+		}
+		
 		String url = brokerUrls.get(brokerIndex) + subUrl;
 		JSONObject obj = (JSONObject) httpClientUtil.postMessageRetObject(url, msg);
 		System.out.println("Trader! MsgService, postOrderToBroker: " + obj);
