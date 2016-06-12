@@ -461,7 +461,7 @@
 			cur_date = validateDate(cur_year, cur_month, cur_date);
 			if (cur_date == 0) alert("Illegal Date");
 			else if (validateInt(cur_quantity) == 0) alert("Illegal Order Quantity");
-			else if (validatePrice(cur_price) == 0) alert("Order Price Must Be A Multiple Of 0.5");
+			else if ((orderType != "Market Order") && (validatePrice(cur_price) == 0)) alert("Order Price Must Be A Multiple Of 0.5");
 			else{
 				var cur_period = $("#Order_Month").children().eq($("#Order_Month").val() - 1).text();
 				if (cur_date < 10) cur_period += ("0" + cur_date);
